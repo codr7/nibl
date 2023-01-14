@@ -20,27 +20,31 @@ namespace nibl {
 	const PC pc = vm.pc;
 
 	for (;;) {
-	  auto [f, err] = vm.read(buf, pos);
+	  auto [f, e] = vm.read(buf, pos);
 
-	  if (err) {
-	    stdout << *err << endl;
+	  if (e) {
+	    stdout << *e << endl;
 	    break;
 	  }
 
 	  if (!f) { break; }
 	  
-	  f->emit(vm);
+	  if (auto e = f->emit(vm); e) {
+	    stdout << *e << endl;
+	    goto END;
+	  }
 	}
 
 	buf.str("");
 	buf.clear();
 	*vm.emit() = ops::stop();
 	
-	if (auto err = vm.eval(pc); err) {
-	  stdout << *err << endl;
+	if (auto e = vm.eval(pc); e) {
+	  stdout << *e << endl;
 	  break;
 	}
 
+      END:
 	vm.dump_stack(stdout);
 	stdout << endl;
       } else {

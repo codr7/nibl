@@ -2,7 +2,10 @@
 #define NIBL_TYPE_HPP
 
 #include <any>
+#include <optional>
 #include <string>
+
+#include "nibl/error.hpp"
 
 namespace nibl {
   using namespace std;
@@ -14,7 +17,7 @@ namespace nibl {
 
     Type(string &&name);
     virtual void dump(any data, ostream &out) const = 0;
-    virtual void emit(VM &vm, const any &data) const = 0;
+    virtual optional<Error> emit(VM &vm, const any &data) const = 0;
   };
 }
 

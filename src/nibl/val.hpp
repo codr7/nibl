@@ -2,6 +2,9 @@
 #define NIBL_VAL_HPP
 
 #include <any>
+#include <optional>
+
+#include "nibl/error.hpp"
 
 namespace nibl {
   using namespace std;
@@ -15,7 +18,7 @@ namespace nibl {
 
     Val(const Type &type, any &&data);
     void dump(ostream &out) const;
-    void emit(VM &vm) const;
+    optional<Error> emit(VM &vm) const;
   };
 
   ostream &operator <<(ostream &out, const Val &v);

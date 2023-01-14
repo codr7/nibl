@@ -9,8 +9,9 @@
 namespace nibl::libs {
   IntType::IntType(string &&name): Type(move(name)) {}
   
-  void IntType::emit(VM &vm, const any &data) const {
+  optional<Error> IntType::emit(VM &vm, const any &data) const {
     *vm.emit() = ops::push_int1(any_cast<types::Int>(data));
+    return nullopt;
   }
 
   void IntType::dump(any data, ostream &out) const {

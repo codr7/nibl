@@ -1,29 +1,52 @@
 #include <map>
 
+#include "nibl/forms/id.hpp"
 #include "nibl/forms/lit.hpp"
 #include "nibl/read.hpp"
 #include "nibl/types.hpp"
 #include "nibl/vm.hpp"
 
-namespace nibl { 
+namespace nibl {
+  Read read_id(const VM &vm, istream &in, Pos &pos) {
+    const Pos fpos(pos);
+    stringstream buf;
+    char c;
+    
+    while (in.get(c)) {
+      if (!isgraph(c)) {
+	in.unget();
+	break;
+      }
+
+      buf << c;
+      pos.column++;
+    }
+
+    if (!buf.tellp()) {
+      return Read(nullopt, nullopt);
+    }
+    
+    return Read(forms::Id(fpos, buf.str()), nullopt);
+  }
+
   Read read_int(const VM &vm, istream &in, Pos &pos, int base) {
-    Pos fpos = pos;
+    const Pos fpos = pos;
     types::Int v(0);
       
-    static map<char, int8_t> cs = {
+    static const map<char, int8_t> cs = {
       {'0', 0}, {'1', 1}, {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6}, {'7', 7},
       {'8', 8}, {'9', 9}, {'a', 10}, {'b', 11}, {'c', 12}, {'d', 13}, {'e', 14},
       {'f', 15}
     };
     
     auto ci(cs.end());
-    char c = 0;
+    char c;
     
     while (in.get(c)) {
       if ((ci = cs.find(c)) == cs.end()) { break; }
       auto cv(ci->second);
 
-      if (cv >= base) { return Read(nullopt, Error(pos, "Invalid integer: ", c)); }
+      if (cv >= base) { return Read(nullopt, Error(pos, "Invalid Int: ", c)); }
       v = v * base + cv;
       pos.column++;
     }

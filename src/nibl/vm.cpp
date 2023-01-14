@@ -15,7 +15,13 @@ namespace nibl {
 
     in.unget();
     if (isdigit(c)) { return read_int(*this, in, pos, 10); }
+    if (isalpha(c)) { return read_id(*this, in, pos); }
     return Read(nullopt, Error(pos, c, '?'));
+  }
+
+  optional<Val> VM::get_env(const string &name) {
+    if (auto found = env.find(name); found != env.end()) { return found->second; }
+    return nullopt;
   }
 
   Op *VM::emit_no_trace(unsigned int n) {

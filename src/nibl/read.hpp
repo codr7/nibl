@@ -12,7 +12,8 @@ namespace nibl {
   using Read = pair<optional<Form>, optional<Error>>;
 
   struct VM;
-  
+
+  Read read_id(const VM &vm, istream &in, Pos &pos);
   Read read_int(const VM &vm, istream &in, Pos &pos, int base);
 }
 

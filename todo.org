@@ -1,3 +1,6 @@
 * add dup/pop macros
-* add id reader
-* add Id form
+* add Lib type
+** add symbols map
+** add Lib.import(vm, names)
+** add VM.symbols map
+** derive ABC
