@@ -1,6 +1,10 @@
-* add dup/pop macros
-* add Lib type
-** add symbols map
-** add Lib.import(vm, names)
-** add VM.symbols map
-** derive ABC
+* add swap op/macro
+* add func
+* add rotr/rotl funcs
+** use std algo
+* add pick func
+* Implement macro/meta type emit
+** use tags
+*** add VM.tags map
+*** store tag in type/macro
+*** add push_tag op

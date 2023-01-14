@@ -17,8 +17,8 @@ namespace nibl {
       
       if (line.empty()) {
 	Pos pos("repl", 1, 1);
-	const PC pc = vm.pc;
-
+	deque<Form> forms;
+	
 	for (;;) {
 	  auto [f, e] = vm.read(buf, pos);
 
@@ -28,15 +28,23 @@ namespace nibl {
 	  }
 
 	  if (!f) { break; }
+	  forms.push_back(*f);
+	}
+
+	buf.str("");
+	buf.clear();
+	const PC pc = vm.pc;
+
+	while (!forms.empty()) {
+	  Form f = forms.front();
+	  forms.pop_front();
 	  
-	  if (auto e = f->emit(vm); e) {
+	  if (auto e = f.emit(vm, forms); e) {
 	    stdout << *e << endl;
 	    goto END;
 	  }
 	}
 
-	buf.str("");
-	buf.clear();
 	*vm.emit() = ops::stop();
 	
 	if (auto e = vm.eval(pc); e) {

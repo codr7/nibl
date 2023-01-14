@@ -19,6 +19,9 @@ namespace nibl {
     Val(const Type &type, any &&data);
     void dump(ostream &out) const;
     optional<Error> emit(VM &vm) const;
+
+    template <typename T>
+    T as() const { return any_cast<T>(data); }
   };
 
   ostream &operator <<(ostream &out, const Val &v);

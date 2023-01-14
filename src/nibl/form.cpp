@@ -9,7 +9,7 @@ namespace nibl {
 
   void Form::dump(ostream& out) const { imp->dump(out); }
 
-  optional<Error> Form::emit(VM &vm) const { return imp->emit(vm); }
+  optional<Error> Form::emit(VM &vm, deque<Form> &args) const { return imp->emit(vm, args); }
 
   ostream &operator<<(ostream &out, Form f) {
     f.dump(out);

@@ -10,15 +10,19 @@
 namespace nibl {
   using namespace std;
 
+  struct Lib;
   struct VM;
   
   struct Type {
     const string name;
 
-    Type(string &&name);
+    Type(Lib &lib, string &&name);
     virtual void dump(any data, ostream &out) const = 0;
     virtual optional<Error> emit(VM &vm, const any &data) const = 0;
   };
+
+  ostream &operator <<(ostream &out, const Type &t);
+  bool operator ==(const Type &t1, const Type &t2);
 }
 
 #endif

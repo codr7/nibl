@@ -2,6 +2,24 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
+  VM::VM(): abc_lib(*this) {}
+
+  optional<Error> VM::import(const Env &source, initializer_list<string> names, Pos pos) {
+    vector<string> ns(names);
+
+    if (ns.empty()) {
+      env.bindings.insert(source.bindings.begin(), source.bindings.end());
+    } else {
+      for (const string &n: ns) {
+	auto v = source.find(n);
+	if (!v) { return Error(pos, n, '?'); }
+	env.bindings.insert(make_pair(n, *v));
+      }
+    }
+
+    return nullopt;
+  }
+
   Read VM::read(istream &in, Pos &pos) const {
   START:
     char c = 0;
@@ -17,11 +35,6 @@ namespace nibl {
     if (isdigit(c)) { return read_int(*this, in, pos, 10); }
     if (isalpha(c)) { return read_id(*this, in, pos); }
     return Read(nullopt, Error(pos, c, '?'));
-  }
-
-  optional<Val> VM::get_env(const string &name) {
-    if (auto found = env.find(name); found != env.end()) { return found->second; }
-    return nullopt;
   }
 
   Op *VM::emit_no_trace(unsigned int n) {

@@ -13,7 +13,7 @@ namespace nibl::forms {
       
       Imp(Pos pos, string &&name);    
       void dump(ostream& out) const override;
-      optional<Error> emit(VM &vm) const override;
+      optional<Error> emit(VM &vm, deque<Form> &args) const override;
     };
 
     Id(Pos pos, string &&name);

@@ -5,6 +5,7 @@
 #include <optional>
 #include <vector>
 
+#include "nibl/env.hpp"
 #include "nibl/error.hpp"
 #include "nibl/libs/abc.hpp"
 #include "nibl/op.hpp"
@@ -18,7 +19,7 @@ namespace nibl {
   
   struct VM {
     libs::ABC abc_lib;
-    map<string, Val> env;
+    Env env;
     
     vector<Op> ops;
     PC pc = 0;
@@ -27,8 +28,9 @@ namespace nibl {
 
     bool trace = false;
 
+    VM();
+    optional<Error> import(const Env &source, initializer_list<string> names, Pos pos);
     Read read(istream &in, Pos &pos) const;
-    optional<Val> get_env(const string &name);
     Op *emit_no_trace(unsigned int n = 1);
     Op *emit(unsigned int n = 1);
     optional<Error> eval(PC start_pc);

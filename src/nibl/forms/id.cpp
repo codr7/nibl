@@ -6,9 +6,17 @@ namespace nibl::forms {
 
   void Id::Imp::dump(ostream &out) const { out << name; }
   
-  optional<Error> Id::Imp::emit(VM &vm) const {
-    auto found = vm.get_env(name);
-    if (found) { return found->emit(vm); }
+  optional<Error> Id::Imp::emit(VM &vm, deque<Form> &args) const {
+    auto found = vm.env.find(name);
+
+    if (found) {
+      if (found->type == vm.abc_lib.macro_type) {
+	return found->as<Macro *>()->emit(vm, args, pos);
+      }
+      
+      return found->emit(vm);
+    }
+    
     return Error(pos, name, '?');
   }
 
