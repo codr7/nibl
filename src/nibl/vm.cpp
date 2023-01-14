@@ -29,6 +29,9 @@ namespace nibl {
     case 10:
       pos.line++;
       goto START;
+    case 32:
+      pos.column++;
+      goto START;
     }
 
     in.unget();
