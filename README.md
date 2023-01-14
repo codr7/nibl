@@ -1,6 +1,6 @@
 # Nibl
 
-## Building
+### Building
 Nibl requires a C++ compiler and CMake to build.
 
 ```
