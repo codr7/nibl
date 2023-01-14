@@ -2,7 +2,7 @@
 
 namespace nibl {
   ostream &operator <<(ostream &out, const Error &e) {
-    out << "Error: " << e.message;
+    out << e.message;
     return out;
   }
 }
