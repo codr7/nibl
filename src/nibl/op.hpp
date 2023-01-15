@@ -19,7 +19,8 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, DIV, DUP, GT, LT, MOD, MUL, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB, SWAP, TRACE, TYPEOF,
+    ADD, AND, DIV, DUP, GT, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB, SWAP, TRACE,
+    TYPEOF,
     STOP };
 
   inline OpCode op_code(Op op) {
@@ -49,6 +50,7 @@ namespace nibl {
     Op lt();
     Op mod();
     Op mul();
+    Op _not();
     Op _or();
     Op pop();
 

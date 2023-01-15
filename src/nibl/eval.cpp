@@ -10,8 +10,8 @@ namespace nibl {
   
   optional<Error> VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&AND, &&DIV, &&DUP, &&GT, &&LT, &&MOD, &&MUL, &&OR, &&POP, &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG,
-      &&SUB, &&SWAP, &&TRACE, &&TYPEOF,
+      &&ADD, &&AND, &&DIV, &&DUP, &&GT, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP, &&PUSH_BOOL, &&PUSH_INT1,
+      &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPEOF,
       &&STOP};
     Op op = 0;
     DISPATCH(start_pc);
@@ -38,6 +38,9 @@ namespace nibl {
     DISPATCH(pc+1);
   MUL:
     eval_mul(*this);
+    DISPATCH(pc+1);
+  NOT:
+    eval_not(*this);
     DISPATCH(pc+1);
   OR:
     eval_or(*this);

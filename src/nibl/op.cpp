@@ -30,6 +30,9 @@ namespace nibl {
     case OpCode::MUL:
       out << "MUL";
       break;
+    case OpCode::NOT:
+      out << "NOT";
+      break;
     case OpCode::OR:
       out << "OR";
       break;
@@ -76,6 +79,7 @@ namespace nibl::ops {
   Op lt() { return static_cast<Op>(OpCode::LT); }
   Op mod() { return static_cast<Op>(OpCode::MOD); }
   Op mul() { return static_cast<Op>(OpCode::MUL); }
+  Op _not() { return static_cast<Op>(OpCode::NOT); }
   Op _or() { return static_cast<Op>(OpCode::OR); }
   Op pop() { return static_cast<Op>(OpCode::POP); }
 

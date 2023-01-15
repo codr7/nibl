@@ -60,6 +60,9 @@ Booleans can be either true (`T`) or false (`F`).
 #### or [a b | c]
 `c` is true if either `a` or `b` is true, else false.
 
+#### not [a | b]
+`b` is true if `a` is false, else false.
+
 ### Types
 Every value has one of the following types:
 

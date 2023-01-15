@@ -1,4 +1,5 @@
-* add ops and/or/if
-** add Bool Operations to readme
-* add lambdas
-* add pick op/macro
+* add if: op/macro
+* add paren support for grouping ops in reader
+** add group form
+** add group reader
+** handle () in read_id

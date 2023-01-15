@@ -89,12 +89,20 @@ namespace nibl::libs {
       *vm.emit() = ops::mul();
       return nullopt;
     }),
+    not_macro(*this, "not", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::_not();
+      return nullopt;
+    }),
     or_macro(*this, "or", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::_or();
       return nullopt;
     }),
     pop_macro(*this, "pop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::pop();
+      return nullopt;
+    }),
+    stop_macro(*this, "stop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::stop();
       return nullopt;
     }),
     sub_macro(*this, "-", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {

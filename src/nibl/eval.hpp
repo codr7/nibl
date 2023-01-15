@@ -53,6 +53,11 @@ namespace nibl {
       a.data = a.as<types::Int>() * b.as<types::Int>();
   }
 
+  inline void eval_not(VM &vm) {
+      Val &a(vm.stack.back());
+      a = Val(vm.abc_lib.bool_type, !a.as<bool>());
+  }
+
   inline void eval_or(VM &vm) {
       Val b(vm.stack.back());
       vm.stack.pop_back();
