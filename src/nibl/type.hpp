@@ -15,7 +15,8 @@ namespace nibl {
   
   struct Type {
     const string name;
-
+    const size_t tag;
+    
     Type(Lib &lib, string &&name);
     virtual void dump(any data, ostream &out) const = 0;
     virtual optional<Error> emit(VM &vm, const any &data) const = 0;

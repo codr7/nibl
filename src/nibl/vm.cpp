@@ -4,6 +4,12 @@
 namespace nibl {
   VM::VM(): abc_lib(*this) {}
 
+  size_t VM::tag(const Type &type, any &&data) {
+    const size_t t = tags.size();
+    tags.emplace_back(type, move(data));
+    return t;
+  }
+
   optional<Error> VM::import(const Env &source, initializer_list<string> names, Pos pos) {
     vector<string> ns(names);
 

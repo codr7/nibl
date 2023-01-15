@@ -3,7 +3,9 @@
 
 namespace nibl {
   Macro::Macro(Lib &lib, string &&name, Body body):
-    name(move(name)), body(body) {
+    name(move(name)),
+    tag(lib.vm.tag(lib.vm.abc_lib.macro_type, this)),
+    body(body) {
     lib.bind(this->name, lib.vm.abc_lib.macro_type, this);  
   }
 

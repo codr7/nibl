@@ -3,7 +3,9 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  Type::Type(Lib &lib, string &&name): name(move(name)) {
+  Type::Type(Lib &lib, string &&name):
+    name(move(name)),
+    tag(lib.vm.tag(lib.vm.abc_lib.meta_type, this)) {
     lib.bind(this->name, lib.vm.abc_lib.meta_type, this);  
   }
 

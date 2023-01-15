@@ -19,6 +19,7 @@ namespace nibl {
     optional<Error> emit(VM &vm, deque<Form> &args, Pos pos);
     
     const string name;
+    const size_t tag;
     const Body body;
   };
 

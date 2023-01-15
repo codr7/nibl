@@ -16,6 +16,7 @@ namespace nibl {
   const unsigned int VERSION = 1;
     
   struct VM {
+    vector<Val> tags;
     libs::ABC abc_lib;
     Env env;
     
@@ -27,6 +28,7 @@ namespace nibl {
     bool trace = false;
 
     VM();
+    size_t tag(const Type &type, any &&data);
     optional<Error> import(const Env &source, initializer_list<string> names, Pos pos);
     Read read(istream &in, Pos &pos) const;
     Op *emit_no_trace(unsigned int n = 1);

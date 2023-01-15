@@ -1,15 +1,8 @@
+* add typeof macro
 * add bool type
 ** add T/F constants
 * add ops gt/lt/and/or/if
 ** add Bool Operations to readme
-* add typeof macro
 * add pick op/macro
-* Implement macro/meta type emit
-** use tags
-*** add Tag vm.tag(type, data)
-**** add Tag type
-**** add VM.tags map
-*** store tag in type/macro
-*** add push_tag op
 * check for '&' in id emit
 ** always emit val

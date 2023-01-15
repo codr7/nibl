@@ -21,7 +21,7 @@ namespace nibl::libs {
   MacroType::MacroType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
   optional<Error> MacroType::emit(VM &vm, const any &data) const {
-    //TODO
+    *vm.emit() = ops::push_tag(any_cast<Macro *>(data)->tag);
     return nullopt;
   }
 
@@ -32,7 +32,7 @@ namespace nibl::libs {
   MetaType::MetaType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
   optional<Error> MetaType::emit(VM &vm, const any &data) const {
-    //TODO
+    *vm.emit() = ops::push_tag(any_cast<Type *>(data)->tag);
     return nullopt;
   }
 

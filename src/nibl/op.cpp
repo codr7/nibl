@@ -1,7 +1,8 @@
 #include "nibl/op.hpp"
+#include "nibl/vm.hpp"
 
 namespace nibl {
-  void op_trace(PC pc, Op op, ostream &out) {
+  void op_trace(const VM &vm, PC pc, Op op, ostream &out) {
     out << pc << ' ';
     
     switch (op_code(op)) {
@@ -22,6 +23,9 @@ namespace nibl {
       break;
     case OpCode::POP:
       out << "POP";
+      break;
+    case OpCode::PUSH_TAG:
+      out << "PUSH_TAG " << ops::push_tag_value(op) << ' ' << vm.tags[ops::push_tag_value(op)];
       break;
     case OpCode::PUSH_INT1:
       out << "PUSH_INT1 " << ops::push_int1_value(op);
@@ -76,8 +80,10 @@ namespace nibl::ops {
       static_cast<Op>(value << PUSH_INT1_VALUE_POS);
   }
 
-  types::Int push_int1_value(Op op) {
-    return get<types::Int, PUSH_INT1_VALUE_POS, PUSH_INT1_VALUE_WIDTH>(op);
+  Op push_tag(size_t value) {
+    return
+      static_cast<Op>(OpCode::PUSH_TAG) +
+      static_cast<Op>(value << PUSH_TAG_VALUE_POS);
   }
 
   Op sub() {
