@@ -33,7 +33,7 @@ namespace nibl {
     Read read(istream &in, Pos &pos);
     Op *emit_no_trace(unsigned int n = 1);
     Op *emit(unsigned int n = 1);
-    optional<Error> eval(PC start_pc, ostream &stdout);
+    void eval(PC start_pc, ostream &stdout);
     void push(Type &type, any &&data);
     void dump_stack(ostream &out) const;
   };

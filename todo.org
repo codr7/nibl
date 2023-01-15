@@ -1,6 +1,5 @@
-* add paren support for grouping ops in reader
-** add group form
-** add group reader
-** handle () in read_id
-* add if: op/macro
-* add if-else: op/macro
+* add if:/else:
+** stop at else: or semicolon if true
+** jump to semicolon on else:
+** jump to else: or semicolon if false
+** dup 10 = if: 1 else: dup 20 = if: 2 else: 3; drop
