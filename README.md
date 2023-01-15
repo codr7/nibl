@@ -79,6 +79,17 @@ The type of macros.
 #### Meta
 The type of types.
 
+`typeof` may be used to get the type of any value.
+
+```
+  1 typeof
+
+[Int]
+  typeof
+
+[Meta]
+```
+
 ### References
 References may be captured using `&`.
 

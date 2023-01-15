@@ -32,15 +32,14 @@ namespace nibl::libs {
   MetaType::MetaType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
   optional<Error> MetaType::emit(VM &vm, const any &data) const {
-    *vm.emit() = ops::push_tag(any_cast<Type *>(data)->tag);
+    *vm.emit() = ops::push_tag(any_cast<const Type *>(data)->tag);
     return nullopt;
   }
 
   void MetaType::dump(any data, ostream &out) const {
-    out << *any_cast<Type *>(data);
+    out << *any_cast<const Type *>(data);
   }
-
-  
+ 
   ABC::ABC(VM &vm):
     Lib(vm, "abc"),
     int_type(*this, "Int"),
@@ -80,6 +79,10 @@ namespace nibl::libs {
     }),
     trace_macro(*this, "trace", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       vm.trace = !vm.trace;
+      return nullopt;
+    }),
+    typeof_macro(*this, "typeof", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::_typeof();
       return nullopt;
     }) {}
 }

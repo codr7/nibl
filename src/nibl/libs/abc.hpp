@@ -32,7 +32,7 @@ namespace nibl::libs {
     const MetaType meta_type;
 
     const Macro add_macro, div_macro, dup_macro, mod_macro, mul_macro, pop_macro, sub_macro, swap_macro,
-      trace_macro;
+      trace_macro, typeof_macro;
     
     ABC(VM &vm);
   };

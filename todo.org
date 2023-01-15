@@ -1,4 +1,3 @@
-* add typeof macro
 * add bool type
 ** add T/F constants
 * add ops gt/lt/and/or/if
