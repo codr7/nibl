@@ -10,8 +10,8 @@ namespace nibl {
   
   optional<Error> VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&DIV, &&DUP, &&MOD, &&MUL, &&POP, &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE,
-      &&TYPEOF,
+      &&ADD, &&DIV, &&DUP, &&GT, &&LT, &&MOD, &&MUL, &&POP, &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB,
+      &&SWAP, &&TRACE, &&TYPEOF,
       &&STOP};
     Op op = 0;
     DISPATCH(start_pc);
@@ -23,6 +23,12 @@ namespace nibl {
     DISPATCH(pc+1);
   DUP:
     stack.emplace_back(stack.back());
+    DISPATCH(pc+1);
+  GT:
+    eval_gt(*this);
+    DISPATCH(pc+1);
+  LT:
+    eval_lt(*this);
     DISPATCH(pc+1);
   MOD:
     eval_mod(*this);

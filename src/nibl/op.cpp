@@ -15,6 +15,12 @@ namespace nibl {
     case OpCode::DUP:
       out << "DUP";
       break;
+    case OpCode::GT:
+      out << "GT";
+      break;
+    case OpCode::LT:
+      out << "LT";
+      break;
     case OpCode::MOD:
       out << "MOD";
       break;
@@ -66,6 +72,14 @@ namespace nibl::ops {
   
   Op dup() {
     return static_cast<Op>(OpCode::DUP);
+  }
+
+  Op gt() {
+    return static_cast<Op>(OpCode::GT);
+  }
+
+  Op lt() {
+    return static_cast<Op>(OpCode::LT);
   }
 
   Op mod() {

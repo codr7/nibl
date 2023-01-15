@@ -17,6 +17,20 @@ namespace nibl {
       Val &x(vm.stack.back());
       x.data = x.as<types::Int>() / y.as<types::Int>();
   }
+  
+  inline void eval_gt(VM &vm) {
+      Val y(vm.stack.back());
+      vm.stack.pop_back();
+      Val &x(vm.stack.back());
+      x = Val(vm.abc_lib.bool_type, x.as<types::Int>() > y.as<types::Int>());
+  }
+
+  inline void eval_lt(VM &vm) {
+      Val y(vm.stack.back());
+      vm.stack.pop_back();
+      Val &x(vm.stack.back());
+      x = Val(vm.abc_lib.bool_type, x.as<types::Int>() < y.as<types::Int>());
+  }
 
   inline void eval_mod(VM &vm) {
       Val y(vm.stack.back());

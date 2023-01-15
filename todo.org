@@ -1,5 +1,4 @@
-* add bool type
-** add T/F constants
-* add ops gt/lt/and/or/if
+* add ops and/or/if
 ** add Bool Operations to readme
+* add lambdas
 * add pick op/macro

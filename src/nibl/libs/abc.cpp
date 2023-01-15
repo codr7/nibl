@@ -69,6 +69,14 @@ namespace nibl::libs {
       *vm.emit() = ops::dup();
       return nullopt;
     }),
+    gt_macro(*this, ">", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::gt();
+      return nullopt;
+    }),
+    lt_macro(*this, "<", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::lt();
+      return nullopt;
+    }),
     mod_macro(*this, "%", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::mod();
       return nullopt;

@@ -10,7 +10,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v1
+Nibl v2
 
 1 2 3 dup
 
@@ -20,13 +20,13 @@ Nibl v1
 ### Stack Operations
 
 #### dup
-Duplicates the top value.
+Duplicate S0.
 
 #### pop
-Removes the top value.
+Remove S0.
 
 #### swap
-Swaps the two top values.
+Swaps the S0 and S1.
 
 ### Tracing
 
@@ -52,26 +52,40 @@ Tracing may be toggled using `trace`.
 
 ### Numbers
 
-#### +
-Adds the two top numbers.
+#### + [a b | c]
+`c` is `b` added to `a`.
 
-#### -
-Subtracts the two top numbers.
+#### - [a b | c]
+`c` is `b` subtracted from `a`.
 
-#### *
-Multiples the two top numbers
+#### * [a b | c]
+`c` is `a` multiplied by `b`.
 
-#### /
-Divides the two top numbers.
+#### / [a b | c]
+`c` is `a` divided by `b`.
 
-#### %
-Calculates the remainder from dividing the two top numbers.
+#### % [a b | c]
+`c` is the remainder from dividing `a` by `b`.
 
 ### Booleans
-Booleans have one of two values; `T` or `F`.
+Booleans have one of two values: `T` or `F`.
+
+#### < [a b | c]
+`c` is `T` if `a` is less than `b`, else `F`.
+
+#### > [a b | c]
+`c` is `T` if `a` is greater than `b`, else `F`.
 
 ### Types
-`typeof` may be used to get the type of any value.
+Every value has one of the following types:
+
+- `Bool` The type of booleans.
+- `Int` The type of numbers.
+- `Macro` The type of macros.
+- `Meta` The type of types.
+
+#### typeof [a | b]
+`b` is the type of `a`.
 
 ```
   1 typeof
@@ -81,20 +95,6 @@ Booleans have one of two values; `T` or `F`.
 
 [Meta]
 ```
-
-Every value has one of the following types:
-
-#### Bool
-The type of booleans.
-
-#### Int
-The type of numbers.
-
-#### Macro
-The type of macros.
-
-#### Meta
-The type of types.
 
 ### References
 References may be captured using `&`.
