@@ -68,17 +68,6 @@ Divides the two top numbers.
 Calculates the remainder from dividing the two top numbers.
 
 ### Types
-Every value has one of the following types.
-
-#### Int
-The type of numbers.
-
-#### Macro
-The type of macros.
-
-#### Meta
-The type of types.
-
 `typeof` may be used to get the type of any value.
 
 ```
@@ -89,6 +78,17 @@ The type of types.
 
 [Meta]
 ```
+
+Every value has one of the following types:
+
+#### Int
+The type of numbers.
+
+#### Macro
+The type of macros.
+
+#### Meta
+The type of types.
 
 ### References
 References may be captured using `&`.
