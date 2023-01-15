@@ -2,6 +2,7 @@
 
 #include "nibl/forms/id.hpp"
 #include "nibl/forms/lit.hpp"
+#include "nibl/forms/ref.hpp"
 #include "nibl/read.hpp"
 #include "nibl/types.hpp"
 #include "nibl/vm.hpp"
@@ -25,8 +26,10 @@ namespace nibl {
     if (!buf.tellp()) {
       return Read(nullopt, nullopt);
     }
-    
-    return Read(forms::Id(fpos, buf.str()), nullopt);
+
+    string n(buf.str());
+    if (n.front() == '&') { return Read(forms::Ref(fpos, n.substr(1)), nullopt); }
+    return Read(forms::Id(fpos, move(n)), nullopt);
   }
 
   Read read_int(const VM &vm, istream &in, Pos &pos, int base) {

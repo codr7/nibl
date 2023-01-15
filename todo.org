@@ -4,5 +4,3 @@
 * add ops gt/lt/and/or/if
 ** add Bool Operations to readme
 * add pick op/macro
-* check for '&' in id emit
-** always emit val
