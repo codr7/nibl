@@ -71,14 +71,14 @@ Every value has one of the following types:
 - `Macro` The type of macros.
 - `Meta` The type of types.
 
-#### typeof [a | b]
+#### type-of [a | b]
 `b` is the type of `a`.
 
 ```
-  1 typeof
+  1 type-of
 
 [Int]
-  typeof
+  type-of
 
 [Meta]
 ```

@@ -11,7 +11,7 @@ namespace nibl {
   optional<Error> VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&DIV, &&DUP, &&GT, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP, &&PUSH_BOOL, &&PUSH_INT1,
-      &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPEOF,
+      &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPE_OF,
       &&STOP};
     Op op = 0;
     DISPATCH(start_pc);
@@ -66,7 +66,7 @@ namespace nibl {
   TRACE:
     op_trace(*this, pc, ops[pc+1], stdout);
     DISPATCH(pc+1);
-  TYPEOF:
+  TYPE_OF:
     stack.back() = Val(abc_lib.meta_type, stack.back().type);
     DISPATCH(pc+1);
     

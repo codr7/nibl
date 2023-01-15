@@ -20,7 +20,7 @@ namespace nibl {
 
   enum class OpCode {
     ADD, AND, DIV, DUP, GT, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB, SWAP, TRACE,
-    TYPEOF,
+    TYPE_OF,
     STOP };
 
   inline OpCode op_code(Op op) {
@@ -75,7 +75,7 @@ namespace nibl {
     Op sub();
     Op swap();
     Op trace();
-    Op _typeof();
+    Op type_of();
     
     Op stop();
   }

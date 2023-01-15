@@ -117,8 +117,8 @@ namespace nibl::libs {
       vm.trace = !vm.trace;
       return nullopt;
     }),
-    typeof_macro(*this, "typeof", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::_typeof();
+    type_of_macro(*this, "type-of", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::type_of();
       return nullopt;
     }) {
 
