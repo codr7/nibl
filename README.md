@@ -19,14 +19,14 @@ Nibl v2
 
 ### Stack Operations
 
-#### dup
-Duplicate S0.
+#### dup [a | a a]
+Duplicate `a`.
 
-#### pop
-Remove S0.
+#### pop [a |]
+Remove `a`.
 
-#### swap
-Swaps the S0 and S1.
+#### swap [a b | b a]
+Swaps `a` and `b`.
 
 ### Tracing
 
