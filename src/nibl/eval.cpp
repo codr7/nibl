@@ -10,7 +10,8 @@ namespace nibl {
   
   optional<Error> VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&DIV, &&DUP, &&MOD, &&MUL, &&POP, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPEOF,
+      &&ADD, &&DIV, &&DUP, &&MOD, &&MUL, &&POP, &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE,
+      &&TYPEOF,
       &&STOP};
     Op op = 0;
     DISPATCH(start_pc);
@@ -31,6 +32,9 @@ namespace nibl {
     DISPATCH(pc+1);
   POP:
     stack.pop_back();
+    DISPATCH(pc+1);
+  PUSH_BOOL:
+    push(abc_lib.bool_type, ops::push_bool_value(op));
     DISPATCH(pc+1);
   PUSH_INT1:
     push(abc_lib.int_type, ops::push_int1_value(op));

@@ -18,7 +18,7 @@ namespace nibl {
   const size_t OP_WIDTH = 64;
   const size_t OP_CODE_WIDTH = 6;
 
-  enum class OpCode { ADD, DIV, DUP, MOD, MUL, POP, PUSH_INT1, PUSH_TAG, SUB, SWAP, TRACE, TYPEOF,
+  enum class OpCode { ADD, DIV, DUP, MOD, MUL, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB, SWAP, TRACE, TYPEOF,
     STOP };
 
   inline OpCode op_code(Op op) {
@@ -28,6 +28,9 @@ namespace nibl {
   void op_trace(const VM &vm, PC pc, Op op, ostream &out);
 
   namespace ops {
+    const size_t PUSH_BOOL_VALUE_POS = OP_CODE_WIDTH;
+    const size_t PUSH_BOOL_VALUE_WIDTH = 1;
+
     const size_t PUSH_INT1_VALUE_POS = OP_CODE_WIDTH;
     const size_t PUSH_INT1_VALUE_WIDTH = OP_WIDTH - PUSH_INT1_VALUE_POS;
 
@@ -43,6 +46,12 @@ namespace nibl {
     Op mod();
     Op mul();
     Op pop();
+
+    Op push_bool(bool value);
+
+    inline bool push_bool_value(Op op) {
+      return get<bool, PUSH_BOOL_VALUE_POS, PUSH_BOOL_VALUE_WIDTH>(op);
+    }
 
     Op push_int1(types::Int value);
 

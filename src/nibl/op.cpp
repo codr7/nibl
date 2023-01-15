@@ -24,11 +24,14 @@ namespace nibl {
     case OpCode::POP:
       out << "POP";
       break;
-    case OpCode::PUSH_TAG:
-      out << "PUSH_TAG " << ops::push_tag_value(op) << ' ' << vm.tags[ops::push_tag_value(op)];
+    case OpCode::PUSH_BOOL:
+      out << "PUSH_BOOL " << (ops::push_bool_value(op) ? 'T' : 'F');
       break;
     case OpCode::PUSH_INT1:
       out << "PUSH_INT1 " << ops::push_int1_value(op);
+      break;
+    case OpCode::PUSH_TAG:
+      out << "PUSH_TAG " << ops::push_tag_value(op) << ' ' << vm.tags[ops::push_tag_value(op)];
       break;
     case OpCode::SUB:
       out << "SUB";
@@ -75,6 +78,12 @@ namespace nibl::ops {
 
   Op pop() {
     return static_cast<Op>(OpCode::POP);
+  }
+
+  Op push_bool(bool value) {
+    return
+      static_cast<Op>(OpCode::PUSH_BOOL) +
+      static_cast<Op>(value << PUSH_BOOL_VALUE_POS);
   }
 
   Op push_int1(types::Int value) {

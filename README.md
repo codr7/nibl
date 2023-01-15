@@ -50,7 +50,7 @@ Tracing may be toggled using `trace`.
 [1 2 3 3]
 ```
 
-### Numerical Operations
+### Numbers
 
 #### +
 Adds the two top numbers.
@@ -67,6 +67,9 @@ Divides the two top numbers.
 #### %
 Calculates the remainder from dividing the two top numbers.
 
+### Booleans
+Booleans have one of two values; `T` or `F`.
+
 ### Types
 `typeof` may be used to get the type of any value.
 
@@ -80,6 +83,9 @@ Calculates the remainder from dividing the two top numbers.
 ```
 
 Every value has one of the following types:
+
+#### Bool
+The type of booleans.
 
 #### Int
 The type of numbers.

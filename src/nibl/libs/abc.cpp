@@ -7,6 +7,17 @@
 #include "nibl/vm.hpp"
 
 namespace nibl::libs {
+  BoolType::BoolType(Lib &lib, string &&name): Type(lib, move(name)) {}
+  
+  optional<Error> BoolType::emit(VM &vm, const any &data) const {
+    *vm.emit() = ops::push_bool(any_cast<bool>(data));
+    return nullopt;
+  }
+
+  void BoolType::dump(any data, ostream &out) const {
+    out << (any_cast<bool>(data) ? 'T' : 'F');
+  }
+
   IntType::IntType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
   optional<Error> IntType::emit(VM &vm, const any &data) const {
@@ -42,6 +53,7 @@ namespace nibl::libs {
  
   ABC::ABC(VM &vm):
     Lib(vm, "abc"),
+    bool_type(*this, "Bool"),
     int_type(*this, "Int"),
     macro_type(*this, "Macro"),
     meta_type(*this, "Meta"),
@@ -84,5 +96,9 @@ namespace nibl::libs {
     typeof_macro(*this, "typeof", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::_typeof();
       return nullopt;
-    }) {}
+    }) {
+
+    bind("T", bool_type, true);
+    bind("F", bool_type, false);    
+  }
 }
