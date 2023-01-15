@@ -50,6 +50,23 @@ Tracing may be toggled using `trace`.
 [1 2 3 3]
 ```
 
+### Numerical Operations
+
+#### +
+Adds the two top numbers.
+
+#### -
+Subtracts the two top numbers.
+
+#### *
+Multiples the two top numbers
+
+#### /
+Divides the two top numbers.
+
+#### %
+Calculates the remainder from dividing the two top numbers.
+
 ### Types
 Every value has one of the following types.
 

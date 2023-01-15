@@ -46,12 +46,32 @@ namespace nibl::libs {
     int_type(*this, "Int"),
     macro_type(*this, "Macro"),
     meta_type(*this, "Meta"),
+    add_macro(*this, "+", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::add();
+      return nullopt;
+    }),
+    div_macro(*this, "/", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::div();
+      return nullopt;
+    }),
     dup_macro(*this, "dup", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::dup();
       return nullopt;
     }),
+    mod_macro(*this, "%", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::mod();
+      return nullopt;
+    }),
+    mul_macro(*this, "*", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::mul();
+      return nullopt;
+    }),
     pop_macro(*this, "pop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::pop();
+      return nullopt;
+    }),
+    sub_macro(*this, "-", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::sub();
       return nullopt;
     }),
     swap_macro(*this, "swap", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {

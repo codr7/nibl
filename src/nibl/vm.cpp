@@ -36,7 +36,7 @@ namespace nibl {
 
     in.unget();
     if (isdigit(c)) { return read_int(*this, in, pos, 10); }
-    if (isalpha(c)) { return read_id(*this, in, pos); }
+    if (isgraph(c)) { return read_id(*this, in, pos); }
     return Read(nullopt, Error(pos, c, '?'));
   }
 
