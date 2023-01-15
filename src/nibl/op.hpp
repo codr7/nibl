@@ -9,7 +9,8 @@
 
 namespace nibl {
   using namespace std;
-  
+
+  using PC = size_t;
   using Op = uint64_t;
 
   const size_t OP_WIDTH = 64;
@@ -22,7 +23,7 @@ namespace nibl {
     return static_cast<OpCode>(op & ((1 << OP_CODE_WIDTH) - 1));
   }
 
-  void op_trace(Op op, ostream &out);
+  void op_trace(PC pc, Op op, ostream &out);
 
   namespace ops {
     const size_t PUSH_INT1_VALUE_POS = OP_CODE_WIDTH;

@@ -15,11 +15,10 @@ namespace nibl {
   struct Macro {
     using Body = function<optional<Error> (VM &vm, const Macro &macro, deque<Form> &args, Pos pos)>;
     
-    Macro(Lib &lib, string &&name, int nargs, Body body);
+    Macro(Lib &lib, string &&name, Body body);
     optional<Error> emit(VM &vm, deque<Form> &args, Pos pos);
     
     const string name;
-    const int nargs;
     const Body body;
   };
 

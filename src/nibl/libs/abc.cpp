@@ -46,12 +46,16 @@ namespace nibl::libs {
     int_type(*this, "Int"),
     macro_type(*this, "Macro"),
     meta_type(*this, "Meta"),
-    dup_macro(*this, "dup", 0, [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+    dup_macro(*this, "dup", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::dup();
       return nullopt;
     }),
-    pop_macro(*this, "pop", 0, [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+    pop_macro(*this, "pop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::pop();
+      return nullopt;
+    }),
+    trace_macro(*this, "trace", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      vm.trace = !vm.trace;
       return nullopt;
     }) {}
 }

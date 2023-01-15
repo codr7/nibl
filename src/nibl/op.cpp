@@ -1,8 +1,28 @@
 #include "nibl/op.hpp"
 
 namespace nibl {
-  void op_trace(Op op, ostream &out) {
-    out << "TRACE " << op << endl;
+  void op_trace(PC pc, Op op, ostream &out) {
+    out << pc << ' ';
+    
+    switch (op_code(op)) {
+    case OpCode::DUP:
+      out << "DUP";
+      break;
+    case OpCode::POP:
+      out << "POP";
+      break;
+    case OpCode::PUSH_INT1:
+      out << "PUSH_INT1 " << ops::push_int1_value(op);
+      break;
+    case OpCode::TRACE:
+      out << "TRACE";
+      break;
+    case OpCode::STOP:
+      out << "STOP";
+      break;
+    }
+    
+    out << endl;
   }
 }
 
@@ -26,7 +46,7 @@ namespace nibl::ops {
   }
   
   Op trace() {
-    return static_cast<Op>(OpCode::POP);
+    return static_cast<Op>(OpCode::TRACE);
   }
 
   Op stop() {

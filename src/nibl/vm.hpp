@@ -14,9 +14,7 @@
 
 namespace nibl {
   const unsigned int VERSION = 1;
-  
-  using PC = size_t;
-  
+    
   struct VM {
     libs::ABC abc_lib;
     Env env;
@@ -33,7 +31,7 @@ namespace nibl {
     Read read(istream &in, Pos &pos) const;
     Op *emit_no_trace(unsigned int n = 1);
     Op *emit(unsigned int n = 1);
-    optional<Error> eval(PC start_pc);
+    optional<Error> eval(PC start_pc, ostream &stdout);
     void push(const Type &type, any &&data);
     void dump_stack(ostream &out) const;
   };

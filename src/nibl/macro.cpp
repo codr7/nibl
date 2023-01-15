@@ -2,13 +2,12 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  Macro::Macro(Lib &lib, string &&name, int nargs, Body body):
-    name(move(name)), nargs(nargs), body(body) {
+  Macro::Macro(Lib &lib, string &&name, Body body):
+    name(move(name)), body(body) {
     lib.bind(this->name, lib.vm.abc_lib.macro_type, this);  
   }
 
   optional<Error> Macro::emit(VM &vm, deque<Form> &args, Pos pos) {
-    if (args.size() < nargs) { return Error(pos, "Missing macro args"); }
     return body(vm, *this, args, pos);
   }
 

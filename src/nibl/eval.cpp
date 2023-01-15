@@ -8,7 +8,7 @@
 namespace nibl {
   using namespace std;
   
-  optional<Error> VM::eval(PC start_pc) {
+  optional<Error> VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {&&DUP, &&POP, &&PUSH_INT1, &&TRACE,
       &&STOP};
     Op op = 0;
@@ -23,7 +23,7 @@ namespace nibl {
     push(abc_lib.int_type, ops::push_int1_value(op));
     DISPATCH(pc+1);
   TRACE:
-    op_trace(ops[pc+1], cout);
+    op_trace(pc, ops[pc+1], stdout);
     DISPATCH(pc+1);
     
   STOP:

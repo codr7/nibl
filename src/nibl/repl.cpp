@@ -47,7 +47,7 @@ namespace nibl {
 
 	*vm.emit() = ops::stop();
 	
-	if (auto e = vm.eval(pc); e) {
+	if (auto e = vm.eval(pc, stdout); e) {
 	  stdout << *e << endl;
 	  break;
 	}

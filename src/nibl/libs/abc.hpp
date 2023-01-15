@@ -31,7 +31,7 @@ namespace nibl::libs {
     const MacroType macro_type;
     const MetaType meta_type;
 
-    const Macro dup_macro, pop_macro;
+    const Macro dup_macro, pop_macro, trace_macro;
     
     ABC(VM &vm);
   };
