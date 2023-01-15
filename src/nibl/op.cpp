@@ -14,9 +14,13 @@ namespace nibl {
     case OpCode::PUSH_INT1:
       out << "PUSH_INT1 " << ops::push_int1_value(op);
       break;
+    case OpCode::SWAP:
+      out << "SWAP";
+      break;
     case OpCode::TRACE:
       out << "TRACE";
       break;
+
     case OpCode::STOP:
       out << "STOP";
       break;
@@ -44,7 +48,11 @@ namespace nibl::ops {
   types::Int push_int1_value(Op op) {
     return get<types::Int, PUSH_INT1_VALUE_POS, PUSH_INT1_VALUE_WIDTH>(op);
   }
-  
+
+  Op swap() {
+    return static_cast<Op>(OpCode::SWAP);
+  }
+
   Op trace() {
     return static_cast<Op>(OpCode::TRACE);
   }

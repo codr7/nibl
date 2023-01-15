@@ -25,6 +25,9 @@ Duplicates the top value.
 #### pop
 Removes the top value.
 
+#### swap
+Swaps the two top values.
+
 ### Tracing
 
 Tracing may be toggled using `trace`.
@@ -46,3 +49,15 @@ Tracing may be toggled using `trace`.
   
 [1 2 3 3]
 ```
+
+### Types
+Every value has one of the following types.
+
+#### Int
+The type of numbers.
+
+#### Macro
+The type of macros.
+
+#### Meta
+The type of types.

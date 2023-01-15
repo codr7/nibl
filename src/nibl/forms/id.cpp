@@ -10,7 +10,7 @@ namespace nibl::forms {
     auto found = vm.env.find(name);
 
     if (found) {
-      if (found->type == vm.abc_lib.macro_type) {
+      if (*found->type == vm.abc_lib.macro_type) {
 	return found->as<Macro *>()->emit(vm, args, pos);
       }
       

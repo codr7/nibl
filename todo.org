@@ -1,5 +1,7 @@
-* add swap op/macro
+* add ops +/-
 * add pick op/macro
+* add bool type
+* add ops gt/lt/and/or/if
 * Implement macro/meta type emit
 ** use tags
 *** add Tag vm.tag(type, data)
@@ -9,6 +11,4 @@
 *** add push_tag op
 * check for '&' in id emit
 ** always emit val
-* add types to readme
-* add ops::add/sub/mul/div
-
+* add typeof macro

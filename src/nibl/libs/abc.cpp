@@ -54,6 +54,10 @@ namespace nibl::libs {
       *vm.emit() = ops::pop();
       return nullopt;
     }),
+    swap_macro(*this, "swap", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::swap();
+      return nullopt;
+    }),
     trace_macro(*this, "trace", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       vm.trace = !vm.trace;
       return nullopt;

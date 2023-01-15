@@ -16,7 +16,7 @@ namespace nibl {
   const size_t OP_WIDTH = 64;
   const size_t OP_CODE_WIDTH = 6;
 
-  enum class OpCode { DUP, POP, PUSH_INT1, TRACE,
+  enum class OpCode { DUP, POP, PUSH_INT1, SWAP, TRACE,
     STOP };
 
   inline OpCode op_code(Op op) {
@@ -38,6 +38,7 @@ namespace nibl {
     Op push_int1(types::Int value);
     types::Int push_int1_value(Op op);
     
+    Op swap();
     Op trace();
     
     Op stop();

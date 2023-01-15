@@ -13,7 +13,7 @@ namespace nibl {
   struct VM;
   
   struct Val {
-    const Type &type;
+    const Type *type;
     any data;
 
     Val(const Type &type, any &&data);
