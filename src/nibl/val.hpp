@@ -13,10 +13,10 @@ namespace nibl {
   struct VM;
   
   struct Val {
-    const Type *type;
+    Type *type;
     any data;
 
-    Val(const Type &type, any &&data);
+    Val(Type &type, any &&data);
     void dump(ostream &out) const;
     optional<Error> emit(VM &vm) const;
 

@@ -33,13 +33,13 @@ namespace nibl::libs {
   };
 
   struct ABC: Lib {
-    const BoolType bool_type;
-    const IntType int_type;
-    const MacroType macro_type;
-    const MetaType meta_type;
+    BoolType bool_type;
+    IntType int_type;
+    MacroType macro_type;
+    MetaType meta_type;
 
-    const Macro add_macro, div_macro, dup_macro, gt_macro, lt_macro, mod_macro, mul_macro, pop_macro,
-      sub_macro, swap_macro, trace_macro, typeof_macro;
+    const Macro add_macro, and_macro, div_macro, dup_macro, gt_macro, lt_macro, mod_macro, mul_macro,
+      or_macro, pop_macro, sub_macro, swap_macro, trace_macro, typeof_macro;
     
     ABC(VM &vm);
   };

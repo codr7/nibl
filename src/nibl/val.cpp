@@ -2,7 +2,7 @@
 #include "nibl/val.hpp"
 
 namespace nibl {
-  Val::Val(const Type &type, any &&data): type(&type), data(move(data)) {}
+  Val::Val(Type &type, any &&data): type(&type), data(move(data)) {}
 
   void Val::dump(ostream &out) const { type->dump(data, out); }
 

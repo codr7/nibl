@@ -8,7 +8,7 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  Read read_id(const VM &vm, istream &in, Pos &pos) {
+  Read read_id(VM &vm, istream &in, Pos &pos) {
     const Pos fpos(pos);
     stringstream buf;
     char c;
@@ -32,7 +32,7 @@ namespace nibl {
     return Read(forms::Id(fpos, move(n)), nullopt);
   }
 
-  Read read_int(const VM &vm, istream &in, Pos &pos, int base) {
+  Read read_int(VM &vm, istream &in, Pos &pos, int base) {
     const Pos fpos = pos;
     types::Int v(0);
       

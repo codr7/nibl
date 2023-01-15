@@ -43,12 +43,12 @@ namespace nibl::libs {
   MetaType::MetaType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
   optional<Error> MetaType::emit(VM &vm, const any &data) const {
-    *vm.emit() = ops::push_tag(any_cast<const Type *>(data)->tag);
+    *vm.emit() = ops::push_tag(any_cast<Type *>(data)->tag);
     return nullopt;
   }
 
   void MetaType::dump(any data, ostream &out) const {
-    out << *any_cast<const Type *>(data);
+    out << *any_cast<Type *>(data);
   }
  
   ABC::ABC(VM &vm):
@@ -59,6 +59,10 @@ namespace nibl::libs {
     meta_type(*this, "Meta"),
     add_macro(*this, "+", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::add();
+      return nullopt;
+    }),
+    and_macro(*this, "and", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::_and();
       return nullopt;
     }),
     div_macro(*this, "/", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
@@ -83,6 +87,10 @@ namespace nibl::libs {
     }),
     mul_macro(*this, "*", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::mul();
+      return nullopt;
+    }),
+    or_macro(*this, "or", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::_or();
       return nullopt;
     }),
     pop_macro(*this, "pop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {

@@ -26,29 +26,7 @@ Duplicate `a`.
 Remove `a`.
 
 #### swap [a b | b a]
-Swaps `a` and `b`.
-
-### Tracing
-
-Tracing may be toggled using `trace`.
-
-```
-  trace
-  
-0 STOP
-[]
-  1 2 3 dup
-  
-2 PUSH_INT1 1
-4 PUSH_INT1 2
-6 PUSH_INT1 3
-8 DUP
-10 STOP
-[1 2 3 3]
-  trace
-  
-[1 2 3 3]
-```
+Swap `a` and `b`.
 
 ### Numbers
 
@@ -68,13 +46,19 @@ Tracing may be toggled using `trace`.
 `c` is the remainder from dividing `a` by `b`.
 
 ### Booleans
-Booleans have one of two values: `T` or `F`.
+Booleans can be either true (`T`) or false (`F`).
 
 #### < [a b | c]
-`c` is `T` if `a` is less than `b`, else `F`.
+`c` is true if `a` is less than `b`, else false.
 
 #### > [a b | c]
-`c` is `T` if `a` is greater than `b`, else `F`.
+`c` is true if `a` is greater than `b`, else false.
+
+#### and [a b | c]
+`c` is true if both `a` and `b` are true, else false.
+
+#### or [a b | c]
+`c` is true if either `a` or `b` is true, else false.
 
 ### Types
 Every value has one of the following types:
@@ -106,4 +90,26 @@ References may be captured using `&`.
   &dup
 
 [1 2 3 3 dup]
+```
+
+### Tracing
+
+Tracing may be toggled using `trace`.
+
+```
+  trace
+  
+0 STOP
+[]
+  1 2 3 dup
+  
+2 PUSH_INT1 1
+4 PUSH_INT1 2
+6 PUSH_INT1 3
+8 DUP
+10 STOP
+[1 2 3 3]
+  trace
+  
+[1 2 3 3]
 ```

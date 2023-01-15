@@ -10,7 +10,7 @@ namespace nibl {
     map<string, Val> bindings;
 
     optional<Val> find(const string &name) const;
-    void bind(const string &name, const Type &type, any &&data);
+    void bind(const string &name, Type &type, any &&data);
   };
 }
 

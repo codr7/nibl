@@ -9,12 +9,12 @@ namespace nibl {
     lib.bind(this->name, lib.vm.abc_lib.meta_type, this);  
   }
 
-  ostream &operator <<(ostream &out, const Type &t) {
+  ostream &operator <<(ostream &out, Type &t) {
     out << t.name;
     return out;
   }
 
-  bool operator ==(const Type &t1, const Type &t2) {
+  bool operator ==(Type &t1, Type &t2) {
     return &t1 == &t2;
   }
 }

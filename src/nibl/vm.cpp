@@ -4,7 +4,7 @@
 namespace nibl {
   VM::VM(): abc_lib(*this) {}
 
-  size_t VM::tag(const Type &type, any &&data) {
+  size_t VM::tag(Type &type, any &&data) {
     const size_t t = tags.size();
     tags.emplace_back(type, move(data));
     return t;
@@ -26,7 +26,7 @@ namespace nibl {
     return nullopt;
   }
 
-  Read VM::read(istream &in, Pos &pos) const {
+  Read VM::read(istream &in, Pos &pos) {
   START:
     char c = 0;
     if (!in.get(c)) { return Read(nullopt, nullopt); }

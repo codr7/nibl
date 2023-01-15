@@ -22,8 +22,8 @@ namespace nibl {
     virtual optional<Error> emit(VM &vm, const any &data) const = 0;
   };
 
-  ostream &operator <<(ostream &out, const Type &t);
-  bool operator ==(const Type &t1, const Type &t2);
+  ostream &operator <<(ostream &out, Type &t);
+  bool operator ==(Type &t1, Type &t2);
 }
 
 #endif

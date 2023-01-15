@@ -9,6 +9,9 @@ namespace nibl {
     case OpCode::ADD:
       out << "ADD";
       break;
+    case OpCode::AND:
+      out << "AND";
+      break;
     case OpCode::DIV:
       out << "DIV";
       break;
@@ -26,6 +29,9 @@ namespace nibl {
       break;
     case OpCode::MUL:
       out << "MUL";
+      break;
+    case OpCode::OR:
+      out << "OR";
       break;
     case OpCode::POP:
       out << "POP";
@@ -62,37 +68,16 @@ namespace nibl {
 }
 
 namespace nibl::ops {
-  Op add() {
-    return static_cast<Op>(OpCode::ADD);
-  }
-
-  Op div() {
-    return static_cast<Op>(OpCode::DIV);
-  }
-  
-  Op dup() {
-    return static_cast<Op>(OpCode::DUP);
-  }
-
-  Op gt() {
-    return static_cast<Op>(OpCode::GT);
-  }
-
-  Op lt() {
-    return static_cast<Op>(OpCode::LT);
-  }
-
-  Op mod() {
-    return static_cast<Op>(OpCode::MOD);
-  }
-
-  Op mul() {
-    return static_cast<Op>(OpCode::MUL);
-  }
-
-  Op pop() {
-    return static_cast<Op>(OpCode::POP);
-  }
+  Op add() { return static_cast<Op>(OpCode::ADD); }
+  Op _and() { return static_cast<Op>(OpCode::AND); }
+  Op div() { return static_cast<Op>(OpCode::DIV); }
+  Op dup() { return static_cast<Op>(OpCode::DUP); }
+  Op gt() { return static_cast<Op>(OpCode::GT); }
+  Op lt() { return static_cast<Op>(OpCode::LT); }
+  Op mod() { return static_cast<Op>(OpCode::MOD); }
+  Op mul() { return static_cast<Op>(OpCode::MUL); }
+  Op _or() { return static_cast<Op>(OpCode::OR); }
+  Op pop() { return static_cast<Op>(OpCode::POP); }
 
   Op push_bool(bool value) {
     return
@@ -112,23 +97,9 @@ namespace nibl::ops {
       static_cast<Op>(value << PUSH_TAG_VALUE_POS);
   }
 
-  Op sub() {
-    return static_cast<Op>(OpCode::SUB);
-  }
-
-  Op swap() {
-    return static_cast<Op>(OpCode::SWAP);
-  }
-
-  Op trace() {
-    return static_cast<Op>(OpCode::TRACE);
-  }
-
-  Op _typeof() {
-    return static_cast<Op>(OpCode::TYPEOF);
-  }
-
-  Op stop() {
-    return static_cast<Op>(OpCode::STOP);
-  }
+  Op sub() { return static_cast<Op>(OpCode::SUB); }
+  Op swap() { return static_cast<Op>(OpCode::SWAP); }
+  Op trace() { return static_cast<Op>(OpCode::TRACE); }
+  Op _typeof() { return static_cast<Op>(OpCode::TYPEOF); }
+  Op stop() { return static_cast<Op>(OpCode::STOP); }
 }

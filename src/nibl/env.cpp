@@ -6,7 +6,7 @@ namespace nibl {
     return nullopt;
   }
   
-  void Env::bind(const string &name, const Type &type, any &&data) {
+  void Env::bind(const string &name, Type &type, any &&data) {
     bindings.insert(make_pair(name, Val(type, move(data))));
   }
 }

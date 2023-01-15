@@ -28,17 +28,17 @@ namespace nibl {
     bool trace = false;
 
     VM();
-    size_t tag(const Type &type, any &&data);
+    size_t tag(Type &type, any &&data);
     optional<Error> import(const Env &source, initializer_list<string> names, Pos pos);
-    Read read(istream &in, Pos &pos) const;
+    Read read(istream &in, Pos &pos);
     Op *emit_no_trace(unsigned int n = 1);
     Op *emit(unsigned int n = 1);
     optional<Error> eval(PC start_pc, ostream &stdout);
-    void push(const Type &type, any &&data);
+    void push(Type &type, any &&data);
     void dump_stack(ostream &out) const;
   };
 
-  inline void VM::push(const Type &type, any &&data) { stack.emplace_back(type, move(data)); }
+  inline void VM::push(Type &type, any &&data) { stack.emplace_back(type, move(data)); }
 }
 
 #endif

@@ -11,12 +11,12 @@ namespace nibl::forms {
     struct Imp: Form::Imp {
       const Val val;
       
-      Imp(Pos pos, const Type &type, any &&data);    
+      Imp(Pos pos, Type &type, any &&data);    
       void dump(ostream& out) const override;
       optional<Error> emit(VM &vm, deque<Form> &args) const override;
     };
 
-    Lit(Pos pos, const Type &type, any &&data);
+    Lit(Pos pos, Type &type, any &&data);
   };
 }
 
