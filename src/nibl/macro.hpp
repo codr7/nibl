@@ -13,10 +13,10 @@ namespace nibl {
   struct VM;
 
   struct Macro {
-    using Body = function<optional<Error> (VM &vm, const Macro &macro, deque<Form> &args, Pos pos)>;
+    using Body = function<optional<Error> (VM &vm, const Macro &macro, deque<Form> &args, const Pos &pos)>;
     
     Macro(Lib &lib, string &&name, Body body);
-    optional<Error> emit(VM &vm, deque<Form> &args, Pos pos);
+    optional<Error> emit(VM &vm, deque<Form> &args, const Pos &pos);
     
     const string name;
     const size_t tag;

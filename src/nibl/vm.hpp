@@ -29,7 +29,7 @@ namespace nibl {
 
     VM();
     size_t tag(Type &type, any &&data);
-    optional<Error> import(const Env &source, initializer_list<string> names, Pos pos);
+    optional<Error> import(const Env &source, initializer_list<string> names, const Pos &pos);
     Read read(istream &in, Pos &pos);
     Op *emit_no_trace(unsigned int n = 1);
     Op *emit(unsigned int n = 1);

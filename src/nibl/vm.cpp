@@ -10,7 +10,7 @@ namespace nibl {
     return t;
   }
 
-  optional<Error> VM::import(const Env &source, initializer_list<string> names, Pos pos) {
+  optional<Error> VM::import(const Env &source, initializer_list<string> names, const Pos &pos) {
     vector<string> ns(names);
 
     if (ns.empty()) {

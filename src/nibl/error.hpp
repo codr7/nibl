@@ -14,7 +14,7 @@ namespace nibl {
     const string message;
 
     template <typename...Args>
-    Error(Pos pos, Args &&...args): pos(pos), message(format(forward<Args>(args)...)) {}
+    Error(const Pos &pos, Args &&...args): pos(pos), message(format(forward<Args>(args)...)) {}
   };
 
   ostream &operator <<(ostream &out, const Error &e);

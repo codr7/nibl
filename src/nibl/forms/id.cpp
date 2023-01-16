@@ -2,23 +2,23 @@
 #include "nibl/vm.hpp"
 
 namespace nibl::forms {
-  Id::Imp::Imp(Pos pos, string &&name): Form::Imp(pos), name(move(name)) {}
+  Id::Imp::Imp(string &&name): name(move(name)) {}
 
-  void Id::Imp::dump(ostream &out) const { out << name; }
+  void Id::Imp::dump(Form &form, ostream &out) const { out << name; }
   
-  optional<Error> Id::Imp::emit(VM &vm, deque<Form> &args) const {
+  optional<Error> Id::Imp::emit(VM &vm, Form &form, deque<Form> &args) const {
     auto found = vm.env.find(name);
 
     if (found) {
       if (*found->type == vm.abc_lib.macro_type) {
-	return found->as<Macro *>()->emit(vm, args, pos);
+	return found->as<Macro *>()->emit(vm, args, form.pos);
       }
       
       return found->emit(vm);
     }
     
-    return Error(pos, name, '?');
+    return Error(form.pos, name, '?');
   }
 
-  Id::Id(Pos pos, string &&name): Form(make_shared<const Imp>(pos, move(name))) {}
+  Id::Id(const Pos &pos, string &&name): Form(pos, make_shared<const Imp>(move(name))) {}
 }
