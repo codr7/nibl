@@ -1,7 +1,7 @@
 # Nibl
 
 ### Intro
-Nibl is a virtualized Forth-like language that aims to be both simple and practical.
+Nibl is a virtualized Forth-like language that aims to be both simple to understand/extend and practical.
 
 ### Building
 Nibl requires a C++ compiler and CMake to build.
