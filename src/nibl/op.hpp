@@ -53,39 +53,30 @@ namespace nibl {
     T get(Op op) { return static_cast<T>((op >> pos) & ((static_cast<T>(1) << width) - 1)); }
     
     Op add();
+    
     Op _and(PC next);
-
-    inline PC and_next(Op op) {
-      return get<PC, AND_NEXT_POS, AND_NEXT_WIDTH>(op);
-    }
+    inline PC and_next(Op op) { return get<PC, AND_NEXT_POS, AND_NEXT_WIDTH>(op); }
 
     Op div();
     Op dup();
     Op eq();
     Op gt();
+    
     Op _if(PC next);
-
-    inline PC if_next(Op op) {
-      return get<PC, IF_NEXT_POS, IF_NEXT_WIDTH>(op);
-    }
-
+    inline PC if_next(Op op) { return get<PC, IF_NEXT_POS, IF_NEXT_WIDTH>(op); }
 
     Op lt();
     Op mod();
     Op mul();
     Op _not();
+    
     Op _or(PC next);
-
-    inline PC or_next(Op op) {
-      return get<PC, OR_NEXT_POS, OR_NEXT_WIDTH>(op);
-    }
+    inline PC or_next(Op op) { return get<PC, OR_NEXT_POS, OR_NEXT_WIDTH>(op); }
 
     Op pop();
+    
     Op push_bool(bool value);
-
-    inline bool push_bool_value(Op op) {
-      return get<bool, PUSH_BOOL_VALUE_POS, PUSH_BOOL_VALUE_WIDTH>(op);
-    }
+    inline bool push_bool_value(Op op) { return get<bool, PUSH_BOOL_VALUE_POS, PUSH_BOOL_VALUE_WIDTH>(op); }
 
     Op push_int1(types::Int value);
 
@@ -94,10 +85,7 @@ namespace nibl {
     }
 
     Op push_tag(size_t value);
-
-    inline size_t push_tag_value(Op op) {
-      return get<size_t, PUSH_TAG_VALUE_POS, PUSH_TAG_VALUE_WIDTH>(op);
-    }
+    inline size_t push_tag_value(Op op) { return get<size_t, PUSH_TAG_VALUE_POS, PUSH_TAG_VALUE_WIDTH>(op); }
 
     Op sub();
     Op swap();
