@@ -152,9 +152,11 @@ References may be captured using `&`.
   1 2 3 dup
 
 [1 2 3 3]
-  &dup
+```
+```
+  1 2 3 &dup
 
-[1 2 3 3 dup]
+[1 2 3 dup]
 ```
 
 ### Tracing
