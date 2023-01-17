@@ -10,7 +10,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v2
+Nibl v3
 
 1 2 3 dup
 
@@ -54,14 +54,50 @@ Booleans can be either true (`T`) or false (`F`).
 #### > [a b | c]
 `c` is true if `a` is greater than `b`, else false.
 
-#### and [a b | c]
-`c` is true if both `a` and `b` are true, else false.
-
-#### or [a b | c]
-`c` is true if either `a` or `b` is true, else false.
-
 #### not [a | b]
 `b` is true if `a` is false, else false.
+
+#### and: b [a | c]
+`c` is false if `a` is false, else `b` is evaluated.
+
+```
+  T and: 3
+  
+[3]
+```
+```
+  F and: 3
+
+[F]
+```
+
+#### or: b [a | c]
+`c` is true if `a` is true, else `b` is evaluated.
+
+```
+  T or: 3
+  
+[T]
+```
+```
+  F or: 3
+
+[3]
+```
+
+#### if: ...; [a | ...]
+`if:` skips evaluation until `;` is reached or the program ends when `a` is false.
+
+```
+  T if: 1 2; 3
+
+[1 2 3]
+```
+```
+  F if: 1 2; 3
+
+[3]
+```
 
 ### Types
 Every value has one of the following types:

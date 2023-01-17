@@ -13,15 +13,19 @@ namespace nibl {
   
   struct Form {
     struct Imp {      
+      const Pos pos;
+      
+      Imp(const Pos &pos);
       virtual ~Imp();
-      virtual void dump(Form &form, ostream& out) const = 0;
-      virtual optional<Error> emit(VM &vm, Form &form, deque<Form> &args) const = 0;
+      virtual void dump(ostream& out) const = 0;
+      virtual optional<Error> emit(VM &vm, deque<Form> &args) const = 0;
     };
 
-    const Pos pos;
+    static const shared_ptr<const Imp> END;
+    
     const shared_ptr<const Imp> imp;
     
-    Form(const Pos &pos, shared_ptr<const Imp> imp);
+    Form(shared_ptr<const Imp> imp);
     void dump(ostream& out);
     optional<Error> emit(VM &vm, deque<Form> &args);
     

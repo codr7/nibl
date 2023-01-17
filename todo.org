@@ -1,5 +1,5 @@
-* add if:/else:
-** stop at else: or semicolon if true
-** jump to semicolon on else:
-** jump to else: or semicolon if false
+* add else: support to if:
+** add eq macro
+** set next to else: or END in if:-macro
 ** dup 10 = if: 1 else: dup 20 = if: 2 else: 3; drop
+

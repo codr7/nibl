@@ -2,15 +2,15 @@
 #include "nibl/vm.hpp"
 
 namespace nibl::forms {
-  Ref::Imp::Imp(string &&name): name(move(name)) {}
+  Ref::Imp::Imp(const Pos &pos, string &&name): Form::Imp(pos), name(move(name)) {}
 
-  void Ref::Imp::dump(Form &form, ostream &out) const { out << '&' << name; }
+  void Ref::Imp::dump(ostream &out) const { out << '&' << name; }
   
-  optional<Error> Ref::Imp::emit(VM &vm, Form &form, deque<Form> &args) const {
+  optional<Error> Ref::Imp::emit(VM &vm, deque<Form> &args) const {
     auto found = vm.env.find(name);
     if (found) { return found->emit(vm); }
-    return Error(form.pos, name, '?');
+    return Error(pos, name, '?');
   }
 
-  Ref::Ref(const Pos &pos, string &&name): Form(pos, make_shared<const Imp>(move(name))) {}
+  Ref::Ref(const Pos &pos, string &&name): Form(make_shared<const Imp>(pos, move(name))) {}
 }

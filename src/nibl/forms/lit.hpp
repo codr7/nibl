@@ -11,9 +11,9 @@ namespace nibl::forms {
     struct Imp: Form::Imp {
       const Val val;
       
-      Imp(Type &type, any &&data);    
-      void dump(Form &form, ostream& out) const override;
-      optional<Error> emit(VM &vm, Form &form, deque<Form> &args) const override;
+      Imp(const Pos &pos, Type &type, any &&data);    
+      void dump(ostream& out) const override;
+      optional<Error> emit(VM &vm, deque<Form> &args) const override;
     };
 
     Lit(const Pos &pos, Type &type, any &&data);

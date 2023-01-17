@@ -38,6 +38,11 @@ namespace nibl {
     case 32:
       pos.column++;
       goto START;
+    case ';': {
+      const Pos fpos = pos;
+      pos.column++;
+      return Read(Form(Form::END), nullopt);
+    }
     }
 
     in.unget();
@@ -47,9 +52,10 @@ namespace nibl {
   }
 
   Op *VM::emit_no_trace(unsigned int n) {
-    pc = ops.size();
-    ops.resize(ops.size() + n);
-    return &ops[pc];
+    const PC i = ops.size();
+    pc = i + n;
+    ops.resize(pc);
+    return &ops[i];
   }
 
   Op *VM::emit(unsigned int n) {

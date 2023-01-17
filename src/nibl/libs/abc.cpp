@@ -2,6 +2,7 @@
 
 #include <ostream>
 
+#include "nibl/form.hpp"
 #include "nibl/libs/abc.hpp"
 #include "nibl/types.hpp"
 #include "nibl/vm.hpp"
@@ -61,8 +62,11 @@ namespace nibl::libs {
       *vm.emit() = ops::add();
       return nullopt;
     }),
-    and_macro(*this, "and", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::_and();
+    and_macro(*this, "and:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) -> optional<Error> {
+      const PC pc = vm.pc;
+      vm.emit();
+      if (auto e = pop_front(args).emit(vm, args); e) { return e; }
+      vm.ops[pc] = ops::_and(vm.pc);
       return nullopt;
     }),
     div_macro(*this, "/", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
@@ -75,6 +79,19 @@ namespace nibl::libs {
     }),
     gt_macro(*this, ">", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::gt();
+      return nullopt;
+    }),
+    if_macro(*this, "if:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) -> optional<Error> {
+      const PC pc = vm.pc;
+      vm.emit();
+      
+      while (!args.empty()) {
+	Form f = pop_front(args);
+	if (f.imp == Form::END) { break; }
+	if (auto e = f.emit(vm, args)) { return e; }
+      }
+
+      vm.ops[pc] = ops::_if(vm.pc);
       return nullopt;
     }),
     lt_macro(*this, "<", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
@@ -93,8 +110,11 @@ namespace nibl::libs {
       *vm.emit() = ops::_not();
       return nullopt;
     }),
-    or_macro(*this, "or", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::_or();
+    or_macro(*this, "or:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) -> optional<Error> {
+      const PC pc = vm.pc;
+      vm.emit();
+      if (auto e = pop_front(args).emit(vm, args); e) { return e; }
+      vm.ops[pc] = ops::_or(vm.pc);
       return nullopt;
     }),
     pop_macro(*this, "pop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {

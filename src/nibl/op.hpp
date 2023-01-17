@@ -19,7 +19,7 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, DIV, DUP, GT, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB, SWAP, TRACE,
+    ADD, AND, DIV, DUP, GT, IF, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB, SWAP, TRACE,
     TYPE_OF,
     STOP };
 
@@ -30,6 +30,15 @@ namespace nibl {
   void op_trace(const VM &vm, PC pc, Op op, ostream &out);
 
   namespace ops {
+    const size_t AND_NEXT_POS = OP_CODE_WIDTH;
+    const size_t AND_NEXT_WIDTH = OP_WIDTH - AND_NEXT_POS;
+
+    const size_t IF_NEXT_POS = OP_CODE_WIDTH;
+    const size_t IF_NEXT_WIDTH = OP_WIDTH - IF_NEXT_POS;
+
+    const size_t OR_NEXT_POS = OP_CODE_WIDTH;
+    const size_t OR_NEXT_WIDTH = OP_WIDTH - OR_NEXT_POS;
+
     const size_t PUSH_BOOL_VALUE_POS = OP_CODE_WIDTH;
     const size_t PUSH_BOOL_VALUE_WIDTH = 1;
 
@@ -37,23 +46,39 @@ namespace nibl {
     const size_t PUSH_INT1_VALUE_WIDTH = OP_WIDTH - PUSH_INT1_VALUE_POS;
 
     const size_t PUSH_TAG_VALUE_POS = OP_CODE_WIDTH;
-    const size_t PUSH_TAG_VALUE_WIDTH = OP_WIDTH - PUSH_INT1_VALUE_POS;
+    const size_t PUSH_TAG_VALUE_WIDTH = OP_WIDTH - PUSH_TAG_VALUE_POS;
 
     template <typename T, size_t pos, size_t width>
     T get(Op op) { return static_cast<T>((op >> pos) & ((static_cast<T>(1) << width) - 1)); }
     
     Op add();
-    Op _and();
+    Op _and(PC next);
+
+    inline PC and_next(Op op) {
+      return get<PC, AND_NEXT_POS, AND_NEXT_WIDTH>(op);
+    }
+
     Op div();
     Op dup();
     Op gt();
+    Op _if(PC next);
+
+    inline PC if_next(Op op) {
+      return get<PC, IF_NEXT_POS, IF_NEXT_WIDTH>(op);
+    }
+
+
     Op lt();
     Op mod();
     Op mul();
     Op _not();
-    Op _or();
-    Op pop();
+    Op _or(PC next);
 
+    inline PC or_next(Op op) {
+      return get<PC, OR_NEXT_POS, OR_NEXT_WIDTH>(op);
+    }
+
+    Op pop();
     Op push_bool(bool value);
 
     inline bool push_bool_value(Op op) {

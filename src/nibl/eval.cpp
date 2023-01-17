@@ -1,16 +1,14 @@
-#include <iostream>
-
 #include "nibl/eval.hpp"
 
 #define DISPATCH()						\
-  goto *dispatch[static_cast<uint8_t>(op_code(op = ops[pc++]))] \
+  goto *dispatch[static_cast<uint8_t>(op_code(op = ops[pc++]))]	\
 
 namespace nibl {
   using namespace std;
   
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&AND, &&DIV, &&DUP, &&GT, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP, &&PUSH_BOOL, &&PUSH_INT1,
+      &&ADD, &&AND, &&DIV, &&DUP, &&GT, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP, &&PUSH_BOOL, &&PUSH_INT1,
       &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPE_OF,
       &&STOP};
     Op op;
@@ -20,7 +18,7 @@ namespace nibl {
     eval_add(*this);
     DISPATCH();
   AND:
-    eval_and(*this);
+    pc = eval_and(*this, op);
     DISPATCH();
   DIV:
     eval_div(*this);
@@ -30,6 +28,9 @@ namespace nibl {
     DISPATCH();
   GT:
     eval_gt(*this);
+    DISPATCH();
+  IF:
+    pc = eval_if(*this, op);
     DISPATCH();
   LT:
     eval_lt(*this);
@@ -44,7 +45,7 @@ namespace nibl {
     eval_not(*this);
     DISPATCH();
   OR:
-    eval_or(*this);
+    pc = eval_or(*this, op);
     DISPATCH();
   POP:
     stack.pop_back();
@@ -65,13 +66,12 @@ namespace nibl {
     iter_swap(stack.end()-2, stack.end()-1);
     DISPATCH();
   TRACE:
-    op_trace(*this, pc, ops[pc+1], stdout);
+    op_trace(*this, pc, ops[pc], stdout);
     DISPATCH();
   TYPE_OF:
     stack.back() = Val(abc_lib.meta_type, stack.back().type);
-    DISPATCH();
-    
+    DISPATCH(); 
   STOP:
-    pc++;
+    return;
   }
 }

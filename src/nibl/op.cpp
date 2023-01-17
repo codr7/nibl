@@ -10,7 +10,7 @@ namespace nibl {
       out << "ADD";
       break;
     case OpCode::AND:
-      out << "AND";
+      out << "AND" << ops::and_next(op);
       break;
     case OpCode::DIV:
       out << "DIV";
@@ -20,6 +20,9 @@ namespace nibl {
       break;
     case OpCode::GT:
       out << "GT";
+      break;
+    case OpCode::IF:
+      out << "IF " << ops::if_next(op);
       break;
     case OpCode::LT:
       out << "LT";
@@ -34,7 +37,7 @@ namespace nibl {
       out << "NOT";
       break;
     case OpCode::OR:
-      out << "OR";
+      out << "OR" << ops::or_next(op);
       break;
     case OpCode::POP:
       out << "POP";
@@ -72,15 +75,34 @@ namespace nibl {
 
 namespace nibl::ops {
   Op add() { return static_cast<Op>(OpCode::ADD); }
-  Op _and() { return static_cast<Op>(OpCode::AND); }
+  
+  Op _and(PC next) {
+    return
+      static_cast<Op>(OpCode::AND) +
+      static_cast<Op>(next << AND_NEXT_POS);
+  }
+
   Op div() { return static_cast<Op>(OpCode::DIV); }
   Op dup() { return static_cast<Op>(OpCode::DUP); }
   Op gt() { return static_cast<Op>(OpCode::GT); }
+
+  Op _if(PC next) {
+    return
+      static_cast<Op>(OpCode::IF) +
+      static_cast<Op>(next << IF_NEXT_POS);
+  }
+
   Op lt() { return static_cast<Op>(OpCode::LT); }
   Op mod() { return static_cast<Op>(OpCode::MOD); }
   Op mul() { return static_cast<Op>(OpCode::MUL); }
   Op _not() { return static_cast<Op>(OpCode::NOT); }
-  Op _or() { return static_cast<Op>(OpCode::OR); }
+
+  Op _or(PC next) {
+    return
+      static_cast<Op>(OpCode::OR) +
+      static_cast<Op>(next << OR_NEXT_POS);
+  }
+
   Op pop() { return static_cast<Op>(OpCode::POP); }
 
   Op push_bool(bool value) {

@@ -1,3 +1,4 @@
+#include <deque>
 #include <sstream>
 #include <string>
 
@@ -12,6 +13,13 @@ namespace nibl {
     stringstream buf;
     ((buf << forward<Args>(args)), ...);
     return buf.str();
+  }
+
+  template <typename T>
+  T pop_front(deque<T> &in) {
+    T it = in.front();
+    in.pop_front();
+    return it;
   }
 }
 

@@ -1,6 +1,8 @@
 #include <sstream>
+
 #include "nibl/pos.hpp"
 #include "nibl/repl.hpp"
+#include "nibl/utils.hpp"
 #include "nibl/vm.hpp"
 
 namespace nibl {
@@ -36,9 +38,8 @@ namespace nibl {
 	const PC pc = vm.pc;
 
 	while (!forms.empty()) {
-	  Form f = forms.front();
-	  forms.pop_front();
-	  
+	  Form f = pop_front(forms);
+
 	  if (auto e = f.emit(vm, forms); e) {
 	    stdout << *e << endl;
 	    goto END;
