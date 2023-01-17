@@ -51,35 +51,6 @@ Swap `a` and `b`.
 ### Booleans
 Booleans can be either true (`T`) or false (`F`).
 
-#### = [a b | c]
-`c` is true if `a` and `b` are equal, else false.
-
-```
-1 3 =
-  
-[F]
-```
-```
-  3 3 =
-  
-[T]
-```
-```
-  T F =
-  
-[F]
-```
-```
-  T T =
-  
-[T]
-```
-#### < [a b | c]
-`c` is true if `a` is less than `b`, else false.
-
-#### > [a b | c]
-`c` is true if `a` is greater than `b`, else false.
-
 #### not [a | b]
 `b` is true if `a` is false, else false.
 
@@ -110,6 +81,40 @@ Booleans can be either true (`T`) or false (`F`).
 
 [3]
 ```
+
+### Comparisons
+
+#### = [a b | c]
+`c` is true if `a` and `b` are equal, else false.
+
+```
+1 3 =
+  
+[F]
+```
+```
+  3 3 =
+  
+[T]
+```
+```
+  T F =
+  
+[F]
+```
+```
+  T T =
+  
+[T]
+```
+
+#### < [a b | c]
+`c` is true if `a` is less than `b`, else false.
+
+#### > [a b | c]
+`c` is true if `a` is greater than `b`, else false.
+
+### Branching
 
 #### if: ...; [a | ...]
 Skip evaluation until `;` is reached or the program ends when `a` is false.
