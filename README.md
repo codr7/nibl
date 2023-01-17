@@ -89,7 +89,7 @@ Booleans can be either true (`T`) or false (`F`).
 ```
 
 #### if: ...; [a | ...]
-`if:` skips evaluation until `;` is reached or the program ends when `a` is false.
+Skip evaluation until `;` is reached or the program ends when `a` is false.
 
 ```
   T if: 1 2; 3
