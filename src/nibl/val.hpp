@@ -17,7 +17,6 @@ namespace nibl {
     any data;
 
     Val(Type &type, any &&data);
-    void dump(ostream &out) const;
     optional<Error> emit(VM &vm) const;
 
     template <typename T>
@@ -25,6 +24,7 @@ namespace nibl {
   };
 
   ostream &operator <<(ostream &out, const Val &v);
+  bool operator ==(const Val &v1, const Val &v2);
 }
 
 #endif

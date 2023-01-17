@@ -1,6 +1,5 @@
-* add else: support to if:
+* finish else:
 ** add eq macro
 ** set next to end when else: is found when true
 ** set next to first of else: or end when false
 ** dup 10 = if: 1 else: dup 20 = if: 2 else: 3; drop
-

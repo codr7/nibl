@@ -51,6 +51,29 @@ Swap `a` and `b`.
 ### Booleans
 Booleans can be either true (`T`) or false (`F`).
 
+#### = [a b | c]
+`c` is true if `a` and `b` are equal, else false.
+
+```
+1 3 =
+  
+[F]
+```
+```
+  3 3 =
+  
+[T]
+```
+```
+  Int Meta =
+  
+[F]
+```
+```
+  Int Int =
+  
+[T]
+```
 #### < [a b | c]
 `c` is true if `a` is less than `b`, else false.
 

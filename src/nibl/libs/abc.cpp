@@ -10,48 +10,64 @@
 namespace nibl::libs {
   BoolType::BoolType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
-  optional<Error> BoolType::emit(VM &vm, const any &data) const {
-    *vm.emit() = ops::push_bool(any_cast<bool>(data));
+  void BoolType::dump(const Val &val, ostream &out) const {
+    out << (val.as<bool>() ? 'T' : 'F');
+  }
+
+  optional<Error> BoolType::emit(VM &vm, const Val &val) const {
+    *vm.emit() = ops::push_bool(val.as<bool>());
     return nullopt;
   }
 
-  void BoolType::dump(any data, ostream &out) const {
-    out << (any_cast<bool>(data) ? 'T' : 'F');
+  bool BoolType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<bool>() == val2.as<bool>();
   }
 
   IntType::IntType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
-  optional<Error> IntType::emit(VM &vm, const any &data) const {
-    *vm.emit() = ops::push_int1(any_cast<types::Int>(data));
+  void IntType::dump(const Val &val, ostream &out) const {
+    out << val.as<types::Int>();
+  }
+
+  optional<Error> IntType::emit(VM &vm, const Val &val) const {
+    *vm.emit() = ops::push_int1(val.as<types::Int>());
     return nullopt;
   }
 
-  void IntType::dump(any data, ostream &out) const {
-    out << any_cast<types::Int>(data);
+  bool IntType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<types::Int>() == val2.as<types::Int>();
   }
 
   MacroType::MacroType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
-  optional<Error> MacroType::emit(VM &vm, const any &data) const {
-    *vm.emit() = ops::push_tag(any_cast<Macro *>(data)->tag);
+  void MacroType::dump(const Val &val, ostream &out) const {
+    out << *val.as<Macro *>();
+  }
+
+  optional<Error> MacroType::emit(VM &vm, const Val &val) const {
+    *vm.emit() = ops::push_tag(val.as<Macro *>()->tag);
     return nullopt;
   }
 
-  void MacroType::dump(any data, ostream &out) const {
-    out << *any_cast<Macro *>(data);
+  bool MacroType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<Macro *>() == val2.as<Macro *>();
   }
 
   MetaType::MetaType(Lib &lib, string &&name): Type(lib, move(name)) {}
   
-  optional<Error> MetaType::emit(VM &vm, const any &data) const {
-    *vm.emit() = ops::push_tag(any_cast<Type *>(data)->tag);
+  void MetaType::dump(const Val &val, ostream &out) const {
+    out << *val.as<Type *>();
+  }
+
+  optional<Error> MetaType::emit(VM &vm, const Val &val) const {
+    *vm.emit() = ops::push_tag(val.as<Type *>()->tag);
     return nullopt;
   }
 
-  void MetaType::dump(any data, ostream &out) const {
-    out << *any_cast<Type *>(data);
+  bool MetaType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<Type *>() == val2.as<Type *>();
   }
- 
+
   ABC::ABC(VM &vm):
     Lib(vm, "abc"),
     bool_type(*this, "Bool"),
@@ -75,6 +91,13 @@ namespace nibl::libs {
     }),
     dup_macro(*this, "dup", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::dup();
+      return nullopt;
+    }),
+    else_macro(*this, "else:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      return Error(pos, "Missing if:");
+    }),
+    eq_macro(*this, "=", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
+      *vm.emit() = ops::eq();
       return nullopt;
     }),
     gt_macro(*this, ">", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {

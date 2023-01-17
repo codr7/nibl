@@ -13,7 +13,7 @@
 #include "nibl/val.hpp"
 
 namespace nibl {
-  const unsigned int VERSION = 3;
+  const unsigned int VERSION = 4;
     
   struct VM {
     vector<Val> tags;

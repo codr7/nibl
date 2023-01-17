@@ -18,6 +18,9 @@ namespace nibl {
     case OpCode::DUP:
       out << "DUP";
       break;
+    case OpCode::EQ:
+      out << "EQ";
+      break;
     case OpCode::GT:
       out << "GT";
       break;
@@ -84,6 +87,7 @@ namespace nibl::ops {
 
   Op div() { return static_cast<Op>(OpCode::DIV); }
   Op dup() { return static_cast<Op>(OpCode::DUP); }
+  Op eq() { return static_cast<Op>(OpCode::EQ); }
   Op gt() { return static_cast<Op>(OpCode::GT); }
 
   Op _if(PC next) {

@@ -25,6 +25,13 @@ namespace nibl {
       a.data = a.as<types::Int>() / b.as<types::Int>();
   }
   
+  inline void eval_eq(VM &vm) {
+      Val b(vm.stack.back());
+      vm.stack.pop_back();
+      Val &a(vm.stack.back());
+      a = Val(vm.abc_lib.bool_type, a == b);
+  }
+
   inline void eval_gt(VM &vm) {
       Val b(vm.stack.back());
       vm.stack.pop_back();

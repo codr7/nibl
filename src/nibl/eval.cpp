@@ -8,8 +8,8 @@ namespace nibl {
   
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&AND, &&DIV, &&DUP, &&GT, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP, &&PUSH_BOOL, &&PUSH_INT1,
-      &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPE_OF,
+      &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP, &&PUSH_BOOL,
+      &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPE_OF,
       &&STOP};
     Op op;
     pc = start_pc;
@@ -25,6 +25,9 @@ namespace nibl {
     DISPATCH();
   DUP:
     stack.emplace_back(stack.back());
+    DISPATCH();
+  EQ:
+    eval_eq(*this);
     DISPATCH();
   GT:
     eval_gt(*this);

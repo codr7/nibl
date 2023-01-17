@@ -69,7 +69,7 @@ namespace nibl {
     
     for (const Val &v: stack) {
       if (i++) { out << ' '; }
-      v.dump(out);
+      out << v;
     }
 
     out << ']';
