@@ -66,12 +66,12 @@ Booleans can be either true (`T`) or false (`F`).
 [T]
 ```
 ```
-  Int Meta =
+  T F =
   
 [F]
 ```
 ```
-  Int Int =
+  T T =
   
 [T]
 ```
