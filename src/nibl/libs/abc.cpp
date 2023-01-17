@@ -94,7 +94,7 @@ namespace nibl::libs {
       return nullopt;
     }),
     else_macro(*this, "else:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      return Error(pos, "Missing if:");
+      return Error(pos, "Missing if");
     }),
     eq_macro(*this, "=", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       *vm.emit() = ops::eq();
