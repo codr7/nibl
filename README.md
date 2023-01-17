@@ -176,7 +176,4 @@ Tracing may be toggled using `trace`.
 8 DUP
 10 STOP
 [1 2 3 3]
-  trace
-  
-[1 2 3 3]
 ```
