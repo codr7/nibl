@@ -1,7 +1,7 @@
 # Nibl
 
 ### Intro
-Nibl is a virtualized Forth-like language that aims to be both simple to understand/extend and practical.
+Nibl is a virtualized Forth-like language that aims to be both simple to understand/extend/embed and practical.
 The complete implementation supporting all features described in this document currently weighs in at around 1kloc.
 
 ### Building
