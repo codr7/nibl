@@ -61,7 +61,7 @@ Booleans can be either true (`T`) or false (`F`).
 `b` is true if `a` is false, else false.
 
 #### and: b [a | c]
-`c` is false if `a` is false, else `b` is evaluated.
+`c` is false if `a` is false, else the result of evaluating `b`.
 
 ```
   T and: 3
@@ -75,7 +75,7 @@ Booleans can be either true (`T`) or false (`F`).
 ```
 
 #### or: b [a | c]
-`c` is true if `a` is true, else `b` is evaluated.
+`c` is true if `a` is true, else the result of evaluating `b`.
 
 ```
   T or: 3
