@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v3
+Nibl v5
 
 1 2 3 dup
 
