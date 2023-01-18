@@ -30,6 +30,9 @@ namespace nibl {
     optional<Error> emit(VM &vm, deque<Form> &args);
     
     template <typename T>
+    const typename T::Imp *is() const { return dynamic_cast<const typename T::Imp *>(imp.get()); }
+
+    template <typename T>
     const typename T::Imp &as() const { return *static_cast<const typename T::Imp *>(imp.get()); }
   };
 

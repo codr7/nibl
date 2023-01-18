@@ -51,15 +51,15 @@ namespace nibl {
     return Read(nullopt, Error(pos, c, '?'));
   }
 
-  Op *VM::emit_no_trace(unsigned int n) {
+  PC VM::emit_no_trace(unsigned int n) {
     const PC i = ops.size();
     pc = i + n;
     ops.resize(pc);
-    return &ops[i];
+    return i;
   }
 
-  Op *VM::emit(unsigned int n) {
-    if (trace) { *emit_no_trace() = ops::trace(); }
+  PC VM::emit(unsigned int n) {
+    if (trace) { ops[emit_no_trace()] = ops::trace(); }
     return emit_no_trace(n);
   }
 

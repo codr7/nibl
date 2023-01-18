@@ -19,26 +19,26 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, DIV, DUP, EQ, GT, IF, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB, SWAP,
-    TRACE, TYPE_OF,
+    ADD, AND, DIV, DUP, EQ, GT, IF, JUMP, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB,
+    SWAP, TRACE, TYPE_OF,
     
     STOP };
 
-  inline OpCode op_code(Op op) {
-    return static_cast<OpCode>(op & ((1 << OP_CODE_WIDTH) - 1));
-  }
-
+  inline OpCode op_code(Op op) { return static_cast<OpCode>(op & ((1 << OP_CODE_WIDTH) - 1)); }
   void op_trace(const VM &vm, PC pc, Op op, ostream &out);
 
   namespace ops {
-    const size_t AND_NEXT_POS = OP_CODE_WIDTH;
-    const size_t AND_NEXT_WIDTH = OP_WIDTH - AND_NEXT_POS;
+    const size_t AND_NEXT_PC_POS = OP_CODE_WIDTH;
+    const size_t AND_NEXT_PC_WIDTH = OP_WIDTH - AND_NEXT_PC_POS;
 
-    const size_t IF_NEXT_POS = OP_CODE_WIDTH;
-    const size_t IF_NEXT_WIDTH = OP_WIDTH - IF_NEXT_POS;
+    const size_t IF_NEXT_PC_POS = OP_CODE_WIDTH;
+    const size_t IF_NEXT_PC_WIDTH = OP_WIDTH - IF_NEXT_PC_POS;
 
-    const size_t OR_NEXT_POS = OP_CODE_WIDTH;
-    const size_t OR_NEXT_WIDTH = OP_WIDTH - OR_NEXT_POS;
+    const size_t JUMP_PC_POS = OP_CODE_WIDTH;
+    const size_t JUMP_PC_WIDTH = OP_WIDTH - JUMP_PC_POS;
+
+    const size_t OR_NEXT_PC_POS = OP_CODE_WIDTH;
+    const size_t OR_NEXT_PC_WIDTH = OP_WIDTH - OR_NEXT_PC_POS;
 
     const size_t PUSH_BOOL_VALUE_POS = OP_CODE_WIDTH;
     const size_t PUSH_BOOL_VALUE_WIDTH = 1;
@@ -54,24 +54,27 @@ namespace nibl {
     
     Op add();
     
-    Op _and(PC next);
-    inline PC and_next(Op op) { return get<PC, AND_NEXT_POS, AND_NEXT_WIDTH>(op); }
+    Op _and(PC next_pc);
+    inline PC and_next_pc(Op op) { return get<PC, AND_NEXT_PC_POS, AND_NEXT_PC_WIDTH>(op); }
 
     Op div();
     Op dup();
     Op eq();
     Op gt();
     
-    Op _if(PC next);
-    inline PC if_next(Op op) { return get<PC, IF_NEXT_POS, IF_NEXT_WIDTH>(op); }
+    Op _if(PC next_pc);
+    inline PC if_next_pc(Op op) { return get<PC, IF_NEXT_PC_POS, IF_NEXT_PC_WIDTH>(op); }
+
+    Op jump(PC pc);
+    inline PC jump_pc(Op op) { return get<PC, JUMP_PC_POS, JUMP_PC_WIDTH>(op); }
 
     Op lt();
     Op mod();
     Op mul();
     Op _not();
     
-    Op _or(PC next);
-    inline PC or_next(Op op) { return get<PC, OR_NEXT_POS, OR_NEXT_WIDTH>(op); }
+    Op _or(PC next_pc);
+    inline PC or_next_pc(Op op) { return get<PC, OR_NEXT_PC_POS, OR_NEXT_PC_WIDTH>(op); }
 
     Op pop();
     

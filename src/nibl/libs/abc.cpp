@@ -3,6 +3,7 @@
 #include <ostream>
 
 #include "nibl/form.hpp"
+#include "nibl/forms/id.hpp"
 #include "nibl/libs/abc.hpp"
 #include "nibl/types.hpp"
 #include "nibl/vm.hpp"
@@ -15,7 +16,7 @@ namespace nibl::libs {
   }
 
   optional<Error> BoolType::emit(VM &vm, const Val &val) const {
-    *vm.emit() = ops::push_bool(val.as<bool>());
+    vm.ops[vm.emit()] = ops::push_bool(val.as<bool>());
     return nullopt;
   }
 
@@ -30,7 +31,7 @@ namespace nibl::libs {
   }
 
   optional<Error> IntType::emit(VM &vm, const Val &val) const {
-    *vm.emit() = ops::push_int1(val.as<types::Int>());
+    vm.ops[vm.emit()] = ops::push_int1(val.as<types::Int>());
     return nullopt;
   }
 
@@ -45,7 +46,7 @@ namespace nibl::libs {
   }
 
   optional<Error> MacroType::emit(VM &vm, const Val &val) const {
-    *vm.emit() = ops::push_tag(val.as<Macro *>()->tag);
+    vm.ops[vm.emit()] = ops::push_tag(val.as<Macro *>()->tag);
     return nullopt;
   }
 
@@ -60,7 +61,7 @@ namespace nibl::libs {
   }
 
   optional<Error> MetaType::emit(VM &vm, const Val &val) const {
-    *vm.emit() = ops::push_tag(val.as<Type *>()->tag);
+    vm.ops[vm.emit()] = ops::push_tag(val.as<Type *>()->tag);
     return nullopt;
   }
 
@@ -75,85 +76,94 @@ namespace nibl::libs {
     macro_type(*this, "Macro"),
     meta_type(*this, "Meta"),
     add_macro(*this, "+", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::add();
+      vm.ops[vm.emit()] = ops::add();
       return nullopt;
     }),
     and_macro(*this, "and:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) -> optional<Error> {
-      const PC pc = vm.pc;
-      vm.emit();
+      const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, args); e) { return e; }
       vm.ops[pc] = ops::_and(vm.pc);
       return nullopt;
     }),
     div_macro(*this, "/", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::div();
+      vm.ops[vm.emit()] = ops::div();
       return nullopt;
     }),
     dup_macro(*this, "dup", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::dup();
+      vm.ops[vm.emit()] = ops::dup();
       return nullopt;
     }),
     else_macro(*this, "else:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      return Error(pos, "Missing if");
+	return Error(pos, "Missing if");
     }),
     eq_macro(*this, "=", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::eq();
+      vm.ops[vm.emit()] = ops::eq();
       return nullopt;
     }),
     gt_macro(*this, ">", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::gt();
+      vm.ops[vm.emit()] = ops::gt();
       return nullopt;
     }),
     if_macro(*this, "if:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) -> optional<Error> {
-      const PC pc = vm.pc;
-      vm.emit();
+      const PC pc = vm.emit();
+      optional<PC> else_pc1, else_pc2;
       
       while (!args.empty()) {
 	Form f = pop_front(args);
-	if (f.imp == Form::END) { break; }
+	if (f.imp == Form::END) { break; }	
+
+	if (auto id = f.is<forms::Id>(); id && id->name == "else:") {
+	  else_pc1 = vm.emit();
+	  else_pc2 = vm.pc;
+	  continue;
+	}
+	
 	if (auto e = f.emit(vm, args)) { return e; }
       }
 
-      vm.ops[pc] = ops::_if(vm.pc);
+      if (else_pc1) {
+	vm.ops[*else_pc1] = ops::jump(vm.pc);
+      }
+      
+      vm.ops[pc] = ops::_if(else_pc2 ? *else_pc2 : vm.pc);
       return nullopt;
     }),
     lt_macro(*this, "<", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::lt();
+      vm.ops[vm.emit()] = ops::lt();
       return nullopt;
     }),
     mod_macro(*this, "%", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::mod();
+      vm.ops[vm.emit()] = ops::mod();
       return nullopt;
     }),
     mul_macro(*this, "*", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::mul();
+      vm.ops[vm.emit()] = ops::mul();
       return nullopt;
     }),
     not_macro(*this, "not", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::_not();
+      vm.ops[vm.emit()] = ops::_not();
       return nullopt;
     }),
     or_macro(*this, "or:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) -> optional<Error> {
-      const PC pc = vm.pc;
-      vm.emit();
+      const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, args); e) { return e; }
       vm.ops[pc] = ops::_or(vm.pc);
       return nullopt;
     }),
     pop_macro(*this, "pop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::pop();
+      vm.ops[vm.emit()] = ops::pop();
       return nullopt;
     }),
     stop_macro(*this, "stop", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::stop();
+      vm.ops[vm.emit()] = ops::stop();
       return nullopt;
     }),
     sub_macro(*this, "-", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::sub();
+      vm.ops[vm.emit()] = ops::sub();
       return nullopt;
     }),
     swap_macro(*this, "swap", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::swap();
+      vm.ops[vm.emit()] = ops::swap();
       return nullopt;
     }),
     trace_macro(*this, "trace", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
@@ -161,7 +171,7 @@ namespace nibl::libs {
       return nullopt;
     }),
     type_of_macro(*this, "type-of", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
-      *vm.emit() = ops::type_of();
+      vm.ops[vm.emit()] = ops::type_of();
       return nullopt;
     }) {
 

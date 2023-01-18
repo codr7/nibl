@@ -10,7 +10,7 @@ namespace nibl {
       out << "ADD";
       break;
     case OpCode::AND:
-      out << "AND" << ops::and_next(op);
+      out << "AND" << ops::and_next_pc(op);
       break;
     case OpCode::DIV:
       out << "DIV";
@@ -25,7 +25,10 @@ namespace nibl {
       out << "GT";
       break;
     case OpCode::IF:
-      out << "IF " << ops::if_next(op);
+      out << "IF " << ops::if_next_pc(op);
+      break;
+    case OpCode::JUMP:
+      out << "JUMP " << ops::jump_pc(op);
       break;
     case OpCode::LT:
       out << "LT";
@@ -40,7 +43,7 @@ namespace nibl {
       out << "NOT";
       break;
     case OpCode::OR:
-      out << "OR" << ops::or_next(op);
+      out << "OR" << ops::or_next_pc(op);
       break;
     case OpCode::POP:
       out << "POP";
@@ -79,10 +82,10 @@ namespace nibl {
 namespace nibl::ops {
   Op add() { return static_cast<Op>(OpCode::ADD); }
   
-  Op _and(PC next) {
+  Op _and(PC next_pc) {
     return
       static_cast<Op>(OpCode::AND) +
-      static_cast<Op>(next << AND_NEXT_POS);
+      static_cast<Op>(next_pc << AND_NEXT_PC_POS);
   }
 
   Op div() { return static_cast<Op>(OpCode::DIV); }
@@ -90,10 +93,16 @@ namespace nibl::ops {
   Op eq() { return static_cast<Op>(OpCode::EQ); }
   Op gt() { return static_cast<Op>(OpCode::GT); }
 
-  Op _if(PC next) {
+  Op _if(PC next_pc) {
     return
       static_cast<Op>(OpCode::IF) +
-      static_cast<Op>(next << IF_NEXT_POS);
+      static_cast<Op>(next_pc << IF_NEXT_PC_POS);
+  }
+
+  Op jump(PC pc) {
+    return
+      static_cast<Op>(OpCode::JUMP) +
+      static_cast<Op>(pc << JUMP_PC_POS);
   }
 
   Op lt() { return static_cast<Op>(OpCode::LT); }
@@ -101,10 +110,10 @@ namespace nibl::ops {
   Op mul() { return static_cast<Op>(OpCode::MUL); }
   Op _not() { return static_cast<Op>(OpCode::NOT); }
 
-  Op _or(PC next) {
+  Op _or(PC next_pc) {
     return
       static_cast<Op>(OpCode::OR) +
-      static_cast<Op>(next << OR_NEXT_POS);
+      static_cast<Op>(next_pc << OR_NEXT_PC_POS);
   }
 
   Op pop() { return static_cast<Op>(OpCode::POP); }

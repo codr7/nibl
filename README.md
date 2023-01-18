@@ -117,7 +117,7 @@ Booleans can be either true (`T`) or false (`F`).
 ### Branching
 
 #### if: ...; [a | ...]
-Skip evaluation until `;` is reached or the program ends when `a` is false.
+Skip evaluation until `;` or `else:` is reached or the program ends when `a` is false.
 
 ```
   T if: 1 2; 3
@@ -126,6 +126,33 @@ Skip evaluation until `;` is reached or the program ends when `a` is false.
 ```
 ```
   F if: 1 2; 3
+
+[3]
+```
+
+```
+  T if: 1 else: 2; 3
+
+[1 3]
+```
+```
+  F if: 1 else: 2; 3
+
+[2 3]
+```
+
+```
+  10 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;
+
+[1]
+```
+```
+   20 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;
+
+[2]
+```
+```
+  30 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;
 
 [3]
 ```

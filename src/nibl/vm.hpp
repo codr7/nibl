@@ -31,8 +31,8 @@ namespace nibl {
     size_t tag(Type &type, any &&data);
     optional<Error> import(const Env &source, initializer_list<string> names, const Pos &pos);
     Read read(istream &in, Pos &pos);
-    Op *emit_no_trace(unsigned int n = 1);
-    Op *emit(unsigned int n = 1);
+    PC emit_no_trace(unsigned int n = 1);
+    PC emit(unsigned int n = 1);
     void eval(PC start_pc, ostream &stdout);
     void push(Type &type, any &&data);
     void dump_stack(ostream &out) const;

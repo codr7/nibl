@@ -11,11 +11,11 @@ namespace nibl {
       a.data = a.as<types::Int>() + b.as<types::Int>();
   }
 
-  inline PC eval_and(VM &vm, Op op) {
+  inline PC eval_and(VM &vm, PC next_pc) {
       Val v(vm.stack.back());
-      if (!v.as<bool>()) { return ops::and_next(op); }      
+      if (!v.as<bool>()) { return next_pc; }      
       vm.stack.pop_back();
-      return  vm.pc;
+      return vm.pc;
   }
 
   inline void eval_div(VM &vm) {
@@ -39,12 +39,14 @@ namespace nibl {
       a = Val(vm.abc_lib.bool_type, a.as<types::Int>() > b.as<types::Int>());
   }
 
-  inline PC eval_if(VM &vm, Op op) {
+  inline PC eval_if(VM &vm, PC next_pc) {
       Val v(vm.stack.back());
       vm.stack.pop_back();
-      if (!v.as<bool>()) { return ops::if_next(op); }      
+      if (!v.as<bool>()) { return next_pc; }      
       return vm.pc;
   }
+
+  inline PC eval_jump(VM &vm, PC pc) { return pc; }
 
   inline void eval_lt(VM &vm) {
       Val b(vm.stack.back());
@@ -72,11 +74,11 @@ namespace nibl {
       a = Val(vm.abc_lib.bool_type, !a.as<bool>());
   }
 
-  inline PC eval_or(VM &vm, Op op) {
+  inline PC eval_or(VM &vm, PC next_pc) {
       Val v(vm.stack.back());
-      if (v.as<bool>()) { return ops::and_next(op); }      
+      if (v.as<bool>()) { return next_pc; }      
       vm.stack.pop_back();
-      return  vm.pc;
+      return vm.pc;
   }
 
   inline void eval_sub(VM &vm) {

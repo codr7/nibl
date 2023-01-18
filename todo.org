@@ -1,5 +1,5 @@
-* finish else:
-** add eq macro
-** set next to end when else: is found when true
-** set next to first of else: or end when false
-** dup 10 = if: 1 else: dup 20 = if: 2 else: 3; drop
+* add test: macro
+** [1 2 3 3] test: 1 2 3 dup;
+** extract regression suite from readme
+* move all op imps to eval.hpp
+** pass args

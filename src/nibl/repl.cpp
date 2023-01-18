@@ -46,7 +46,7 @@ namespace nibl {
 	  }
 	}
 
-	*vm.emit() = ops::stop();	
+	vm.ops[vm.emit()] = ops::stop();	
 	vm.eval(pc, stdout);
       END:
 	vm.dump_stack(stdout);

@@ -8,9 +8,11 @@ namespace nibl {
   
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP, &&PUSH_BOOL,
-      &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPE_OF,
+      &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&IF, &&JUMP, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
+      &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPE_OF,
+      
       &&STOP};
+    
     Op op;
     pc = start_pc;
     DISPATCH();
@@ -18,7 +20,7 @@ namespace nibl {
     eval_add(*this);
     DISPATCH();
   AND:
-    pc = eval_and(*this, op);
+    pc = eval_and(*this, ops::and_next_pc(op));
     DISPATCH();
   DIV:
     eval_div(*this);
@@ -33,7 +35,10 @@ namespace nibl {
     eval_gt(*this);
     DISPATCH();
   IF:
-    pc = eval_if(*this, op);
+    pc = eval_if(*this, ops::if_next_pc(op));
+    DISPATCH();
+  JUMP:
+    pc = eval_jump(*this, ops::jump_pc(op));
     DISPATCH();
   LT:
     eval_lt(*this);
@@ -48,7 +53,7 @@ namespace nibl {
     eval_not(*this);
     DISPATCH();
   OR:
-    pc = eval_or(*this, op);
+    pc = eval_or(*this, ops::or_next_pc(op));
     DISPATCH();
   POP:
     stack.pop_back();
