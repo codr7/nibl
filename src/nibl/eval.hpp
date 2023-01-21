@@ -87,6 +87,18 @@ namespace nibl {
       Val &a(vm.stack.back());
       a.data = a.as<types::Int>() - b.as<types::Int>();
   }
+
+  inline void eval_test(VM &vm, ostream &stdout) {
+    Stack expected(move(vm.stack));
+    vm.eval(vm.pc, stdout);
+    Stack actual(move(vm.stack));
+    
+    if (actual == expected) {
+      stdout << "Test ok: " << expected << endl;
+    } else {
+      stdout << "Test failed, expected: " << expected << ", actual: " << actual << endl;
+    }
+  }
 }
 
 #endif

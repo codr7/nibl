@@ -43,8 +43,8 @@ namespace nibl::libs {
     MetaType meta_type;
 
     Macro add_macro, and_macro, div_macro, dup_macro, else_macro, eq_macro, gt_macro, if_macro, lt_macro,
-      mod_macro, mul_macro, not_macro, or_macro, pop_macro, stop_macro, sub_macro, swap_macro, trace_macro,
-      type_of_macro;
+      mod_macro, mul_macro, not_macro, or_macro, pop_macro, stop_macro, sub_macro, swap_macro, test_macro,
+      trace_macro, type_of_macro;
     
     ABC(VM &vm);
   };

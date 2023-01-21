@@ -62,16 +62,4 @@ namespace nibl {
     if (trace) { ops[emit_no_trace()] = ops::trace(); }
     return emit_no_trace(n);
   }
-
-  void VM::dump_stack(ostream &out) const {
-    out << '[';
-    int i = 0;
-    
-    for (const Val &v: stack) {
-      if (i++) { out << ' '; }
-      out << v;
-    }
-
-    out << ']';
-  }
 }

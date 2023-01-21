@@ -10,11 +10,11 @@
 #include "nibl/libs/abc.hpp"
 #include "nibl/op.hpp"
 #include "nibl/read.hpp"
-#include "nibl/val.hpp"
+#include "nibl/stack.hpp"
 
 namespace nibl {
-  const unsigned int VERSION = 5;
-    
+  const unsigned int VERSION = 6;
+  
   struct VM {
     vector<Val> tags;
     libs::ABC abc_lib;
@@ -23,7 +23,7 @@ namespace nibl {
     vector<Op> ops;
     PC pc = 0;
 
-    vector<Val> stack;
+    Stack stack;
 
     bool trace = false;
 
@@ -35,7 +35,6 @@ namespace nibl {
     PC emit(unsigned int n = 1);
     void eval(PC start_pc, ostream &stdout);
     void push(Type &type, any &&data);
-    void dump_stack(ostream &out) const;
   };
 
   inline void VM::push(Type &type, any &&data) { stack.emplace_back(type, move(data)); }

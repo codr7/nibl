@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v5
+Nibl v6
 
 1 2 3 dup
 
@@ -208,4 +208,20 @@ Tracing may be toggled using `trace`.
 8 DUP
 10 STOP
 [1 2 3 3]
+```
+
+### Testing
+`test:` may be used to write tests, it compares the contents of the stack before and after running the code.
+
+```
+  1 2 test: 1 2 3;
+  
+Test failed, expected: [1 2], actual: [1 2 3]
+[]
+```
+```
+  1 2 3 test: 1 2 3;
+  
+Test ok: [1 2 3]
+[]
 ```

@@ -1,5 +1,7 @@
-* add test: macro
-** [1 2 3 3] test: 1 2 3 dup;
-** extract regression suite from readme
+* add string literal reader
+** store in tags
+* add load macro
+* extract regression suite from readme
 * move all op imps to eval.hpp
 ** pass args
+* add fns

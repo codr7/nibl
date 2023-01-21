@@ -14,7 +14,7 @@ namespace nibl {
     char c;
     
     while (in.get(c)) {
-      if (!isgraph(c)) {
+      if (c == ';' || !isgraph(c)) {
 	in.unget();
 	break;
       }

@@ -9,7 +9,7 @@ namespace nibl {
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&IF, &&JUMP, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
-      &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TRACE, &&TYPE_OF,
+      &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
       
       &&STOP};
     
@@ -72,6 +72,9 @@ namespace nibl {
     DISPATCH();
   SWAP:
     iter_swap(stack.end()-2, stack.end()-1);
+    DISPATCH();
+  TEST:
+    eval_test(*this, stdout);
     DISPATCH();
   TRACE:
     op_trace(*this, pc, ops[pc], stdout);

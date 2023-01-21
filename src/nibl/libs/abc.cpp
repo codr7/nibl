@@ -166,6 +166,19 @@ namespace nibl::libs {
       vm.ops[vm.emit()] = ops::swap();
       return nullopt;
     }),
+    test_macro(*this, "test:", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) -> optional<Error> {
+      const PC pc = vm.emit();
+      
+      while (!args.empty()) {
+	Form f = pop_front(args);
+	if (f.imp == Form::END) { break; }	
+	if (auto e = f.emit(vm, args)) { return e; }
+      }
+
+      vm.ops[vm.emit()] = ops::stop();
+      vm.ops[pc] = ops::test();
+      return nullopt;
+    }),
     trace_macro(*this, "trace", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       vm.trace = !vm.trace;
       return nullopt;

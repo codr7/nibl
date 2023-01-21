@@ -63,6 +63,9 @@ namespace nibl {
     case OpCode::SWAP:
       out << "SWAP";
       break;
+    case OpCode::TEST:
+      out << "TEST";
+      break;
     case OpCode::TRACE:
       out << "TRACE";
       break;
@@ -138,6 +141,7 @@ namespace nibl::ops {
 
   Op sub() { return static_cast<Op>(OpCode::SUB); }
   Op swap() { return static_cast<Op>(OpCode::SWAP); }
+  Op test() { return static_cast<Op>(OpCode::TEST); }
   Op trace() { return static_cast<Op>(OpCode::TRACE); }
   Op type_of() { return static_cast<Op>(OpCode::TYPE_OF); }
   Op stop() { return static_cast<Op>(OpCode::STOP); }
