@@ -8,17 +8,18 @@
 #include "nibl/error.hpp"
 
 namespace nibl {
+  struct Env;
   struct Form;
   struct Lib;
   struct VM;
 
   struct Macro {
-    using Body = function<optional<Error> (VM &vm, const Macro &macro, deque<Form> &args, const Pos &pos)>;
+    using Body = function<optional<Error> (VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos)>;
     
-    Macro(Lib &lib, string &&name, Body body);
-    optional<Error> emit(VM &vm, deque<Form> &args, const Pos &pos);
+    Macro(VM &vm, Env &env, const optional<string> &name, Body body);
+    optional<Error> emit(VM &vm, Env &env, deque<Form> &args, const Pos &pos);
     
-    const string name;
+    const optional<string> name;
     const size_t tag;
     const Body body;
   };

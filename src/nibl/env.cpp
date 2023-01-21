@@ -1,3 +1,4 @@
+#include <vector>
 #include "nibl/env.hpp"
 
 namespace nibl {
@@ -8,5 +9,21 @@ namespace nibl {
   
   void Env::bind(const string &name, Type &type, any &&data) {
     bindings.insert(make_pair(name, Val(type, move(data))));
+  }
+
+  optional<Error> Env::import(const Env &source, initializer_list<string> names, const Pos &pos) {
+    vector<string> ns(names);
+
+    if (ns.empty()) {
+      bindings.insert(source.bindings.begin(), source.bindings.end());
+    } else {
+      for (const string &n: ns) {
+	auto v = source.find(n);
+	if (!v) { return Error(pos, n, '?'); }
+	bindings.insert(make_pair(n, *v));
+      }
+    }
+
+    return nullopt;
   }
 }

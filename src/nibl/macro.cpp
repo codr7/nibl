@@ -2,19 +2,21 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  Macro::Macro(Lib &lib, string &&name, Body body):
-    name(move(name)),
-    tag(lib.vm.tag(lib.vm.abc_lib.macro_type, this)),
+  Macro::Macro(VM &vm, Env &env, const optional<string> &name, Body body):
+    name(name),
+    tag(vm.tag(vm.abc_lib.macro_type, this)),
     body(body) {
-    lib.bind(this->name, lib.vm.abc_lib.macro_type, this);  
+    if (name) { env.bind(*name, vm.abc_lib.macro_type, this); }
   }
 
-  optional<Error> Macro::emit(VM &vm, deque<Form> &args, const Pos &pos) {
-    return body(vm, *this, args, pos);
+  optional<Error> Macro::emit(VM &vm, Env &env, deque<Form> &args, const Pos &pos) {
+    return body(vm, env, *this, args, pos);
   }
 
   ostream &operator <<(ostream &out, const Macro &m) {
-    out << m.name;
+    out << "Macro(";
+    if (m.name) { out << *m.name; }
+    out << ')';
     return out;
   }
 }

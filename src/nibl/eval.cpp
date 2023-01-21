@@ -8,7 +8,7 @@ namespace nibl {
   
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&IF, &&JUMP, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
+      &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
       &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
       
       &&STOP};
@@ -34,11 +34,11 @@ namespace nibl {
   GT:
     eval_gt(*this);
     DISPATCH();
+  GOTO:
+    pc = eval_goto(*this, ops::goto_pc(op));
+    DISPATCH();
   IF:
     pc = eval_if(*this, ops::if_next_pc(op));
-    DISPATCH();
-  JUMP:
-    pc = eval_jump(*this, ops::jump_pc(op));
     DISPATCH();
   LT:
     eval_lt(*this);

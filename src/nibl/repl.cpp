@@ -40,7 +40,7 @@ namespace nibl {
 	while (!forms.empty()) {
 	  Form f = pop_front(forms);
 
-	  if (auto e = f.emit(vm, forms); e) {
+	  if (auto e = f.emit(vm, vm.root_env, forms); e) {
 	    stdout << *e << endl;
 	    goto END;
 	  }

@@ -4,18 +4,18 @@
 #include <map>
 
 #include "nibl/env.hpp"
-#include "nibl/macro.hpp"
-#include "nibl/val.hpp"
 
 namespace nibl {
   struct VM;
   
   struct Lib: Env {
-    VM &vm;
-    const string name;
-    
-    Lib(VM &vm, string &&name);
+    const optional<string> name;
+    const size_t tag;
+        
+    Lib(VM &vm, Env &env, const optional<string> &name);
   };
+
+  ostream &operator <<(ostream &out, const Lib &l);
 }
 
 #endif

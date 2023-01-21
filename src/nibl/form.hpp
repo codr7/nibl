@@ -9,6 +9,7 @@
 #include "nibl/pos.hpp"
 
 namespace nibl {
+  struct Env;
   struct VM;
   
   struct Form {
@@ -18,7 +19,7 @@ namespace nibl {
       Imp(const Pos &pos);
       virtual ~Imp();
       virtual void dump(ostream& out) const = 0;
-      virtual optional<Error> emit(VM &vm, deque<Form> &args) const = 0;
+      virtual optional<Error> emit(VM &vm, Env &env, deque<Form> &args) const = 0;
     };
 
     static const shared_ptr<const Imp> END;
@@ -27,7 +28,7 @@ namespace nibl {
     
     Form(shared_ptr<const Imp> imp);
     void dump(ostream& out);
-    optional<Error> emit(VM &vm, deque<Form> &args);
+    optional<Error> emit(VM &vm, Env &env, deque<Form> &args);
     
     template <typename T>
     const typename T::Imp *is() const { return dynamic_cast<const typename T::Imp *>(imp.get()); }

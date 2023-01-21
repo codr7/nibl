@@ -5,7 +5,6 @@
 #include <optional>
 #include <vector>
 
-#include "nibl/env.hpp"
 #include "nibl/error.hpp"
 #include "nibl/libs/abc.hpp"
 #include "nibl/op.hpp"
@@ -16,11 +15,10 @@ namespace nibl {
   const unsigned int VERSION = 6;
   
   struct VM {
-    vector<Val> tags;
-    libs::ABC abc_lib;
-
     Env root_env;
-    vector<Env *> envs;
+    vector<Val> tags;
+
+    libs::ABC abc_lib;
     
     vector<Op> ops;
     PC pc = 0;
@@ -30,9 +28,7 @@ namespace nibl {
     bool trace = false;
 
     VM();
-    Env &env();
     size_t tag(Type &type, any &&data);
-    optional<Error> import(const Env &source, initializer_list<string> names, const Pos &pos);
     Read read(istream &in, Pos &pos);
     PC emit_no_trace(unsigned int n = 1);
     PC emit(unsigned int n = 1);

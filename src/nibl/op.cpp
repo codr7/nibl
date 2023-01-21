@@ -27,8 +27,8 @@ namespace nibl {
     case OpCode::IF:
       out << "IF " << ops::if_next_pc(op);
       break;
-    case OpCode::JUMP:
-      out << "JUMP " << ops::jump_pc(op);
+    case OpCode::GOTO:
+      out << "GOTO " << ops::goto_pc(op);
       break;
     case OpCode::LT:
       out << "LT";
@@ -102,10 +102,10 @@ namespace nibl::ops {
       static_cast<Op>(next_pc << IF_NEXT_PC_POS);
   }
 
-  Op jump(PC pc) {
+  Op _goto(PC pc) {
     return
-      static_cast<Op>(OpCode::JUMP) +
-      static_cast<Op>(pc << JUMP_PC_POS);
+      static_cast<Op>(OpCode::GOTO) +
+      static_cast<Op>(pc << GOTO_PC_POS);
   }
 
   Op lt() { return static_cast<Op>(OpCode::LT); }

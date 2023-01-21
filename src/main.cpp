@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   nibl::VM vm;
   nibl::Pos pos("init", 1, 1);
 
-  if (auto e = vm.import(vm.abc_lib, {}, pos); e) {
+  if (auto e = vm.root_env.import(vm.abc_lib, {}, pos); e) {
     cout << *e << endl;
     return -1;
   }

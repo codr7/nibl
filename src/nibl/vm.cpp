@@ -2,32 +2,12 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  VM::VM(): abc_lib(*this) {
-    envs.push_back(&root_env);
-  }
-
-  Env &VM::env() { return *envs.back(); }
+  VM::VM(): abc_lib(*this, root_env) {}
 
   size_t VM::tag(Type &type, any &&data) {
     const size_t t = tags.size();
     tags.emplace_back(type, move(data));
     return t;
-  }
-
-  optional<Error> VM::import(const Env &source, initializer_list<string> names, const Pos &pos) {
-    vector<string> ns(names);
-
-    if (ns.empty()) {
-      env().bindings.insert(source.bindings.begin(), source.bindings.end());
-    } else {
-      for (const string &n: ns) {
-	auto v = source.find(n);
-	if (!v) { return Error(pos, n, '?'); }
-	env().bindings.insert(make_pair(n, *v));
-      }
-    }
-
-    return nullopt;
   }
 
   Read VM::read(istream &in, Pos &pos) {

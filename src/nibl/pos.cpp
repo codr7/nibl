@@ -4,7 +4,7 @@ namespace nibl {
   const Pos Pos::INVALID;
 
   ostream &operator <<(ostream &out, Pos p) {
-    out << "'" << p.source << "' at line " << p.line << ", column " << p.column;
+    out << p.source << '@' << p.line << ':' << p.column;
     return out;
   }
 }

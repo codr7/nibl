@@ -8,9 +8,11 @@
 namespace nibl {
   struct Env {
     map<string, Val> bindings;
-
+    optional<string> def_name;
+        
     optional<Val> find(const string &name) const;
     void bind(const string &name, Type &type, any &&data);
+    optional<Error> import(const Env &source, initializer_list<string> names, const Pos &pos);
   };
 }
 

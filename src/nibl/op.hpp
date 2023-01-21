@@ -19,8 +19,8 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, DIV, DUP, EQ, GT, IF, JUMP, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG, SUB,
-    SWAP, TEST, TRACE, TYPE_OF,
+    ADD, AND, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT1, PUSH_TAG,
+    SUB, SWAP, TEST, TRACE, TYPE_OF,
     
     STOP };
 
@@ -31,11 +31,11 @@ namespace nibl {
     const size_t AND_NEXT_PC_POS = OP_CODE_WIDTH;
     const size_t AND_NEXT_PC_WIDTH = OP_WIDTH - AND_NEXT_PC_POS;
 
+    const size_t GOTO_PC_POS = OP_CODE_WIDTH;
+    const size_t GOTO_PC_WIDTH = OP_WIDTH - GOTO_PC_POS;
+
     const size_t IF_NEXT_PC_POS = OP_CODE_WIDTH;
     const size_t IF_NEXT_PC_WIDTH = OP_WIDTH - IF_NEXT_PC_POS;
-
-    const size_t JUMP_PC_POS = OP_CODE_WIDTH;
-    const size_t JUMP_PC_WIDTH = OP_WIDTH - JUMP_PC_POS;
 
     const size_t OR_NEXT_PC_POS = OP_CODE_WIDTH;
     const size_t OR_NEXT_PC_WIDTH = OP_WIDTH - OR_NEXT_PC_POS;
@@ -62,11 +62,11 @@ namespace nibl {
     Op eq();
     Op gt();
     
+    Op _goto(PC pc);
+    inline PC goto_pc(Op op) { return get<PC, GOTO_PC_POS, GOTO_PC_WIDTH>(op); }
+
     Op _if(PC next_pc);
     inline PC if_next_pc(Op op) { return get<PC, IF_NEXT_PC_POS, IF_NEXT_PC_WIDTH>(op); }
-
-    Op jump(PC pc);
-    inline PC jump_pc(Op op) { return get<PC, JUMP_PC_POS, JUMP_PC_WIDTH>(op); }
 
     Op lt();
     Op mod();

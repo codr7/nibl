@@ -1,5 +1,19 @@
+* add call op
+* add def: macro
+** two args: name/value
+** set/reset env.def_name in emit
+** def: foo func: 1 2 3;
+** def: bar 42
+* handle Func in id emit
+* add call_stack
+** add Call struct with func/pos/ret_pc
+* --commit func
 * add load macro
-* extract regression suite from readme
+** extract regression suite from readme
+* add optional pos arg to lib/macro/func/type
+** print if set
+* add grouping with parens
+** add group form
 * move all op imps to eval.hpp
 ** pass args
 * add fns

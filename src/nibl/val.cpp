@@ -4,7 +4,7 @@
 namespace nibl {
   Val::Val(Type &type, any &&data): type(&type), data(move(data)) {}
 
-  optional<Error> Val::emit(VM &vm) const { return type->emit(vm, *this); }
+  optional<Error> Val::emit(VM &vm, Env &env) const { return type->emit(vm, env, *this); }
 
   ostream &operator <<(ostream &out, const Val &v) {
     v.type->dump(v, out);
