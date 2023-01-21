@@ -11,28 +11,35 @@ namespace nibl::libs {
   struct BoolType: Type {
     BoolType(Lib &lib, string &&name);
     void dump(const Val &val, ostream &out) const override;
-    optional<Error> emit(VM &vm, const Val &val) const override;
+    optional<Error> emit(VM &vm, const Val &val) override;
     bool eq(const Val &val1, const Val &val2) const override;
   };
 
   struct IntType: Type {
     IntType(Lib &lib, string &&name);
     void dump(const Val &val, ostream &out) const override;
-    optional<Error> emit(VM &vm, const Val &val) const override;
+    optional<Error> emit(VM &vm, const Val &val) override;
     bool eq(const Val &val1, const Val &val2) const override;
   };
 
   struct MacroType: Type {
     MacroType(Lib &lib, string &&name);
     void dump(const Val &val, ostream &out) const override;
-    optional<Error> emit(VM &vm, const Val &val) const override;
+    optional<Error> emit(VM &vm, const Val &val) override;
     bool eq(const Val &val1, const Val &val2) const override;
   };
 
   struct MetaType: Type {
     MetaType(Lib &lib, string &&name);
     void dump(const Val &val, ostream &out) const override;
-    optional<Error> emit(VM &vm, const Val &val) const override;
+    optional<Error> emit(VM &vm, const Val &val) override;
+    bool eq(const Val &val1, const Val &val2) const override;
+  };
+
+  struct StringType: Type {
+    StringType(Lib &lib, string &&name);
+    void dump(const Val &val, ostream &out) const override;
+    optional<Error> emit(VM &vm, const Val &val) override;
     bool eq(const Val &val1, const Val &val2) const override;
   };
 
@@ -41,6 +48,7 @@ namespace nibl::libs {
     IntType int_type;
     MacroType macro_type;
     MetaType meta_type;
+    StringType string_type;
 
     Macro add_macro, and_macro, div_macro, dup_macro, else_macro, eq_macro, gt_macro, if_macro, lt_macro,
       mod_macro, mul_macro, not_macro, or_macro, pop_macro, stop_macro, sub_macro, swap_macro, test_macro,

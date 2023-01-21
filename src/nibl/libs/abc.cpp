@@ -15,7 +15,7 @@ namespace nibl::libs {
     out << (val.as<bool>() ? 'T' : 'F');
   }
 
-  optional<Error> BoolType::emit(VM &vm, const Val &val) const {
+  optional<Error> BoolType::emit(VM &vm, const Val &val) {
     vm.ops[vm.emit()] = ops::push_bool(val.as<bool>());
     return nullopt;
   }
@@ -30,7 +30,7 @@ namespace nibl::libs {
     out << val.as<types::Int>();
   }
 
-  optional<Error> IntType::emit(VM &vm, const Val &val) const {
+  optional<Error> IntType::emit(VM &vm, const Val &val) {
     vm.ops[vm.emit()] = ops::push_int1(val.as<types::Int>());
     return nullopt;
   }
@@ -45,7 +45,7 @@ namespace nibl::libs {
     out << *val.as<Macro *>();
   }
 
-  optional<Error> MacroType::emit(VM &vm, const Val &val) const {
+  optional<Error> MacroType::emit(VM &vm, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(val.as<Macro *>()->tag);
     return nullopt;
   }
@@ -60,7 +60,7 @@ namespace nibl::libs {
     out << *val.as<Type *>();
   }
 
-  optional<Error> MetaType::emit(VM &vm, const Val &val) const {
+  optional<Error> MetaType::emit(VM &vm, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(val.as<Type *>()->tag);
     return nullopt;
   }
@@ -69,12 +69,28 @@ namespace nibl::libs {
     return val1.as<Type *>() == val2.as<Type *>();
   }
 
+  StringType::StringType(Lib &lib, string &&name): Type(lib, move(name)) {}
+  
+  void StringType::dump(const Val &val, ostream &out) const {
+    out << '"' << val.as<string>() << '"';
+  }
+
+  optional<Error> StringType::emit(VM &vm, const Val &val) {
+    vm.ops[vm.emit()] = ops::push_tag(vm.tag(*this, val.as<string>()));
+    return nullopt;
+  }
+
+  bool StringType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<string>() == val2.as<string>();
+  }
+
   ABC::ABC(VM &vm):
     Lib(vm, "abc"),
     bool_type(*this, "Bool"),
     int_type(*this, "Int"),
     macro_type(*this, "Macro"),
     meta_type(*this, "Meta"),
+    string_type(*this, "String"),
     add_macro(*this, "+", [](VM &vm, const Macro &macro, deque<Form> &args, Pos pos) {
       vm.ops[vm.emit()] = ops::add();
       return nullopt;

@@ -1,5 +1,3 @@
-* add string literal reader
-** store in tags
 * add load macro
 * extract regression suite from readme
 * move all op imps to eval.hpp

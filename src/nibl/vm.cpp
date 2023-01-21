@@ -38,8 +38,11 @@ namespace nibl {
     case 32:
       pos.column++;
       goto START;
+    case '"': {
+      pos.column++;
+      return read_string(*this, in, pos);
+    }
     case ';': {
-      const Pos fpos = pos;
       pos.column++;
       return Read(Form(Form::END), nullopt);
     }

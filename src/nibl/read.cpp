@@ -57,4 +57,23 @@ namespace nibl {
     if (!in.eof()) { in.unget();}
     return Read(forms::Lit(fpos, vm.abc_lib.int_type, v), nullopt);
   }
+
+  Read read_string(VM &vm, istream &in, Pos &pos) {
+    const Pos fpos(pos);
+    stringstream buf;
+    char c;
+    
+    while (in.get(c)) {
+      if (c == '"') { break; }
+      buf << c;
+      pos.column++;
+    }
+
+    if (!buf.tellp()) {
+      return Read(nullopt, nullopt);
+    }
+
+    string s(buf.str());
+    return Read(forms::Lit(fpos, vm.abc_lib.string_type, move(s)), nullopt);
+  }
 }
