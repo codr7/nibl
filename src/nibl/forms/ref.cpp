@@ -7,7 +7,7 @@ namespace nibl::forms {
   void Ref::Imp::dump(ostream &out) const { out << '&' << name; }
   
   optional<Error> Ref::Imp::emit(VM &vm, deque<Form> &args) const {
-    auto found = vm.env.find(name);
+    auto found = vm.env().find(name);
     if (found) { return found->emit(vm); }
     return Error(pos, name, '?');
   }

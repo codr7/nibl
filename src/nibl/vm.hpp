@@ -18,7 +18,9 @@ namespace nibl {
   struct VM {
     vector<Val> tags;
     libs::ABC abc_lib;
-    Env env;
+
+    Env root_env;
+    vector<Env *> envs;
     
     vector<Op> ops;
     PC pc = 0;
@@ -28,6 +30,7 @@ namespace nibl {
     bool trace = false;
 
     VM();
+    Env &env();
     size_t tag(Type &type, any &&data);
     optional<Error> import(const Env &source, initializer_list<string> names, const Pos &pos);
     Read read(istream &in, Pos &pos);

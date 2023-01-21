@@ -2,7 +2,11 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  VM::VM(): abc_lib(*this) {}
+  VM::VM(): abc_lib(*this) {
+    envs.push_back(&root_env);
+  }
+
+  Env &VM::env() { return *envs.back(); }
 
   size_t VM::tag(Type &type, any &&data) {
     const size_t t = tags.size();
@@ -14,12 +18,12 @@ namespace nibl {
     vector<string> ns(names);
 
     if (ns.empty()) {
-      env.bindings.insert(source.bindings.begin(), source.bindings.end());
+      env().bindings.insert(source.bindings.begin(), source.bindings.end());
     } else {
       for (const string &n: ns) {
 	auto v = source.find(n);
 	if (!v) { return Error(pos, n, '?'); }
-	env.bindings.insert(make_pair(n, *v));
+	env().bindings.insert(make_pair(n, *v));
       }
     }
 
