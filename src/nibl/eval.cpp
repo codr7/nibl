@@ -9,7 +9,7 @@ namespace nibl {
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
-      &&PUSH_BOOL, &&PUSH_INT1, &&PUSH_TAG, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
+      &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
       
       &&STOP};
     
@@ -26,7 +26,7 @@ namespace nibl {
     eval_div(*this);
     DISPATCH();
   DUP:
-    stack.emplace_back(stack.back());
+    eval_dup(*this);
     DISPATCH();
   EQ:
     eval_eq(*this);
@@ -56,31 +56,31 @@ namespace nibl {
     pc = eval_or(*this, ops::or_next_pc(op));
     DISPATCH();
   POP:
-    stack.pop_back();
+    eval_pop(*this);
     DISPATCH();
   PUSH_BOOL:
-    push(abc_lib.bool_type, ops::push_bool_value(op));
+    eval_push_bool(*this, ops::push_bool_value(op));
     DISPATCH();
-  PUSH_INT1:
-    push(abc_lib.int_type, ops::push_int1_value(op));
+  PUSH_INT:
+    eval_push_int(*this, ops::push_int_value(op));
     DISPATCH();
   PUSH_TAG:
-    stack.push_back(tags[ops::push_tag_value(op)]);
+    eval_push_tag(*this, ops::push_tag_value(op));
     DISPATCH();
   SUB:
     eval_sub(*this);
     DISPATCH();
   SWAP:
-    iter_swap(stack.end()-2, stack.end()-1);
+    eval_swap(*this);
     DISPATCH();
   TEST:
     eval_test(*this, stdout);
     DISPATCH();
   TRACE:
-    op_trace(*this, pc, ops[pc], stdout);
+    eval_trace(*this, stdout);
     DISPATCH();
   TYPE_OF:
-    stack.back() = Val(abc_lib.meta_type, stack.back().type);
+    eval_type_of(*this);
     DISPATCH(); 
   STOP:
     return;

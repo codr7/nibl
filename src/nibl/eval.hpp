@@ -25,6 +25,10 @@ namespace nibl {
       a.data = a.as<types::Int>() / b.as<types::Int>();
   }
 
+  inline void eval_dup(VM &vm) {
+    vm.stack.emplace_back(vm.stack.back());
+  }
+  
   inline void eval_eq(VM &vm) {
       Val b(vm.stack.back());
       vm.stack.pop_back();
@@ -81,11 +85,31 @@ namespace nibl {
       return vm.pc;
   }
 
+  inline void eval_pop(VM &vm) {
+      vm.stack.pop_back();
+  }
+  
+  inline void eval_push_bool(VM &vm, bool value) {
+    vm.push(vm.abc_lib.bool_type, value);
+  }
+
+  inline void eval_push_int(VM &vm, types::Int value) {
+    vm.push(vm.abc_lib.int_type, value);
+  }
+
+  inline void eval_push_tag(VM &vm, size_t value) {
+    vm.stack.push_back(vm.tags[value]);
+  }
+  
   inline void eval_sub(VM &vm) {
       Val b(vm.stack.back());
       vm.stack.pop_back();
       Val &a(vm.stack.back());
       a.data = a.as<types::Int>() - b.as<types::Int>();
+  }
+
+  inline void eval_swap(VM &vm) {
+    iter_swap(vm.stack.end()-2, vm.stack.end()-1);
   }
 
   inline void eval_test(VM &vm, ostream &stdout) {
@@ -98,6 +122,14 @@ namespace nibl {
     } else {
       stdout << "Test failed, expected: " << expected << ", actual: " << actual << endl;
     }
+  }
+
+  inline void eval_trace(VM &vm, ostream &stdout) {
+    op_trace(vm, vm.pc, stdout);
+  }
+
+  inline void eval_type_of(VM &vm) {
+    vm.stack.back() = Val(vm.abc_lib.meta_type, vm.stack.back().type);
   }
 }
 

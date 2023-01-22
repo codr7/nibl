@@ -47,7 +47,7 @@ namespace nibl::libs {
   }
 
   optional<Error> IntType::emit(VM &vm, Env &env, const Val &val) {
-    vm.ops[vm.emit()] = ops::push_int1(val.as<types::Int>());
+    vm.ops[vm.emit()] = ops::push_int(val.as<types::Int>());
     return nullopt;
   }
 

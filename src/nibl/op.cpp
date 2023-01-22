@@ -2,8 +2,9 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  void op_trace(const VM &vm, PC pc, Op op, ostream &out) {
+  void op_trace(VM &vm, PC pc, ostream &out) {
     out << pc << ' ';
+    const Op op = vm.ops[pc];
     
     switch (op_code(op)) {
     case OpCode::ADD:
@@ -51,8 +52,8 @@ namespace nibl {
     case OpCode::PUSH_BOOL:
       out << "PUSH_BOOL " << (ops::push_bool_value(op) ? 'T' : 'F');
       break;
-    case OpCode::PUSH_INT1:
-      out << "PUSH_INT1 " << ops::push_int1_value(op);
+    case OpCode::PUSH_INT:
+      out << "PUSH_INT " << ops::push_int_value(op);
       break;
     case OpCode::PUSH_TAG:
       out << "PUSH_TAG " << ops::push_tag_value(op) << ' ' << vm.tags[ops::push_tag_value(op)];
@@ -127,10 +128,10 @@ namespace nibl::ops {
       static_cast<Op>(value << PUSH_BOOL_VALUE_POS);
   }
 
-  Op push_int1(types::Int value) {
+  Op push_int(types::Int value) {
     return
-      static_cast<Op>(OpCode::PUSH_INT1) +
-      static_cast<Op>(value << PUSH_INT1_VALUE_POS);
+      static_cast<Op>(OpCode::PUSH_INT) +
+      static_cast<Op>(value << PUSH_INT_VALUE_POS);
   }
 
   Op push_tag(size_t value) {
