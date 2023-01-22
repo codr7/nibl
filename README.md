@@ -158,12 +158,12 @@ Skip evaluation until `;` or `else:` is reached or the program ends when `a` is 
 ```
 
 ### Functions
-Functions are first class and may be defined using `func:`, and subsequently called using `call`.
+Functions are first class and may be defined using `fun:`, and subsequently called using `call`.
 
 ```
-  func: 1 2 3;
+  fun: 1 2 3;
   
-[Func()]
+[Fun()]
   call
   
 [1 2 3]

@@ -20,7 +20,7 @@ namespace nibl {
   }
 
   inline void eval_call(VM &vm) {
-    Func &f = *vm.stack.back().as<Func *>();
+    Fun &f = *vm.stack.back().as<Fun *>();
     vm.stack.pop_back();
     vm.call(f);
   }

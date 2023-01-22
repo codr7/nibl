@@ -5,16 +5,16 @@
 #include "nibl/types.hpp"
 
 namespace nibl {
-  struct Func;
+  struct Fun;
   
   struct Call {
-    const Func &func;
+    const Fun &fun;
     const PC ret_pc;
 
-    Call(const Func &func, PC ret_pc);
+    Call(const Fun &fun, PC ret_pc);
   };
 
-  inline Call::Call(const Func &func, PC ret_pc): func(func), ret_pc(ret_pc) {}
+  inline Call::Call(const Fun &fun, PC ret_pc): fun(fun), ret_pc(ret_pc) {}
 }
 
 #endif

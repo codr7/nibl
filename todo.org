@@ -1,3 +1,8 @@
+* add optional pos arg to lib/macro/func/type
+** print if set
+** update fun example in readme
+* add load macro
+** extract regression suite from readme
 * add def: macro
 ** two args: name/value
 ** set/reset env.def_name in emit
@@ -5,11 +10,7 @@
 ** def: bar 42
 *** special case lit
 **** check next form & bind
-* handle Func in id emit
-* add load macro
-** extract regression suite from readme
-* add optional pos arg to lib/macro/func/type
-** print if set
+* handle Fun in id emit
 * add grouping with parens
 ** add group form
 * fib

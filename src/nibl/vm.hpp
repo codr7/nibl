@@ -7,7 +7,7 @@
 
 #include "nibl/call.hpp"
 #include "nibl/error.hpp"
-#include "nibl/func.hpp"
+#include "nibl/fun.hpp"
 #include "nibl/libs/abc.hpp"
 #include "nibl/op.hpp"
 #include "nibl/read.hpp"
@@ -36,14 +36,14 @@ namespace nibl {
     PC emit(unsigned int n = 1);
     void eval(PC start_pc, ostream &stdout);
     void push(Type &type, any &&data);
-    void call(const Func &func);
+    void call(const Fun &fun);
   };
 
   inline void VM::push(Type &type, any &&data) { stack.emplace_back(type, move(data)); }
 
-  inline void VM::call(const Func &func) {
-    calls.emplace_back(func, pc);
-    pc = func.pc;
+  inline void VM::call(const Fun &fun) {
+    calls.emplace_back(fun, pc);
+    pc = fun.pc;
   }
 }
 

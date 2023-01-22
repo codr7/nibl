@@ -4,7 +4,7 @@
 
 #include "nibl/form.hpp"
 #include "nibl/forms/id.hpp"
-#include "nibl/func.hpp"
+#include "nibl/fun.hpp"
 #include "nibl/libs/abc.hpp"
 #include "nibl/types.hpp"
 #include "nibl/vm.hpp"
@@ -25,19 +25,19 @@ namespace nibl::libs {
     return val1.as<bool>() == val2.as<bool>();
   }
 
-  FuncType::FuncType(VM &vm, Env &env): Type(vm, env, "Func") {}
+  FunType::FunType(VM &vm, Env &env): Type(vm, env, "Fun") {}
   
-  void FuncType::dump(const Val &val, ostream &out) const {
-    out << *val.as<Func *>();
+  void FunType::dump(const Val &val, ostream &out) const {
+    out << *val.as<Fun *>();
   }
 
-  E FuncType::emit(VM &vm, Env &env, const Val &val) {
-    vm.ops[vm.emit()] = ops::push_tag(val.as<Func *>()->tag);
+  E FunType::emit(VM &vm, Env &env, const Val &val) {
+    vm.ops[vm.emit()] = ops::push_tag(val.as<Fun *>()->tag);
     return nullopt;
   }
 
-  bool FuncType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Func *>() == val2.as<Func *>();
+  bool FunType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<Fun *>() == val2.as<Fun *>();
   }
 
   IntType::IntType(VM &vm, Env &env): Type(vm, env, "Int") {}
@@ -118,7 +118,7 @@ namespace nibl::libs {
   ABC::ABC(VM &vm, Env &env):
     Lib(vm, env, "abc"),
     bool_type(vm, env),
-    func_type(vm, env),
+    fun_type(vm, env),
     int_type(vm, env),
     lib_type(vm, env),
     macro_type(vm, env),
@@ -153,9 +153,9 @@ namespace nibl::libs {
       vm.ops[vm.emit()] = ops::eq();
       return nullopt;
     }),
-    func_macro(vm, env, "func:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    fun_macro(vm, env, "fun:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
 	const PC skip_pc = vm.emit();
-	const PC func_pc = vm.pc;
+	const PC fun_pc = vm.pc;
 	
 	while (!args.empty()) {
 	  Form f = pop_front(args);
@@ -165,7 +165,7 @@ namespace nibl::libs {
 
 	vm.ops[vm.emit()] = ops::ret();
 	vm.ops[skip_pc] = ops::_goto(vm.pc);
-	Func *f = new Func(vm, env, env.def_name, func_pc);
+	Fun *f = new Fun(vm, env, env.def_name, fun_pc);
 	if (!env.def_name) { vm.ops[vm.emit()] = ops::push_tag(f->tag); }
 	return nullopt;
       }),
