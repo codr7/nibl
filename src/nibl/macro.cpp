@@ -9,7 +9,7 @@ namespace nibl {
     if (name) { env.bind(*name, vm.abc_lib.macro_type, this); }
   }
 
-  optional<Error> Macro::emit(VM &vm, Env &env, deque<Form> &args, const Pos &pos) {
+  E Macro::emit(VM &vm, Env &env, deque<Form> &args, const Pos &pos) {
     return body(vm, env, *this, args, pos);
   }
 

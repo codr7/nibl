@@ -4,8 +4,8 @@
 namespace nibl {
   VM::VM(): abc_lib(*this, root_env) {}
 
-  size_t VM::tag(Type &type, any &&data) {
-    const size_t t = tags.size();
+  Tag VM::tag(Type &type, any &&data) {
+    const Tag t = tags.size();
     tags.emplace_back(type, move(data));
     return t;
   }

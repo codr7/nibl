@@ -11,7 +11,7 @@ namespace nibl {
     bindings.insert(make_pair(name, Val(type, move(data))));
   }
 
-  optional<Error> Env::import(const Env &source, initializer_list<string> names, const Pos &pos) {
+  E Env::import(const Env &source, initializer_list<string> names, const Pos &pos) {
     vector<string> ns(names);
 
     if (ns.empty()) {

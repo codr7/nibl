@@ -12,7 +12,7 @@ namespace nibl {
         
     optional<Val> find(const string &name) const;
     void bind(const string &name, Type &type, any &&data);
-    optional<Error> import(const Env &source, initializer_list<string> names, const Pos &pos);
+    E import(const Env &source, initializer_list<string> names, const Pos &pos);
   };
 }
 

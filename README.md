@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v6
+Nibl v7
 
 1 2 3 dup
 
@@ -155,6 +155,18 @@ Skip evaluation until `;` or `else:` is reached or the program ends when `a` is 
   30 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;
 
 [3]
+```
+
+### Functions
+Functions are first class and may be defined using `func:`, and subsequently called using `call`.
+
+```
+  func: 1 2 3;
+  
+[Func()]
+  call
+  
+[1 2 3]
 ```
 
 ### Types

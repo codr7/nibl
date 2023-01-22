@@ -13,6 +13,9 @@ namespace nibl {
     case OpCode::AND:
       out << "AND" << ops::and_next_pc(op);
       break;
+    case OpCode::CALL:
+      out << "CALL";
+      break;
     case OpCode::DIV:
       out << "DIV";
       break;
@@ -58,6 +61,9 @@ namespace nibl {
     case OpCode::PUSH_TAG:
       out << "PUSH_TAG " << ops::push_tag_value(op) << ' ' << vm.tags[ops::push_tag_value(op)];
       break;
+    case OpCode::RET:
+      out << "RET";
+      break;
     case OpCode::SUB:
       out << "SUB";
       break;
@@ -92,6 +98,7 @@ namespace nibl::ops {
       static_cast<Op>(next_pc << AND_NEXT_PC_POS);
   }
 
+  Op call() { return static_cast<Op>(OpCode::CALL); }
   Op div() { return static_cast<Op>(OpCode::DIV); }
   Op dup() { return static_cast<Op>(OpCode::DUP); }
   Op eq() { return static_cast<Op>(OpCode::EQ); }
@@ -128,18 +135,19 @@ namespace nibl::ops {
       static_cast<Op>(value << PUSH_BOOL_VALUE_POS);
   }
 
-  Op push_int(types::Int value) {
+  Op push_int(Int value) {
     return
       static_cast<Op>(OpCode::PUSH_INT) +
       static_cast<Op>(value << PUSH_INT_VALUE_POS);
   }
 
-  Op push_tag(size_t value) {
+  Op push_tag(Tag value) {
     return
       static_cast<Op>(OpCode::PUSH_TAG) +
       static_cast<Op>(value << PUSH_TAG_VALUE_POS);
   }
 
+  Op ret() { return static_cast<Op>(OpCode::RET); }
   Op sub() { return static_cast<Op>(OpCode::SUB); }
   Op swap() { return static_cast<Op>(OpCode::SWAP); }
   Op test() { return static_cast<Op>(OpCode::TEST); }

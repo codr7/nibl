@@ -3,8 +3,10 @@
 
 #include <cstdint>
 
-namespace nibl::types {
+namespace nibl {
   using Int = int64_t;
+  using PC = size_t;
+  using Tag = size_t;
 }
 
 #endif

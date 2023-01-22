@@ -9,7 +9,7 @@ namespace nibl {
   
   struct Func {
     const optional<string> name;
-    const size_t tag;
+    const Tag tag;
     const PC pc;
 
     Func(VM &vm, Env &env, const optional<string> &name, PC pc);

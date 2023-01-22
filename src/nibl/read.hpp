@@ -9,7 +9,7 @@
 namespace nibl {
   using namespace std;
   
-  using Read = pair<optional<Form>, optional<Error>>;
+  using Read = pair<optional<Form>, E>;
 
   struct VM;
 

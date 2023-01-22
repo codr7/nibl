@@ -1,6 +1,3 @@
-* add call op
-** add call_stack
-*** add Call struct with func/pos/ret_pc
 * add def: macro
 ** two args: name/value
 ** set/reset env.def_name in emit

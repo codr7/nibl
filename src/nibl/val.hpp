@@ -18,7 +18,7 @@ namespace nibl {
     any data;
 
     Val(Type &type, any &&data);
-    optional<Error> emit(VM &vm, Env &env) const;
+    E emit(VM &vm, Env &env) const;
 
     template <typename T>
     T as() const { return any_cast<T>(data); }

@@ -3,9 +3,9 @@
 
 #include <deque>
 #include <functional>
-#include <optional>
 
 #include "nibl/error.hpp"
+#include "nibl/types.hpp"
 
 namespace nibl {
   struct Env;
@@ -14,13 +14,13 @@ namespace nibl {
   struct VM;
 
   struct Macro {
-    using Body = function<optional<Error> (VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos)>;
+    using Body = function<E (VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos)>;
     
     Macro(VM &vm, Env &env, const optional<string> &name, Body body);
-    optional<Error> emit(VM &vm, Env &env, deque<Form> &args, const Pos &pos);
+    E emit(VM &vm, Env &env, deque<Form> &args, const Pos &pos);
     
     const optional<string> name;
-    const size_t tag;
+    const Tag tag;
     const Body body;
   };
 

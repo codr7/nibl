@@ -34,7 +34,7 @@ namespace nibl {
 
   Read read_int(VM &vm, istream &in, Pos &pos, int base) {
     const Pos fpos = pos;
-    types::Int v(0);
+    Int v(0);
       
     static const map<char, int8_t> cs = {
       {'0', 0}, {'1', 1}, {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6}, {'7', 7},

@@ -6,7 +6,7 @@ namespace nibl::forms {
 
   void Id::Imp::dump(ostream &out) const { out << name; }
   
-  optional<Error> Id::Imp::emit(VM &vm, Env &env, deque<Form> &args) const {
+  E Id::Imp::emit(VM &vm, Env &env, deque<Form> &args) const {
     auto found = env.find(name);
 
     if (found) {

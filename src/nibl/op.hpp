@@ -12,15 +12,14 @@ namespace nibl {
 
   struct VM;
   
-  using PC = size_t;
   using Op = uint64_t;
 
   const size_t OP_WIDTH = sizeof(Op) * 8;
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT, PUSH_TAG,
-    SUB, SWAP, TEST, TRACE, TYPE_OF,
+    ADD, AND, CALL, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT, PUSH_TAG,
+    RET, SUB, SWAP, TEST, TRACE, TYPE_OF,
     
     STOP };
 
@@ -57,6 +56,7 @@ namespace nibl {
     Op _and(PC next_pc);
     inline PC and_next_pc(Op op) { return get<PC, AND_NEXT_PC_POS, AND_NEXT_PC_WIDTH>(op); }
 
+    Op call();
     Op div();
     Op dup();
     Op eq();
@@ -81,15 +81,16 @@ namespace nibl {
     Op push_bool(bool value);
     inline bool push_bool_value(Op op) { return get<bool, PUSH_BOOL_VALUE_POS, PUSH_BOOL_VALUE_WIDTH>(op); }
 
-    Op push_int(types::Int value);
+    Op push_int(Int value);
 
-    inline types::Int push_int_value(Op op) {
-      return get<types::Int, PUSH_INT_VALUE_POS, PUSH_INT_VALUE_WIDTH>(op);
+    inline Int push_int_value(Op op) {
+      return get<Int, PUSH_INT_VALUE_POS, PUSH_INT_VALUE_WIDTH>(op);
     }
 
-    Op push_tag(size_t value);
+    Op push_tag(Tag value);
     inline size_t push_tag_value(Op op) { return get<size_t, PUSH_TAG_VALUE_POS, PUSH_TAG_VALUE_WIDTH>(op); }
 
+    Op ret();
     Op sub();
     Op swap();
     Op test();

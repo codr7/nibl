@@ -8,8 +8,8 @@ namespace nibl {
   
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
-      &&ADD, &&AND, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
-      &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
+      &&ADD, &&AND, &&CALL, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
+      &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
       
       &&STOP};
     
@@ -20,7 +20,10 @@ namespace nibl {
     eval_add(*this);
     DISPATCH();
   AND:
-    pc = eval_and(*this, ops::and_next_pc(op));
+    eval_and(*this, ops::and_next_pc(op));
+    DISPATCH();
+  CALL:
+    eval_call(*this);
     DISPATCH();
   DIV:
     eval_div(*this);
@@ -35,10 +38,10 @@ namespace nibl {
     eval_gt(*this);
     DISPATCH();
   GOTO:
-    pc = eval_goto(*this, ops::goto_pc(op));
+    eval_goto(*this, ops::goto_pc(op));
     DISPATCH();
   IF:
-    pc = eval_if(*this, ops::if_next_pc(op));
+    eval_if(*this, ops::if_next_pc(op));
     DISPATCH();
   LT:
     eval_lt(*this);
@@ -53,7 +56,7 @@ namespace nibl {
     eval_not(*this);
     DISPATCH();
   OR:
-    pc = eval_or(*this, ops::or_next_pc(op));
+    eval_or(*this, ops::or_next_pc(op));
     DISPATCH();
   POP:
     eval_pop(*this);
@@ -66,6 +69,9 @@ namespace nibl {
     DISPATCH();
   PUSH_TAG:
     eval_push_tag(*this, ops::push_tag_value(op));
+    DISPATCH();
+  RET:
+    eval_ret(*this);
     DISPATCH();
   SUB:
     eval_sub(*this);
