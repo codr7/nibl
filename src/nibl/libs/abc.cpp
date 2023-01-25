@@ -4,13 +4,14 @@
 
 #include "nibl/form.hpp"
 #include "nibl/forms/id.hpp"
+#include "nibl/forms/lit.hpp"
 #include "nibl/fun.hpp"
 #include "nibl/libs/abc.hpp"
 #include "nibl/types.hpp"
 #include "nibl/vm.hpp"
 
 namespace nibl::libs {
-  BoolType::BoolType(VM &vm, Env &env): Type(vm, env, "Bool") {}
+  BoolType::BoolType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Bool", pos) {}
   
   void BoolType::dump(const Val &val, ostream &out) const {
     out << (val.as<bool>() ? 'T' : 'F');
@@ -25,7 +26,7 @@ namespace nibl::libs {
     return val1.as<bool>() == val2.as<bool>();
   }
 
-  FunType::FunType(VM &vm, Env &env): Type(vm, env, "Fun") {}
+  FunType::FunType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Fun", pos) {}
   
   void FunType::dump(const Val &val, ostream &out) const {
     out << *val.as<Fun *>();
@@ -40,7 +41,7 @@ namespace nibl::libs {
     return val1.as<Fun *>() == val2.as<Fun *>();
   }
 
-  IntType::IntType(VM &vm, Env &env): Type(vm, env, "Int") {}
+  IntType::IntType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Int", pos) {}
   
   void IntType::dump(const Val &val, ostream &out) const {
     out << val.as<Int>();
@@ -55,7 +56,7 @@ namespace nibl::libs {
     return val1.as<Int>() == val2.as<Int>();
   }
 
-  LibType::LibType(VM &vm, Env &env): Type(vm, env, "Lib") {}
+  LibType::LibType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Lib", pos) {}
   
   void LibType::dump(const Val &val, ostream &out) const {
     out << *val.as<Lib *>();
@@ -70,7 +71,7 @@ namespace nibl::libs {
     return val1.as<Lib *>() == val2.as<Lib *>();
   }
 
-  MacroType::MacroType(VM &vm, Env &env): Type(vm, env, "Macro") {}
+  MacroType::MacroType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Macro", pos) {}
   
   void MacroType::dump(const Val &val, ostream &out) const {
     out << *val.as<Macro *>();
@@ -85,7 +86,7 @@ namespace nibl::libs {
     return val1.as<Macro *>() == val2.as<Macro *>();
   }
 
-  MetaType::MetaType(VM &vm, Env &env): Type(vm, env, "Meta") {}
+  MetaType::MetaType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Meta", pos) {}
   
   void MetaType::dump(const Val &val, ostream &out) const {
     out << *val.as<Type *>();
@@ -100,7 +101,7 @@ namespace nibl::libs {
     return val1.as<Type *>() == val2.as<Type *>();
   }
 
-  StringType::StringType(VM &vm, Env &env): Type(vm, env, "String") {}
+  StringType::StringType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "String", pos) {}
   
   void StringType::dump(const Val &val, ostream &out) const {
     out << '"' << val.as<string>() << '"';
@@ -115,45 +116,33 @@ namespace nibl::libs {
     return val1.as<string>() == val2.as<string>();
   }
 
-  ABC::ABC(VM &vm, Env &env):
-    Lib(vm, env, "abc"),
-    bool_type(vm, env),
-    fun_type(vm, env),
-    int_type(vm, env),
-    lib_type(vm, env),
-    macro_type(vm, env),
-    meta_type(vm, env),
-    string_type(vm, env),
-    add_macro(vm, env, "+", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
+  ABC::ABC(VM &vm, Env &env, const optional<Pos> &pos):
+    Lib(vm, env, "abc", pos),
+    bool_type(vm, env, pos),
+    fun_type(vm, env, pos),
+    int_type(vm, env, pos),
+    lib_type(vm, env, pos),
+    macro_type(vm, env, pos),
+    meta_type(vm, env, pos),
+    string_type(vm, env, pos),
+    add_macro(vm, env, "+", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
       vm.ops[vm.emit()] = ops::add();
       return nullopt;
     }),
-    and_macro(vm, env, "and:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    and_macro(vm, env, "and:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
       const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, env, args); e) { return e; }
       vm.ops[pc] = ops::_and(vm.pc);
       return nullopt;
     }),
-    call_macro(vm, env, "call", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::call();
-      return nullopt;
-    }),
-    div_macro(vm, env, "/", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::div();
-      return nullopt;
-    }),
-    dup_macro(vm, env, "dup", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::dup();
-      return nullopt;
-    }),
-    else_macro(vm, env, "else:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
+    call_macro(vm, env, "call", pos, ops::call()),
+    div_macro(vm, env, "/", pos, ops::div()),
+    dup_macro(vm, env, "dup", pos, ops::dup()),
+    else_macro(vm, env, "else:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
 	return Error(pos, "Missing if");
     }),
-    eq_macro(vm, env, "=", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::eq();
-      return nullopt;
-    }),
-    fun_macro(vm, env, "fun:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    eq_macro(vm, env, "=", pos, ops::eq()),
+    fun_macro(vm, env, "fun:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
 	const PC skip_pc = vm.emit();
 	const PC fun_pc = vm.pc;
 	
@@ -163,17 +152,17 @@ namespace nibl::libs {
 	  if (auto e = f.emit(vm, env, args)) { return e; }
 	}
 
-	vm.ops[vm.emit()] = ops::ret();
+	if (auto c = op_code(vm.ops.back()); c != OpCode::REC && c != OpCode::RET) {
+	  vm.ops[vm.emit()] = ops::ret();
+	}
+	
 	vm.ops[skip_pc] = ops::_goto(vm.pc);
-	Fun *f = new Fun(vm, env, env.def_name, fun_pc);
-	if (!env.def_name) { vm.ops[vm.emit()] = ops::push_tag(f->tag); }
+	Fun *f = new Fun(vm, env, env.def_name, pos, fun_pc);
+	if (!env.def_name) { args.emplace_front(forms::Lit(pos, vm.abc_lib.fun_type, f)); }
 	return nullopt;
       }),
-    gt_macro(vm, env, ">", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::gt();
-      return nullopt;
-    }),
-    if_macro(vm, env, "if:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    gt_macro(vm, env, ">", pos, ops::gt()),
+    if_macro(vm, env, "if:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
       const PC pc = vm.emit();
       optional<PC> else_pc1, else_pc2;
       
@@ -197,45 +186,23 @@ namespace nibl::libs {
       vm.ops[pc] = ops::_if(else_pc2 ? *else_pc2 : vm.pc);
       return nullopt;
     }),
-    lt_macro(vm, env, "<", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::lt();
-      return nullopt;
-    }),
-    mod_macro(vm, env, "%", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::mod();
-      return nullopt;
-    }),
-    mul_macro(vm, env, "*", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::mul();
-      return nullopt;
-    }),
-    not_macro(vm, env, "not", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::_not();
-      return nullopt;
-    }),
-    or_macro(vm, env, "or:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    lt_macro(vm, env, "<", pos, ops::lt()),
+    mod_macro(vm, env, "%", pos, ops::mod()),
+    mul_macro(vm, env, "*", pos, ops::mul()),
+    not_macro(vm, env, "not", pos, ops::_not()),
+    or_macro(vm, env, "or:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
       const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, env, args); e) { return e; }
       vm.ops[pc] = ops::_or(vm.pc);
       return nullopt;
     }),
-    pop_macro(vm, env, "pop", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::pop();
-      return nullopt;
-    }),
-    stop_macro(vm, env, "stop", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::stop();
-      return nullopt;
-    }),
-    sub_macro(vm, env, "-", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::sub();
-      return nullopt;
-    }),
-    swap_macro(vm, env, "swap", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::swap();
-      return nullopt;
-    }),
-    test_macro(vm, env, "test:", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    pop_macro(vm, env, "pop", pos, ops::pop()),
+    rec_macro(vm, env, "rec", pos, ops::rec()),
+    ret_macro(vm, env, "ret", pos, ops::ret()),
+    stop_macro(vm, env, "stop", pos, ops::stop()),
+    sub_macro(vm, env, "-", pos, ops::sub()),
+    swap_macro(vm, env, "swap", pos, ops::swap()),
+    test_macro(vm, env, "test:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
       const PC pc = vm.emit();
       
       while (!args.empty()) {
@@ -248,15 +215,11 @@ namespace nibl::libs {
       vm.ops[pc] = ops::test();
       return nullopt;
     }),
-    trace_macro(vm, env, "trace", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
+    trace_macro(vm, env, "trace", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
       vm.trace = !vm.trace;
       return nullopt;
     }),
-    type_of_macro(vm, env, "type-of", [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
-      vm.ops[vm.emit()] = ops::type_of();
-      return nullopt;
-    }) {
-
+    type_of_macro(vm, env, "type-of", pos, ops::type_of()) {
     bind("T", bool_type, true);
     bind("F", bool_type, false);    
   }

@@ -17,9 +17,10 @@ namespace nibl {
   
   struct Type {
     const optional<string> name;
+    const optional<Pos> pos;
     const Tag tag;
     
-    Type(VM &vm, Env &env, const optional<string> &name);
+    Type(VM &vm, Env &env, const optional<string> &name, const optional<Pos> &pos);
     virtual void dump(const Val &val, ostream &out) const = 0;
     virtual E emit(VM &vm, Env &env, const Val &val) = 0;
     virtual bool eq(const Val &val1, const Val &val2) const = 0;

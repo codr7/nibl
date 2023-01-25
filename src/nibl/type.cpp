@@ -3,16 +3,20 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  Type::Type(VM &vm, Env &env, const optional<string> &name):
+  Type::Type(VM &vm, Env &env, const optional<string> &name, const optional<Pos> &pos):
     name(name),
+    pos(pos),
     tag(vm.tag(vm.abc_lib.meta_type, this)) {
     if (name) { env.bind(*name, vm.abc_lib.meta_type, this); }
   }
 
   ostream &operator <<(ostream &out, Type &t) {
-    out << "Type(";
-    if (t.name) { out << *t.name; }
-    out << ')';
+    if (t.name) {
+      out << *t.name;
+    } else if (t.pos) {
+      out << "Type(" << *t.pos << ')';
+    }
+    
     return out;
   }
 

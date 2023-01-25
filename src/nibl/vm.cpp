@@ -2,7 +2,7 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  VM::VM(): abc_lib(*this, root_env) {}
+  VM::VM(const optional<Pos> &pos): abc_lib(*this, root_env, pos) {}
 
   Tag VM::tag(Type &type, any &&data) {
     const Tag t = tags.size();

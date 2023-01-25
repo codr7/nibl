@@ -163,7 +163,7 @@ Functions are first class and may be defined using `fun:`, and subsequently call
 ```
   fun: 1 2 3;
   
-[Fun()]
+[Fun(repl@1:1)]
   call
   
 [1 2 3]

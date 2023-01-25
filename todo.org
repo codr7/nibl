@@ -1,8 +1,14 @@
-* add optional pos arg to lib/macro/func/type
-** print if set
-** update fun example in readme
-* add load macro
+* add Prim type
+** funcion body
+* add load prim
+** add vm.path
 ** extract regression suite from readme
+* add type-of prim
+* convert type-of: macro
+** args.emplace_front(forms::Lit(pos, vm.abc_lib.meta_type, t));
+** remove op
+* fib
+** add bench: macro
 * add def: macro
 ** two args: name/value
 ** set/reset env.def_name in emit
@@ -10,8 +16,4 @@
 ** def: bar 42
 *** special case lit
 **** check next form & bind
-* handle Fun in id emit
-* add grouping with parens
-** add group form
-* fib
-** add bench: macro
+** handle Fun in id emit

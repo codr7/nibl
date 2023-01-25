@@ -61,6 +61,9 @@ namespace nibl {
     case OpCode::PUSH_TAG:
       out << "PUSH_TAG " << ops::push_tag_value(op) << ' ' << vm.tags[ops::push_tag_value(op)];
       break;
+    case OpCode::REC:
+      out << "REC";
+      break;
     case OpCode::RET:
       out << "RET";
       break;
@@ -147,6 +150,7 @@ namespace nibl::ops {
       static_cast<Op>(value << PUSH_TAG_VALUE_POS);
   }
 
+  Op rec() { return static_cast<Op>(OpCode::REC); }
   Op ret() { return static_cast<Op>(OpCode::RET); }
   Op sub() { return static_cast<Op>(OpCode::SUB); }
   Op swap() { return static_cast<Op>(OpCode::SWAP); }

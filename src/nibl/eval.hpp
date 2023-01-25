@@ -5,31 +5,25 @@
 
 namespace nibl {
   inline void eval_add(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a.data = a.as<Int>() + b.as<Int>();
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a.data = a.as<Int>() + b.as<Int>();
   }
 
   inline void eval_and(VM &vm, PC next_pc) {
-      if (vm.stack.back().as<bool>()) {
-	vm.stack.pop_back();
-      } else {
-	vm.pc = next_pc;
-      }
+    if (vm.stack.back().as<bool>()) {
+      vm.stack.pop_back();
+    } else {
+      vm.pc = next_pc;
+    }
   }
 
-  inline void eval_call(VM &vm) {
-    Fun &f = *vm.stack.back().as<Fun *>();
-    vm.stack.pop_back();
-    vm.call(f);
-  }
+  inline void eval_call(VM &vm) { vm.call(*pop_back(vm.stack).as<Fun *>()); }
 
   inline void eval_div(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a.data = a.as<Int>() / b.as<Int>();
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a.data = a.as<Int>() / b.as<Int>();
   }
 
   inline void eval_dup(VM &vm) {
@@ -37,66 +31,58 @@ namespace nibl {
   }
   
   inline void eval_eq(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a = Val(vm.abc_lib.bool_type, a == b);
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a = Val(vm.abc_lib.bool_type, a == b);
   }
 
   inline void eval_goto(VM &vm, PC pc) { vm.pc = pc; }
 
   inline void eval_gt(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a = Val(vm.abc_lib.bool_type, a.as<Int>() > b.as<Int>());
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a = Val(vm.abc_lib.bool_type, a.as<Int>() > b.as<Int>());
   }
 
   inline void eval_if(VM &vm, PC next_pc) {
-      Val v(vm.stack.back());
-      vm.stack.pop_back();
-      if (!v.as<bool>()) { vm.pc = next_pc; }      
+    Val v(pop_back(vm.stack));
+    if (!v.as<bool>()) { vm.pc = next_pc; }      
   }
 
   inline void eval_lt(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a = Val(vm.abc_lib.bool_type, a.as<Int>() < b.as<Int>());
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a = Val(vm.abc_lib.bool_type, a.as<Int>() < b.as<Int>());
   }
 
   inline void eval_mod(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a.data = a.as<Int>() % b.as<Int>();
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a.data = a.as<Int>() % b.as<Int>();
   }
 
   inline void eval_mul(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a.data = a.as<Int>() * b.as<Int>();
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a.data = a.as<Int>() * b.as<Int>();
   }
 
   inline void eval_not(VM &vm) {
-      Val &a(vm.stack.back());
-      a = Val(vm.abc_lib.bool_type, !a.as<bool>());
+    Val &a(vm.stack.back());
+    a = Val(vm.abc_lib.bool_type, !a.as<bool>());
   }
 
   inline void eval_or(VM &vm, PC next_pc) {
-      Val v(vm.stack.back());
+    Val v(vm.stack.back());
 
-      if (v.as<bool>()) {
-	vm.pc = next_pc;
-      } else {      
-	vm.stack.pop_back();
-      }
-  }
-
-  inline void eval_pop(VM &vm) {
+    if (v.as<bool>()) {
+      vm.pc = next_pc;
+    } else {      
       vm.stack.pop_back();
+    }
   }
+
+  inline void eval_pop(VM &vm) { vm.stack.pop_back(); }
   
   inline void eval_push_bool(VM &vm, bool value) {
     vm.push(vm.abc_lib.bool_type, value);
@@ -110,16 +96,14 @@ namespace nibl {
     vm.stack.push_back(vm.tags[value]);
   }
 
-  inline void eval_ret(VM &vm) {
-    vm.pc = vm.calls.back().ret_pc;
-    vm.calls.pop_back();
-  }
+  inline void eval_rec(VM &vm) { vm.pc = vm.calls.back().fun.pc; }
+
+  inline void eval_ret(VM &vm) { vm.pc = pop_back(vm.calls).ret_pc; }
 
   inline void eval_sub(VM &vm) {
-      Val b(vm.stack.back());
-      vm.stack.pop_back();
-      Val &a(vm.stack.back());
-      a.data = a.as<Int>() - b.as<Int>();
+    Val b(pop_back(vm.stack));
+    Val &a(vm.stack.back());
+    a.data = a.as<Int>() - b.as<Int>();
   }
 
   inline void eval_swap(VM &vm) {

@@ -10,9 +10,10 @@ namespace nibl {
   
   struct Lib: Env {
     const optional<string> name;
+    const optional<Pos> pos;
     const size_t tag;
-        
-    Lib(VM &vm, Env &env, const optional<string> &name);
+    
+    Lib(VM &vm, Env &env, const optional<string> &name, const optional<Pos> &pos);
   };
 
   ostream &operator <<(ostream &out, const Lib &l);

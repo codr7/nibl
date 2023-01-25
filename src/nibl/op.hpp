@@ -19,7 +19,7 @@ namespace nibl {
 
   enum class OpCode {
     ADD, AND, CALL, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT, PUSH_TAG,
-    RET, SUB, SWAP, TEST, TRACE, TYPE_OF,
+    REC, RET, SUB, SWAP, TEST, TRACE, TYPE_OF,
     
     STOP };
 
@@ -90,6 +90,7 @@ namespace nibl {
     Op push_tag(Tag value);
     inline size_t push_tag_value(Op op) { return get<size_t, PUSH_TAG_VALUE_POS, PUSH_TAG_VALUE_WIDTH>(op); }
 
+    Op rec();
     Op ret();
     Op sub();
     Op swap();

@@ -9,7 +9,7 @@ namespace nibl {
   void VM::eval(PC start_pc, ostream &stdout) {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&CALL, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
-      &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
+      &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
       
       &&STOP};
     
@@ -69,6 +69,9 @@ namespace nibl {
     DISPATCH();
   PUSH_TAG:
     eval_push_tag(*this, ops::push_tag_value(op));
+    DISPATCH();
+  REC:
+    eval_rec(*this);
     DISPATCH();
   RET:
     eval_ret(*this);

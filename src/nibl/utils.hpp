@@ -1,4 +1,3 @@
-#include <deque>
 #include <sstream>
 #include <string>
 
@@ -15,10 +14,17 @@ namespace nibl {
     return buf.str();
   }
 
-  template <typename T>
-  T pop_front(deque<T> &in) {
-    T it = in.front();
+  template <template <typename...> typename C, typename T, typename...Args>
+  T pop_front(C<T, Args...> &in) {
+    T it = move(in.front());
     in.pop_front();
+    return it;
+  }
+
+  template <template <typename...> typename C, typename T, typename...Args>
+  inline T pop_back(C<T, Args...> in) {
+    T it(move(in.back()));
+    in.pop_back();
     return it;
   }
 }

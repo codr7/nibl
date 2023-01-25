@@ -29,7 +29,7 @@ namespace nibl {
     vector<Call> calls;
     bool trace = false;
 
-    VM();
+    VM(const optional<Pos> &pos);
     Tag tag(Type &type, any &&data);
     Read read(istream &in, Pos &pos);
     PC emit_no_trace(unsigned int n = 1);
