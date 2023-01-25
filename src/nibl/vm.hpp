@@ -14,7 +14,7 @@
 #include "nibl/stack.hpp"
 
 namespace nibl {
-  const unsigned int VERSION = 7;
+  const unsigned int VERSION = 8;
   
   struct VM {
     Env root_env;

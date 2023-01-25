@@ -24,7 +24,7 @@ namespace nibl {
       goto START;
     case '"': {
       pos.column++;
-      return read_string(*this, in, pos);
+      return read_str(*this, in, pos);
     }
     case ';': {
       pos.column++;

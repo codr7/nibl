@@ -51,8 +51,8 @@ namespace nibl::libs {
     bool eq(const Val &val1, const Val &val2) const override;
   };
 
-  struct StringType: Type {
-    StringType(VM &vm, Env &env, const optional<Pos> &pos);
+  struct StrType: Type {
+    StrType(VM &vm, Env &env, const optional<Pos> &pos);
     void dump(const Val &val, ostream &out) const override;
     E emit(VM &vm, Env &env, const Val &val) override;
     bool eq(const Val &val1, const Val &val2) const override;
@@ -65,7 +65,7 @@ namespace nibl::libs {
     LibType lib_type;
     MacroType macro_type;
     MetaType meta_type;
-    StringType string_type;
+    StrType str_type;
 
     Macro add_macro, and_macro, call_macro, div_macro, dup_macro, else_macro, eq_macro, fun_macro, gt_macro,
       if_macro, lt_macro, mod_macro, mul_macro, not_macro, or_macro, pop_macro, rec_macro, ret_macro,

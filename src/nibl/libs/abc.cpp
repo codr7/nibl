@@ -101,19 +101,19 @@ namespace nibl::libs {
     return val1.as<Type *>() == val2.as<Type *>();
   }
 
-  StringType::StringType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "String", pos) {}
+  StrType::StrType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Str", pos) {}
   
-  void StringType::dump(const Val &val, ostream &out) const {
-    out << '"' << val.as<string>() << '"';
+  void StrType::dump(const Val &val, ostream &out) const {
+    out << '"' << val.as<Str>() << '"';
   }
 
-  E StringType::emit(VM &vm, Env &env, const Val &val) {
-    vm.ops[vm.emit()] = ops::push_tag(vm.tag(*this, val.as<string>()));
+  E StrType::emit(VM &vm, Env &env, const Val &val) {
+    vm.ops[vm.emit()] = ops::push_tag(vm.tag(*this, val.as<Str>()));
     return nullopt;
   }
 
-  bool StringType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<string>() == val2.as<string>();
+  bool StrType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<Str>() == val2.as<Str>();
   }
 
   ABC::ABC(VM &vm, Env &env, const optional<Pos> &pos):
@@ -124,7 +124,7 @@ namespace nibl::libs {
     lib_type(vm, env, pos),
     macro_type(vm, env, pos),
     meta_type(vm, env, pos),
-    string_type(vm, env, pos),
+    str_type(vm, env, pos),
     add_macro(vm, env, "+", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
       vm.ops[vm.emit()] = ops::add();
       return nullopt;

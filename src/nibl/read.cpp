@@ -58,7 +58,7 @@ namespace nibl {
     return Read(forms::Lit(fpos, vm.abc_lib.int_type, v), nullopt);
   }
 
-  Read read_string(VM &vm, istream &in, Pos &pos) {
+  Read read_str(VM &vm, istream &in, Pos &pos) {
     const Pos fpos(pos);
     stringstream buf;
     char c;
@@ -73,7 +73,7 @@ namespace nibl {
       return Read(nullopt, nullopt);
     }
 
-    string s(buf.str());
-    return Read(forms::Lit(fpos, vm.abc_lib.string_type, move(s)), nullopt);
+    Str s(buf.str());
+    return Read(forms::Lit(fpos, vm.abc_lib.str_type, move(s)), nullopt);
   }
 }

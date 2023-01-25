@@ -15,7 +15,7 @@ namespace nibl {
 
   Read read_id(VM &vm, istream &in, Pos &pos);
   Read read_int(VM &vm, istream &in, Pos &pos, int base);
-  Read read_string(VM &vm, istream &in, Pos &pos);
+  Read read_str(VM &vm, istream &in, Pos &pos);
 }
 
 #endif

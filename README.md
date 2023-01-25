@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v7
+Nibl v8
 
 1 2 3 dup
 
@@ -172,10 +172,13 @@ Functions are first class and may be defined using `fun:`, and subsequently call
 ### Types
 Every value has one of the following types:
 
-- `Bool` The type of booleans.
-- `Int` The type of numbers.
-- `Macro` The type of macros.
-- `Meta` The type of types.
+- `Bool` The type of booleans
+- `Fun` The type of functions
+- `Int` The type of numbers
+- `Lib` The type of libraries
+- `Macro` The type of macros
+- `Meta` The type of types
+- `Str` The type of strings
 
 #### type-of [a | b]
 `b` is the type of `a`.
