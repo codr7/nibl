@@ -26,11 +26,8 @@ namespace nibl {
     ostream &stdout;
     Env root_env;
     vector<Val> tags;
-    libs::ABC abc_lib;
-    
+    libs::ABC abc_lib;    
     vector<Op> ops;
-    PC pc = 0;
-
     Stack stack;
     vector<Call> calls;
 
@@ -38,13 +35,14 @@ namespace nibl {
     Tag tag(Type &type, any &&data);
     Read read(istream &in, Pos &pos);
     E read(istream &in, Forms &out, Pos &pos);
+    PC emit_pc() const;
     PC emit_no_trace(unsigned int n = 1);
     PC emit(unsigned int n = 1);
     E emit(Forms &forms);
-    E eval(PC start_pc);
+    E eval(PC &pc);
     void push(Type &type, any &&data);
     Val pop();
-    void call(const Fun &fun);
+    void call(Fun &fun, PC &pc);
     E load(fs::path filename, Pos &pos);
   };
 
@@ -52,7 +50,7 @@ namespace nibl {
 
   inline Val VM::pop() { return pop_back(stack); }
 
-  inline void VM::call(const Fun &fun) {
+  inline void VM::call(Fun &fun, PC &pc) {
     calls.emplace_back(fun, pc);
     pc = fun.pc;
   }

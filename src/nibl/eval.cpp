@@ -6,7 +6,7 @@
 namespace nibl {
   using namespace std;
   
-  E VM::eval(PC start_pc) {
+  E VM::eval(PC &pc) {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&CALL, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
       &&PRIM_CALL, &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE,
@@ -15,85 +15,84 @@ namespace nibl {
       &&STOP};
     
     Op op;
-    pc = start_pc;
     DISPATCH();
   ADD:
-    eval_add(*this);
+    eval_add(*this, pc, op);
     DISPATCH();
   AND:
-    eval_and(*this, ops::and_next_pc(op));
+    eval_and(*this, pc, op);
     DISPATCH();
   CALL:
-    eval_call(*this);
+    eval_call(*this, pc, op);
     DISPATCH();
   DIV:
-    eval_div(*this);
+    eval_div(*this, pc, op);
     DISPATCH();
   DUP:
-    eval_dup(*this);
+    eval_dup(*this, pc, op);
     DISPATCH();
   EQ:
-    eval_eq(*this);
+    eval_eq(*this, pc, op);
     DISPATCH();
   GT:
-    eval_gt(*this);
+    eval_gt(*this, pc, op);
     DISPATCH();
   GOTO:
-    eval_goto(*this, ops::goto_pc(op));
+    eval_goto(*this, pc, op);
     DISPATCH();
   IF:
-    eval_if(*this, ops::if_next_pc(op));
+    eval_if(*this, pc, op);
     DISPATCH();
   LT:
-    eval_lt(*this);
+    eval_lt(*this, pc, op);
     DISPATCH();
   MOD:
-    eval_mod(*this);
+    eval_mod(*this, pc, op);
     DISPATCH();
   MUL:
-    eval_mul(*this);
+    eval_mul(*this, pc, op);
     DISPATCH();
   NOT:
-    eval_not(*this);
+    eval_not(*this, pc, op);
     DISPATCH();
   OR:
-    eval_or(*this, ops::or_next_pc(op));
+    eval_or(*this, pc, op);
     DISPATCH();
   POP:
-    eval_pop(*this);
+    eval_pop(*this, pc, op);
     DISPATCH();
   PRIM_CALL:
-    if (auto e = eval_prim_call(*this, ops::prim_call_tag(op)); e) { return e; }
+    if (auto e = eval_prim_call(*this, pc, op); e) { return e; }
     DISPATCH();
   PUSH_BOOL:
-    eval_push_bool(*this, ops::push_bool_value(op));
+    eval_push_bool(*this, pc, op);
     DISPATCH();
   PUSH_INT:
-    eval_push_int(*this, ops::push_int_value(op));
+    eval_push_int(*this, pc, op);
     DISPATCH();
   PUSH_TAG:
-    eval_push_tag(*this, ops::push_tag_value(op));
+    eval_push_tag(*this, pc, op);
     DISPATCH();
   REC:
-    eval_rec(*this);
+    eval_rec(*this, pc, op);
     DISPATCH();
   RET:
-    eval_ret(*this);
+    eval_ret(*this, pc, op);
     DISPATCH();
   SUB:
-    eval_sub(*this);
+    eval_sub(*this, pc, op);
     DISPATCH();
   SWAP:
-    eval_swap(*this);
+    eval_swap(*this, pc, op);
     DISPATCH();
   TEST:
-    if (auto e = eval_test(*this); e) { return e; }
+    if (auto e = eval_test(*this, pc, op); e) { return e; }
     DISPATCH();
   TRACE:
-    eval_trace(*this);
+    eval_trace(*this, pc, op);
     DISPATCH();
   TYPE_OF:
-    eval_type_of(*this);
+    eval_type_of(*this, pc, op);
     DISPATCH(); 
   STOP:
     return nullopt;

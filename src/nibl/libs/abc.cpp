@@ -145,44 +145,43 @@ namespace nibl::libs {
     str_type(vm, env, pos),
 
     /* Macros */
-    add_macro(vm, env, "+", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) {
+    add_macro(vm, env, "+", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) {
       vm.ops[vm.emit()] = ops::add();
       return nullopt;
     }),
-    and_macro(vm, env, "and:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
+    and_macro(vm, env, "and:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, env, args); e) { return e; }
-      vm.ops[pc] = ops::_and(vm.pc);
+      vm.ops[pc] = ops::_and(vm.emit_pc());
       return nullopt;
     }),
     call_macro(vm, env, "call", pos, ops::call()),
     div_macro(vm, env, "/", pos, ops::div()),
     dup_macro(vm, env, "dup", pos, ops::dup()),
-    else_macro(vm, env, "else:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) {
-	return Error(pos, "Missing if");
+    else_macro(vm, env, "else:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) {
+      return Error(pos, "Missing if");
     }),
     eq_macro(vm, env, "=", pos, ops::eq()),
-    fun_macro(vm, env, "fun:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
-	const PC skip_pc = vm.emit();
-	const PC fun_pc = vm.pc;
+    fun_macro(vm, env, "fun:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
+      const PC skip_pc = vm.emit(), fun_pc = vm.emit_pc();
 	
-	while (!args.empty()) {
-	  Form f = pop_front(args);
-	  if (f.imp == Form::END) { break; }	
-	  if (auto e = f.emit(vm, env, args)) { return e; }
-	}
+      while (!args.empty()) {
+	Form f = pop_front(args);
+	if (f.imp == Form::END) { break; }	
+	if (auto e = f.emit(vm, env, args)) { return e; }
+      }
 
-	if (auto c = op_code(vm.ops.back()); c != OpCode::REC && c != OpCode::RET) {
-	  vm.ops[vm.emit()] = ops::ret();
-	}
+      if (auto c = op_code(vm.ops.back()); c != OpCode::REC && c != OpCode::RET) {
+	vm.ops[vm.emit()] = ops::ret();
+      }
 	
-	vm.ops[skip_pc] = ops::_goto(vm.pc);
-	Fun *f = new Fun(vm, env, env.def_name, pos, fun_pc);
-	if (!env.def_name) { args.emplace_front(forms::Lit(pos, vm.abc_lib.fun_type, f)); }
-	return nullopt;
-      }),
+      vm.ops[skip_pc] = ops::_goto(vm.emit_pc());
+      Fun *f = new Fun(vm, env, env.def_name, pos, fun_pc);
+      if (!env.def_name) { args.emplace_front(forms::Lit(pos, vm.abc_lib.fun_type, f)); }
+      return nullopt;
+    }),
     gt_macro(vm, env, ">", pos, ops::gt()),
-    if_macro(vm, env, "if:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
+    if_macro(vm, env, "if:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       optional<PC> else_pc1, else_pc2;
       
@@ -192,7 +191,7 @@ namespace nibl::libs {
 
 	if (auto id = f.is<forms::Id>(); id && id->name == "else:") {
 	  else_pc1 = vm.emit();
-	  else_pc2 = vm.pc;
+	  else_pc2 = vm.emit_pc();
 	  continue;
 	}
 	
@@ -200,20 +199,20 @@ namespace nibl::libs {
       }
 
       if (else_pc1) {
-	vm.ops[*else_pc1] = ops::_goto(vm.pc);
+	vm.ops[*else_pc1] = ops::_goto(vm.emit_pc());
       }
       
-      vm.ops[pc] = ops::_if(else_pc2 ? *else_pc2 : vm.pc);
+      vm.ops[pc] = ops::_if(else_pc2 ? *else_pc2 : vm.emit_pc());
       return nullopt;
     }),
     lt_macro(vm, env, "<", pos, ops::lt()),
     mod_macro(vm, env, "%", pos, ops::mod()),
     mul_macro(vm, env, "*", pos, ops::mul()),
     not_macro(vm, env, "not", pos, ops::_not()),
-    or_macro(vm, env, "or:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
+    or_macro(vm, env, "or:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, env, args); e) { return e; }
-      vm.ops[pc] = ops::_or(vm.pc);
+      vm.ops[pc] = ops::_or(vm.emit_pc());
       return nullopt;
     }),
     pop_macro(vm, env, "pop", pos, ops::pop()),
@@ -222,7 +221,7 @@ namespace nibl::libs {
     stop_macro(vm, env, "stop", pos, ops::stop()),
     sub_macro(vm, env, "-", pos, ops::sub()),
     swap_macro(vm, env, "swap", pos, ops::swap()),
-    test_macro(vm, env, "test:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
+    test_macro(vm, env, "test:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       
       while (!args.empty()) {
@@ -235,7 +234,7 @@ namespace nibl::libs {
       vm.ops[pc] = ops::test();
       return nullopt;
     }),
-    trace_macro(vm, env, "trace", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos pos) {
+    trace_macro(vm, env, "trace", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos pos) {
       vm.trace = !vm.trace;
       return nullopt;
     }),

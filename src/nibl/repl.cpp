@@ -18,7 +18,7 @@ namespace nibl {
       if (line.empty()) {
 	Pos pos("repl", 1, 1);
 	Forms fs;
-	const PC start_pc = vm.pc;
+	PC pc = vm.emit_pc();
 
 	if (auto e = vm.read(buf, fs, pos); e) {
 	  vm.stdout << *e << endl;
@@ -34,7 +34,7 @@ namespace nibl {
 	}
 
 	vm.ops[vm.emit()] = ops::stop();	
-	if (auto e = vm.eval(start_pc); e) { vm.stdout << *e << endl; }
+	if (auto e = vm.eval(pc); e) { vm.stdout << *e << endl; }
       END:
 	vm.stdout << vm.stack << endl;
       } else {

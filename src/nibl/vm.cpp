@@ -50,12 +50,13 @@ namespace nibl {
 
 	return nullopt;
   }
-  
+
+  PC VM::emit_pc() const { return ops.size(); }
+
   PC VM::emit_no_trace(unsigned int n) {
-    const PC start_pc = ops.size();
-    pc = start_pc + n;
-    ops.resize(pc);
-    return start_pc;
+    const PC pc = ops.size();
+    ops.resize(pc + n);
+    return pc;
   }
 
   PC VM::emit(unsigned int n) {
@@ -80,13 +81,13 @@ namespace nibl {
     Forms fs;
     if (auto e = read(in, fs, pos); e) { return e; }
 
-    const PC start_pc = pc;
+    PC pc = emit_pc();
     if (auto e = emit(fs); e) { return e; }
     ops[emit()] = ops::stop();	
     
     auto pp(path);
     path = p.parent_path();
-    auto e = eval(start_pc);
+    auto e = eval(pc);
     path = pp;
     return e;
   }
