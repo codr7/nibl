@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
     return -1;
   }
   
-  nibl::REPL repl(vm, cin, cout);
-  repl.run();
+  nibl::repl(vm);
   return 0;
 }

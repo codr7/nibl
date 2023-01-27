@@ -1,6 +1,7 @@
 #ifndef NIBL_EVAL_HPP
 #define NIBL_EVAL_HPP
 
+#include "nibl/prim.hpp"
 #include "nibl/vm.hpp"
 
 namespace nibl {
@@ -83,7 +84,11 @@ namespace nibl {
   }
 
   inline void eval_pop(VM &vm) { vm.stack.pop_back(); }
-  
+
+  inline E eval_prim_call(VM &vm, Tag tag) {
+    return vm.tags[tag].as<Prim *>()->call(vm);
+  }
+
   inline void eval_push_bool(VM &vm, bool value) {
     vm.push(vm.abc_lib.bool_type, value);
   }
@@ -92,7 +97,7 @@ namespace nibl {
     vm.push(vm.abc_lib.int_type, value);
   }
 
-  inline void eval_push_tag(VM &vm, size_t value) {
+  inline void eval_push_tag(VM &vm, Tag value) {
     vm.stack.push_back(vm.tags[value]);
   }
 
@@ -110,20 +115,22 @@ namespace nibl {
     iter_swap(vm.stack.end()-2, vm.stack.end()-1);
   }
 
-  inline void eval_test(VM &vm, ostream &stdout) {
+  inline E eval_test(VM &vm) {
     Stack expected(move(vm.stack));
-    vm.eval(vm.pc, stdout);
+    if (auto e = vm.eval(vm.pc); e) { return e; }
     Stack actual(move(vm.stack));
     
     if (actual == expected) {
-      stdout << "Test ok: " << expected << endl;
+      vm.stdout << "Test ok: " << expected << endl;
     } else {
-      stdout << "Test failed, expected: " << expected << ", actual: " << actual << endl;
+      vm.stdout << "Test failed, expected: " << expected << ", actual: " << actual << endl;
     }
+
+    return nullopt;
   }
 
-  inline void eval_trace(VM &vm, ostream &stdout) {
-    op_trace(vm, vm.pc, stdout);
+  inline void eval_trace(VM &vm) {
+    op_trace(vm, vm.pc, vm.stdout);
   }
 
   inline void eval_type_of(VM &vm) {

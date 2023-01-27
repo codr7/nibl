@@ -9,14 +9,7 @@ namespace nibl {
 
   struct VM;
   
-  struct REPL {
-    VM &vm;
-    istream &stdin;
-    ostream &stdout;
-
-    REPL(VM &vm, istream &stdin, ostream &stdout);
-    void run();
-  };
+  void repl(VM &vm);
 }
 
 #endif

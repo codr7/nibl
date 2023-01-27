@@ -1,7 +1,11 @@
 #include "nibl/forms/id.hpp"
 #include "nibl/vm.hpp"
 
-namespace nibl::forms {
+namespace nibl {
+  struct Prim;
+}
+
+namespace nibl::forms {  
   Id::Imp::Imp(const Pos &pos, string &&name): Form::Imp(pos), name(move(name)) {}
 
   void Id::Imp::dump(ostream &out) const { out << name; }
@@ -13,7 +17,12 @@ namespace nibl::forms {
       if (*found->type == vm.abc_lib.macro_type) {
 	return found->as<Macro *>()->emit(vm, env, args, pos);
       }
-      
+
+      if (*found->type == vm.abc_lib.prim_type) {
+	vm.ops[vm.emit()] = ops::prim_call(*found->as<Prim *>());
+	return nullopt;
+      }
+
       return found->emit(vm, env);
     }
     

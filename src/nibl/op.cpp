@@ -52,15 +52,22 @@ namespace nibl {
     case OpCode::POP:
       out << "POP";
       break;
+    case OpCode::PRIM_CALL: {
+      Tag t(ops::prim_call_tag(op));
+      out << "PRIM_CALL " << t << ' ' << *vm.tags[t].as<Prim *>();
+      break;
+    }
     case OpCode::PUSH_BOOL:
       out << "PUSH_BOOL " << (ops::push_bool_value(op) ? 'T' : 'F');
       break;
     case OpCode::PUSH_INT:
       out << "PUSH_INT " << ops::push_int_value(op);
       break;
-    case OpCode::PUSH_TAG:
-      out << "PUSH_TAG " << ops::push_tag_value(op) << ' ' << vm.tags[ops::push_tag_value(op)];
+    case OpCode::PUSH_TAG: {
+      Tag t(ops::push_tag_value(op));
+      out << "PUSH_TAG " << t << ' ' << vm.tags[t];
       break;
+    }
     case OpCode::REC:
       out << "REC";
       break;
@@ -132,6 +139,12 @@ namespace nibl::ops {
 
   Op pop() { return static_cast<Op>(OpCode::POP); }
 
+  Op prim_call(Prim &prim) {
+    return
+      static_cast<Op>(OpCode::PRIM_CALL) +
+      static_cast<Op>(prim.tag << PRIM_CALL_TAG_POS);
+  }
+  
   Op push_bool(bool value) {
     return
       static_cast<Op>(OpCode::PUSH_BOOL) +

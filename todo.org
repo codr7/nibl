@@ -1,8 +1,5 @@
-* add Prim type
-** funcion body
-* add load prim
-** add vm.path
-** extract regression suite from readme
+* finish test suite
+* change id/ref emit to push lit form on args
 * add type-of prim
 * convert type-of: macro
 ** args.emplace_front(forms::Lit(pos, vm.abc_lib.meta_type, t));

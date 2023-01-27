@@ -6,50 +6,37 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  REPL::REPL(VM &vm, istream &stdin, ostream &stdout): vm(vm), stdin(stdin), stdout(stdout) {}
-
-  void REPL::run() {
+  void repl(VM &vm) {
     stringstream buf;
     
     for (;;) {
-      stdout << "  ";
+      vm.stdout << "  ";
       
       string line;
-      if (!getline(stdin, line)) { break; }
+      if (!getline(vm.stdin, line)) { break; }
       
       if (line.empty()) {
 	Pos pos("repl", 1, 1);
-	deque<Form> forms;
-	
-	for (;;) {
-	  auto [f, e] = vm.read(buf, pos);
+	Forms fs;
+	const PC start_pc = vm.pc;
 
-	  if (e) {
-	    stdout << *e << endl;
-	    break;
-	  }
-
-	  if (!f) { break; }
-	  forms.push_back(*f);
+	if (auto e = vm.read(buf, fs, pos); e) {
+	  vm.stdout << *e << endl;
+	  goto END;
 	}
 
 	buf.str("");
 	buf.clear();
-	const PC pc = vm.pc;
 
-	while (!forms.empty()) {
-	  Form f = pop_front(forms);
-
-	  if (auto e = f.emit(vm, vm.root_env, forms); e) {
-	    stdout << *e << endl;
+	if (auto e = vm.emit(fs); e) {
+	    vm.stdout << *e << endl;
 	    goto END;
-	  }
 	}
 
 	vm.ops[vm.emit()] = ops::stop();	
-	vm.eval(pc, stdout);
+	if (auto e = vm.eval(start_pc); e) { vm.stdout << *e << endl; }
       END:
-	stdout << vm.stack << endl;
+	vm.stdout << vm.stack << endl;
       } else {
 	buf << line << endl;
       }

@@ -101,6 +101,21 @@ namespace nibl::libs {
     return val1.as<Type *>() == val2.as<Type *>();
   }
 
+  PrimType::PrimType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Prim", pos) {}
+  
+  void PrimType::dump(const Val &val, ostream &out) const {
+    out << *val.as<Prim *>();
+  }
+
+  E PrimType::emit(VM &vm, Env &env, const Val &val) {
+    vm.ops[vm.emit()] = ops::push_tag(val.as<Prim *>()->tag);
+    return nullopt;
+  }
+
+  bool PrimType::eq(const Val &val1, const Val &val2) const {
+    return val1.as<Prim *>() == val2.as<Prim *>();
+  }
+  
   StrType::StrType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Str", pos) {}
   
   void StrType::dump(const Val &val, ostream &out) const {
@@ -118,18 +133,23 @@ namespace nibl::libs {
 
   ABC::ABC(VM &vm, Env &env, const optional<Pos> &pos):
     Lib(vm, env, "abc", pos),
+
+    /* Types */
     bool_type(vm, env, pos),
     fun_type(vm, env, pos),
     int_type(vm, env, pos),
     lib_type(vm, env, pos),
     macro_type(vm, env, pos),
     meta_type(vm, env, pos),
+    prim_type(vm, env, pos),
     str_type(vm, env, pos),
-    add_macro(vm, env, "+", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
+
+    /* Macros */
+    add_macro(vm, env, "+", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) {
       vm.ops[vm.emit()] = ops::add();
       return nullopt;
     }),
-    and_macro(vm, env, "and:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    and_macro(vm, env, "and:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, env, args); e) { return e; }
       vm.ops[pc] = ops::_and(vm.pc);
@@ -138,11 +158,11 @@ namespace nibl::libs {
     call_macro(vm, env, "call", pos, ops::call()),
     div_macro(vm, env, "/", pos, ops::div()),
     dup_macro(vm, env, "dup", pos, ops::dup()),
-    else_macro(vm, env, "else:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
+    else_macro(vm, env, "else:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) {
 	return Error(pos, "Missing if");
     }),
     eq_macro(vm, env, "=", pos, ops::eq()),
-    fun_macro(vm, env, "fun:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    fun_macro(vm, env, "fun:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
 	const PC skip_pc = vm.emit();
 	const PC fun_pc = vm.pc;
 	
@@ -162,7 +182,7 @@ namespace nibl::libs {
 	return nullopt;
       }),
     gt_macro(vm, env, ">", pos, ops::gt()),
-    if_macro(vm, env, "if:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    if_macro(vm, env, "if:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       optional<PC> else_pc1, else_pc2;
       
@@ -190,7 +210,7 @@ namespace nibl::libs {
     mod_macro(vm, env, "%", pos, ops::mod()),
     mul_macro(vm, env, "*", pos, ops::mul()),
     not_macro(vm, env, "not", pos, ops::_not()),
-    or_macro(vm, env, "or:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    or_macro(vm, env, "or:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       if (auto e = pop_front(args).emit(vm, env, args); e) { return e; }
       vm.ops[pc] = ops::_or(vm.pc);
@@ -202,7 +222,7 @@ namespace nibl::libs {
     stop_macro(vm, env, "stop", pos, ops::stop()),
     sub_macro(vm, env, "-", pos, ops::sub()),
     swap_macro(vm, env, "swap", pos, ops::swap()),
-    test_macro(vm, env, "test:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) -> E {
+    test_macro(vm, env, "test:", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos &pos) -> E {
       const PC pc = vm.emit();
       
       while (!args.empty()) {
@@ -215,11 +235,17 @@ namespace nibl::libs {
       vm.ops[pc] = ops::test();
       return nullopt;
     }),
-    trace_macro(vm, env, "trace", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, Pos pos) {
+    trace_macro(vm, env, "trace", pos, [](VM &vm, Env &env, Macro &macro, deque<Form> &args, const Pos pos) {
       vm.trace = !vm.trace;
       return nullopt;
     }),
-    type_of_macro(vm, env, "type-of", pos, ops::type_of()) {
+    type_of_macro(vm, env, "type-of", pos, ops::type_of()),
+
+    /* Prims */
+    load_prim(vm, env, "load", [](VM &vm, Prim &prim) {
+      Pos pos("load", 1, 1);
+      return vm.load(vm.pop().as<Str>(), pos);
+    }) {
     bind("T", bool_type, true);
     bind("F", bool_type, false);    
   }

@@ -6,10 +6,11 @@
 namespace nibl {
   using namespace std;
   
-  void VM::eval(PC start_pc, ostream &stdout) {
+  E VM::eval(PC start_pc) {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&CALL, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
-      &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE, &&TYPE_OF,
+      &&PRIM_CALL, &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE,
+      &&TYPE_OF,
       
       &&STOP};
     
@@ -61,6 +62,9 @@ namespace nibl {
   POP:
     eval_pop(*this);
     DISPATCH();
+  PRIM_CALL:
+    if (auto e = eval_prim_call(*this, ops::prim_call_tag(op)); e) { return e; }
+    DISPATCH();
   PUSH_BOOL:
     eval_push_bool(*this, ops::push_bool_value(op));
     DISPATCH();
@@ -83,15 +87,15 @@ namespace nibl {
     eval_swap(*this);
     DISPATCH();
   TEST:
-    eval_test(*this, stdout);
+    if (auto e = eval_test(*this); e) { return e; }
     DISPATCH();
   TRACE:
-    eval_trace(*this, stdout);
+    eval_trace(*this);
     DISPATCH();
   TYPE_OF:
     eval_type_of(*this);
     DISPATCH(); 
   STOP:
-    return;
+    return nullopt;
   }
 }

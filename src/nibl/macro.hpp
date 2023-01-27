@@ -11,7 +11,6 @@
 namespace nibl {
   struct Env;
   struct Form;
-  struct Lib;
   struct VM;
 
   struct Macro {

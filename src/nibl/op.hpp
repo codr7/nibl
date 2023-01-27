@@ -10,6 +10,7 @@
 namespace nibl {
   using namespace std;
 
+  struct Prim;
   struct VM;
   
   using Op = uint64_t;
@@ -18,8 +19,8 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, CALL, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PUSH_BOOL, PUSH_INT, PUSH_TAG,
-    REC, RET, SUB, SWAP, TEST, TRACE, TYPE_OF,
+    ADD, AND, CALL, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PRIM_CALL, PUSH_BOOL, PUSH_INT,
+    PUSH_TAG, REC, RET, SUB, SWAP, TEST, TRACE, TYPE_OF,
     
     STOP };
 
@@ -38,6 +39,9 @@ namespace nibl {
 
     const size_t OR_NEXT_PC_POS = OP_CODE_WIDTH;
     const size_t OR_NEXT_PC_WIDTH = OP_WIDTH - OR_NEXT_PC_POS;
+
+    const size_t PRIM_CALL_TAG_POS = OP_CODE_WIDTH;
+    const size_t PRIM_CALL_TAG_WIDTH = OP_WIDTH - PRIM_CALL_TAG_POS;
 
     const size_t PUSH_BOOL_VALUE_POS = OP_CODE_WIDTH;
     const size_t PUSH_BOOL_VALUE_WIDTH = 1;
@@ -77,6 +81,9 @@ namespace nibl {
     inline PC or_next_pc(Op op) { return get<PC, OR_NEXT_PC_POS, OR_NEXT_PC_WIDTH>(op); }
 
     Op pop();
+
+    Op prim_call(Prim &prim);
+    inline PC prim_call_tag(Op op) { return get<Tag, PRIM_CALL_TAG_POS, PRIM_CALL_TAG_WIDTH>(op); }
     
     Op push_bool(bool value);
     inline bool push_bool_value(Op op) { return get<bool, PUSH_BOOL_VALUE_POS, PUSH_BOOL_VALUE_WIDTH>(op); }
@@ -88,7 +95,7 @@ namespace nibl {
     }
 
     Op push_tag(Tag value);
-    inline size_t push_tag_value(Op op) { return get<size_t, PUSH_TAG_VALUE_POS, PUSH_TAG_VALUE_WIDTH>(op); }
+    inline size_t push_tag_value(Op op) { return get<Tag, PUSH_TAG_VALUE_POS, PUSH_TAG_VALUE_WIDTH>(op); }
 
     Op rec();
     Op ret();

@@ -1,8 +1,10 @@
+#include <fstream>
+#include <iostream>
 #include <locale>
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  VM::VM(const optional<Pos> &pos): abc_lib(*this, root_env, pos) {}
+  VM::VM(const optional<Pos> &pos): stdin(cin), stdout(cout), abc_lib(*this, root_env, pos) {}
 
   Tag VM::tag(Type &type, any &&data) {
     const Tag t = tags.size();
@@ -38,15 +40,54 @@ namespace nibl {
     return Read(nullopt, Error(pos, c, '?'));
   }
 
+  E VM::read(istream &in, Forms &out, Pos &pos) {
+    	for (;;) {
+	  auto [f, e] = read(in, pos);
+	  if (e) { return e; }
+	  if (!f) { break; }
+	  out.push_back(*f);
+	}
+
+	return nullopt;
+  }
+  
   PC VM::emit_no_trace(unsigned int n) {
-    const PC i = ops.size();
-    pc = i + n;
+    const PC start_pc = ops.size();
+    pc = start_pc + n;
     ops.resize(pc);
-    return i;
+    return start_pc;
   }
 
   PC VM::emit(unsigned int n) {
     if (trace) { ops[emit_no_trace()] = ops::trace(); }
     return emit_no_trace(n);
+  }
+
+  E VM::emit(Forms &forms) {
+    while (!forms.empty()) {
+      Form f = pop_front(forms);
+      if (auto e = f.emit(*this, root_env, forms); e) { return e; }
+    }
+
+    return nullopt;
+  }
+  
+  E VM::load(fs::path filename, Pos &pos) {
+    auto p(filename.is_absolute() ? filename : path/filename);
+    ifstream in(p);
+    if (in.fail()) { return Error(pos, p, '?'); }
+
+    Forms fs;
+    if (auto e = read(in, fs, pos); e) { return e; }
+
+    const PC start_pc = pc;
+    if (auto e = emit(fs); e) { return e; }
+    ops[emit()] = ops::stop();	
+    
+    auto pp(path);
+    path = p.parent_path();
+    auto e = eval(start_pc);
+    path = pp;
+    return e;
   }
 }

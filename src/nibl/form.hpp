@@ -11,7 +11,7 @@
 namespace nibl {
   struct Env;
   struct VM;
-  
+
   struct Form {
     struct Imp {      
       const Pos pos;
@@ -36,6 +36,8 @@ namespace nibl {
     template <typename T>
     const typename T::Imp &as() const { return *static_cast<const typename T::Imp *>(imp.get()); }
   };
+
+  using Forms = deque<Form>;
 
   ostream &operator<<(ostream &out, Form val);
 }

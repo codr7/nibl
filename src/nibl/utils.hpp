@@ -22,7 +22,7 @@ namespace nibl {
   }
 
   template <template <typename...> typename C, typename T, typename...Args>
-  inline T pop_back(C<T, Args...> in) {
+  inline T pop_back(C<T, Args...> &in) {
     T it(move(in.back()));
     in.pop_back();
     return it;

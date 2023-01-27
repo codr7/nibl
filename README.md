@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v8
+Nibl v9
 
 1 2 3 dup
 
@@ -206,8 +206,20 @@ References may be captured using `&`.
 [1 2 3 dup]
 ```
 
-### Tracing
+### Loading
+Code may be loaded from file using `load`.
 
+foo.nl
+```
+1 2 3
+```
+```
+  "foo.nl" load
+
+[1 2 3]
+```
+
+### Tracing
 Tracing may be toggled using `trace`.
 
 ```
@@ -239,4 +251,15 @@ Test failed, expected: [1 2], actual: [1 2 3]
   
 Test ok: [1 2 3]
 []
+```
+
+Nibl comes with a regression test suite.
+
+```
+  "tests.nl" load
+
+Test ok: [1 2 2]
+Test ok: [1 2]
+Test ok: [1 3 2]
+...
 ```

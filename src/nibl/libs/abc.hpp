@@ -4,6 +4,7 @@
 #include "nibl/error.hpp"
 #include "nibl/lib.hpp"
 #include "nibl/macro.hpp"
+#include "nibl/prim.hpp"
 #include "nibl/type.hpp"
 
 namespace nibl::libs {
@@ -51,6 +52,13 @@ namespace nibl::libs {
     bool eq(const Val &val1, const Val &val2) const override;
   };
 
+  struct PrimType: Type {
+    PrimType(VM &vm, Env &env, const optional<Pos> &pos);
+    void dump(const Val &val, ostream &out) const override;
+    E emit(VM &vm, Env &env, const Val &val) override;
+    bool eq(const Val &val1, const Val &val2) const override;
+  };
+
   struct StrType: Type {
     StrType(VM &vm, Env &env, const optional<Pos> &pos);
     void dump(const Val &val, ostream &out) const override;
@@ -65,11 +73,14 @@ namespace nibl::libs {
     LibType lib_type;
     MacroType macro_type;
     MetaType meta_type;
+    PrimType prim_type;
     StrType str_type;
 
     Macro add_macro, and_macro, call_macro, div_macro, dup_macro, else_macro, eq_macro, fun_macro, gt_macro,
       if_macro, lt_macro, mod_macro, mul_macro, not_macro, or_macro, pop_macro, rec_macro, ret_macro,
       stop_macro, sub_macro, swap_macro, test_macro, trace_macro, type_of_macro;
+
+    Prim load_prim;
     
     ABC(VM &vm, Env &env, const optional<Pos> &pos);
   };
