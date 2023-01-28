@@ -133,10 +133,6 @@ namespace nibl {
   inline void eval_trace(VM &vm, PC &pc, Op op) {
     op_trace(vm, pc, vm.stdout);
   }
-
-  inline void eval_type_of(VM &vm, PC &pc, Op op) {
-    vm.stack.back() = Val(vm.abc_lib.meta_type, vm.stack.back().type);
-  }
 }
 
 #endif

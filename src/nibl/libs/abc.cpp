@@ -236,12 +236,15 @@ namespace nibl::libs {
       vm.trace = !vm.trace;
       return nullopt;
     }),
-    type_of_macro(vm, env, "type-of", pos, ops::type_of()),
 
     /* Prims */
     load_prim(vm, env, "load", [](VM &vm, Prim &prim) {
       Pos pos("load", 1, 1);
       return vm.load(vm.pop().as<Str>(), pos);
+    }),
+    type_of_prim(vm, env, "type-of", [](VM &vm, Prim &prim) {
+      vm.stack.back() = Val(vm.abc_lib.meta_type, vm.stack.back().type);
+      return nullopt;
     }) {
     bind("T", bool_type, true);
     bind("F", bool_type, false);    

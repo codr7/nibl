@@ -10,7 +10,6 @@ namespace nibl {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&CALL, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
       &&PRIM_CALL, &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE,
-      &&TYPE_OF,
       
       &&STOP};
     
@@ -91,9 +90,6 @@ namespace nibl {
   TRACE:
     eval_trace(*this, pc, op);
     DISPATCH();
-  TYPE_OF:
-    eval_type_of(*this, pc, op);
-    DISPATCH(); 
   STOP:
     return nullopt;
   }

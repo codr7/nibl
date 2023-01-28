@@ -1,4 +1,3 @@
-* convert type-of to prim
 * fib
 ** add bench: macro
 * add def: macro
