@@ -4,6 +4,8 @@
 namespace nibl {
   Val::Val(Type &type, any &&data): type(&type), data(move(data)) {}
 
+  Val::Val(Type &type, const any &data): type(&type), data(data) {}
+
   E Val::emit(VM &vm, Env &env) const { return type->emit(vm, env, *this); }
 
   ostream &operator <<(ostream &out, const Val &v) {

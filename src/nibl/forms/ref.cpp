@@ -1,3 +1,4 @@
+#include "nibl/forms/lit.hpp"
 #include "nibl/forms/ref.hpp"
 #include "nibl/vm.hpp"
 
@@ -8,7 +9,12 @@ namespace nibl::forms {
   
   E Ref::Imp::emit(VM &vm, Env &env, deque<Form> &args) const {
     auto found = env.find(name);
-    if (found) { return found->emit(vm, env); }
+
+    if (found) {
+      args.emplace_front(Lit(pos, *found->type, found->data));
+      return nullopt;
+    }
+    
     return Error(pos, name, '?');
   }
 

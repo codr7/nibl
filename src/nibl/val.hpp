@@ -18,6 +18,7 @@ namespace nibl {
     any data;
 
     Val(Type &type, any &&data);
+    Val(Type &type, const any &data);
     E emit(VM &vm, Env &env) const;
 
     template <typename T>

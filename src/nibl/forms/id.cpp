@@ -1,4 +1,5 @@
 #include "nibl/forms/id.hpp"
+#include "nibl/forms/lit.hpp"
 #include "nibl/vm.hpp"
 
 namespace nibl {
@@ -23,7 +24,8 @@ namespace nibl::forms {
 	return nullopt;
       }
 
-      return found->emit(vm, env);
+      args.emplace_front(Lit(pos, *found->type, found->data));
+      return nullopt;
     }
     
     return Error(pos, name, '?');

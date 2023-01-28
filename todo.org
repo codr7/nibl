@@ -1,8 +1,4 @@
-* change id/ref emit to push lit form on args
-* add type-of prim
-* convert type-of: macro
-** args.emplace_front(forms::Lit(pos, vm.abc_lib.meta_type, t));
-** remove op
+* convert type-of to prim
 * fib
 ** add bench: macro
 * add def: macro

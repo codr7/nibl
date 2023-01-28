@@ -12,11 +12,13 @@ namespace nibl::forms {
       const Val val;
       
       Imp(const Pos &pos, Type &type, any &&data);    
+      Imp(const Pos &pos, Type &type, const any &data);    
       void dump(ostream& out) const override;
       E emit(VM &vm, Env &env, deque<Form> &args) const override;
     };
 
     Lit(const Pos &pos, Type &type, any &&data);
+    Lit(const Pos &pos, Type &type, const any &data);
   };
 }
 
