@@ -88,7 +88,7 @@ Booleans can be either true (`T`) or false (`F`).
 `c` is true if `a` and `b` are equal, else false.
 
 ```
-1 3 =
+  1 3 =
   
 [F]
 ```
@@ -142,19 +142,9 @@ Skip evaluation until `;` or `else:` is reached or the program ends when `a` is 
 ```
 
 ```
-  10 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;
-
-[1]
-```
-```
-   20 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;
+   20 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;;
 
 [2]
-```
-```
-  30 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;
-
-[3]
 ```
 
 ### Functions
@@ -178,6 +168,7 @@ Every value has one of the following types:
 - `Lib` The type of libraries
 - `Macro` The type of macros
 - `Meta` The type of types
+- `Prim` The type of primitives
 - `Str` The type of strings
 
 #### type-of [a | b]

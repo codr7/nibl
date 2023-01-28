@@ -166,7 +166,7 @@ namespace nibl::libs {
       const PC skip_pc = vm.emit(), fun_pc = vm.emit_pc();
 	
       while (!args.empty()) {
-	Form f = pop_front(args);
+	Form f(pop_front(args));
 	if (f.imp == Form::END) { break; }	
 	if (auto e = f.emit(vm, env, args)) { return e; }
       }
@@ -186,7 +186,7 @@ namespace nibl::libs {
       optional<PC> else_pc1, else_pc2;
       
       while (!args.empty()) {
-	Form f = pop_front(args);
+	Form f(pop_front(args));
 	if (f.imp == Form::END) { break; }	
 
 	if (auto id = f.is<forms::Id>(); id && id->name == "else:") {
@@ -198,9 +198,7 @@ namespace nibl::libs {
 	if (auto e = f.emit(vm, env, args)) { return e; }
       }
 
-      if (else_pc1) {
-	vm.ops[*else_pc1] = ops::_goto(vm.emit_pc());
-      }
+      if (else_pc1) { vm.ops[*else_pc1] = ops::_goto(vm.emit_pc()); }
       
       vm.ops[pc] = ops::_if(else_pc2 ? *else_pc2 : vm.emit_pc());
       return nullopt;

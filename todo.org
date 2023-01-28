@@ -1,4 +1,3 @@
-* finish test suite
 * change id/ref emit to push lit form on args
 * add type-of prim
 * convert type-of: macro
