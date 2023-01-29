@@ -5,4 +5,4 @@ def: fib fun:
     1 = if: swap;
     pop;;
 
-1000000 bench: 20 0 1 fib pop;
+100000 bench: 100 0 1 fib pop;
