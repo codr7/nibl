@@ -311,5 +311,5 @@ python bench/fib.py
 ```
 ```
 python bench/fibt.py
-712
+657
 ```
