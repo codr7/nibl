@@ -1,6 +1,8 @@
 1 2 2 test: 1 2 dup;
 1 2 test: 1 2 3 pop;
 1 3 2 test: 1 2 3 swap;
+3 1 2 test: 1 2 3 rotl;
+2 3 1 test: 1 2 3 rotr;
 
 7 test: 3 4 +;
 4 test: 7 3 -;

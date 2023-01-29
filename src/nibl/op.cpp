@@ -82,6 +82,12 @@ namespace nibl {
     case OpCode::RET:
       out << "RET";
       break;
+    case OpCode::ROTL:
+      out << "ROTL";
+      break;
+    case OpCode::ROTR:
+      out << "ROTR";
+      break;
     case OpCode::SUB:
       out << "SUB";
       break;
@@ -178,6 +184,8 @@ namespace nibl::ops {
 
   Op rec() { return static_cast<Op>(OpCode::REC); }
   Op ret() { return static_cast<Op>(OpCode::RET); }
+  Op rotl() { return static_cast<Op>(OpCode::ROTL); }
+  Op rotr() { return static_cast<Op>(OpCode::ROTR); }
   Op sub() { return static_cast<Op>(OpCode::SUB); }
   Op swap() { return static_cast<Op>(OpCode::SWAP); }
   Op test() { return static_cast<Op>(OpCode::TEST); }

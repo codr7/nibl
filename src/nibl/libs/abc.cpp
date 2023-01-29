@@ -195,7 +195,7 @@ namespace nibl::libs {
 	if (auto e = f.emit(vm, env, args)) { return e; }
       }
 
-      if (auto c = op_code(vm.ops.back()); c != OpCode::REC && c != OpCode::RET) {
+      if (auto c = op_code(vm.ops.back()); c != OpCode::RET) {
 	vm.ops[vm.emit()] = ops::ret();
       }
 	
@@ -239,6 +239,8 @@ namespace nibl::libs {
     pop_macro(vm, env, "pop", pos, ops::pop()),
     rec_macro(vm, env, "rec", pos, ops::rec()),
     ret_macro(vm, env, "ret", pos, ops::ret()),
+    rotl_macro(vm, env, "rotl", pos, ops::rotl()),
+    rotr_macro(vm, env, "rotr", pos, ops::rotr()),
     stop_macro(vm, env, "stop", pos, ops::stop()),
     sub_macro(vm, env, "-", pos, ops::sub()),
     swap_macro(vm, env, "swap", pos, ops::swap()),

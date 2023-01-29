@@ -125,6 +125,14 @@ namespace nibl {
 
   inline void eval_ret(VM &vm, PC &pc, Op op) { pc = pop_back(vm.calls).ret_pc; }
 
+  inline void eval_rotl(VM &vm, PC &pc, Op op) {
+    rotate(vm.stack.end() - 3, vm.stack.end() - 1, vm.stack.end());
+  }
+
+  inline void eval_rotr(VM &vm, PC &pc, Op op) {
+    rotate(vm.stack.end() - 3, vm.stack.end() - 2, vm.stack.end());
+  }
+
   inline void eval_sub(VM &vm, PC &pc, Op op) {
     Val b(pop_back(vm.stack));
     Val &a(vm.stack.back());

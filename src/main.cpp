@@ -23,6 +23,7 @@ static int v_cmd(Args &args) {
 }
 
 static int build_cmd(Args &args) {
+  cout << "Not implemented" << endl;
   return 0;
 }
 

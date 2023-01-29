@@ -35,6 +35,12 @@ Remove `a`.
 #### swap [a b | b a]
 Swap `a` and `b`.
 
+#### rotl [a b c | c a b]
+Rotate three top values to the left.
+
+#### rotr [a b c | b c a]
+Rotate three top values to the right.
+
 ### Numbers
 
 #### + [a b | c]
@@ -283,10 +289,29 @@ Test ok: [1 3 2]
 
   1000 bench: 20 fib pop;
 
-[1244]
+[1176]
 ```
 ```
 cd bench
 python fib.py
 1078
+```
+
+```
+  def: fib fun:
+    rotr dup 0 = if:
+      pop pop
+    else: dup 1 = if:
+      pop swap pop
+    else:
+      dec rotl dup rotl + rec;;;
+[]
+
+  1000000 bench: 20 0 1 fib pop;
+[2854]
+```
+```
+cd bench
+python fibt.py
+1402
 ```

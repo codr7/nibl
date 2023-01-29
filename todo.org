@@ -1,5 +1,4 @@
 * bench fib
-** add rotl/rotr
 ** replace = 0 with =0
 *** add eq_zero op
 ** replace = 1 with =1
