@@ -12,18 +12,16 @@ mkdir build
 cd build
 cmake ..
 make
-./nibl
+./nibl help
 Nibl v11
 
-  def: fib fun:
-    dup 1 > if:
-      1 - dup fib swap
-      1 - fib +;;
-    
-[]
-  10 fib
-  
-[55]
+Usage: nibl [command] [file1.nl] [file2.nl]
+
+Commands:
+build	Build executable
+eval	Evaluate and exit
+repl	Start repl
+v	Print version and exit
 ```
 
 ### Stack Operations

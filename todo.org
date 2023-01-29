@@ -1,5 +1,16 @@
 * bench fib
 ** add rotl/rotr
-** replace = 0 with z?
-** replace = 1 with one?
-
+** replace = 0 with =0
+*** add eq_zero op
+** replace = 1 with =1
+*** add eq_one op
+* add say op
+* string interpolation
+** 2 3 2 3 + "% + % = %" say
+** "2 + 3 = %(2 3 +)" say
+** emit as series of strings/ops
+** add str op with nr of vals as arg
+** use sstream
+* implement build cmd
+** generate single c++ file with eval-calls
+** add op_build(ostream &out)
