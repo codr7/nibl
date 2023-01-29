@@ -1,7 +1,7 @@
 # Nibl
 
 ### Intro
-Nibl is a Forth VM that aims to be simple to understand, extend and embed; it currently weighs in at around 1kloc.
+Nibl is a Forth VM that aims to be simple to understand, extend and embed; it currently weighs in at around 2kloc.
 
 ### Building
 Nibl requires a C++ compiler and CMake to build.
