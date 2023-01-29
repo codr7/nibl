@@ -37,6 +37,17 @@ def: fib fun:
 
 55 test: 10 fib;
 
+def: fibt fun:
+  rotr dup 1 > if:
+    dec rotl dup rotl + rec
+  else:
+    0 = if:
+      pop
+    else:
+      swap pop;;;
+
+55 test: 10 0 1 fibt;
+
 Int test: 1 type-of;
 Meta test: Int type-of;
 Macro test: &dup type-of;

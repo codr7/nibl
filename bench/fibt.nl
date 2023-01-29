@@ -1,9 +1,10 @@
 def: fib fun:
-  rotr dup 0 = if:
-    pop pop
-  else: dup 1 = if:
-    pop swap pop
+  rotr dup 1 > if:
+    dec rotl dup rotl + rec
   else:
-    dec rotl dup rotl + rec;;;
+    0 = if:
+      pop
+    else:
+      swap pop;;;
 
 1000000 bench: 20 0 1 fib pop;
