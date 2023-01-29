@@ -10,6 +10,7 @@
 namespace nibl {
   using namespace std;
 
+  struct Fun;
   struct Prim;
   struct VM;
   
@@ -19,8 +20,8 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, CALL, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PRIM_CALL, PUSH_BOOL, PUSH_INT,
-    PUSH_TAG, REC, RET, SUB, SWAP, TEST, TRACE,
+    ADD, AND, BENCH, CALL, DEC, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PRIM_CALL, PUSH_BOOL,
+    PUSH_INT, PUSH_TAG, REC, RET, SUB, SWAP, TEST, TRACE,
     
     STOP };
 
@@ -28,17 +29,20 @@ namespace nibl {
   void op_trace(VM &vm, PC pc, ostream &out);
 
   namespace ops {
-    const size_t AND_NEXT_PC_POS = OP_CODE_WIDTH;
-    const size_t AND_NEXT_PC_WIDTH = OP_WIDTH - AND_NEXT_PC_POS;
+    const size_t AND_END_PC_POS = OP_CODE_WIDTH;
+    const size_t AND_END_PC_WIDTH = OP_WIDTH - AND_END_PC_POS;
+
+    const size_t CALL_TAG_POS = OP_CODE_WIDTH;
+    const size_t CALL_TAG_WIDTH = OP_WIDTH - CALL_TAG_POS;
 
     const size_t GOTO_PC_POS = OP_CODE_WIDTH;
     const size_t GOTO_PC_WIDTH = OP_WIDTH - GOTO_PC_POS;
 
-    const size_t IF_NEXT_PC_POS = OP_CODE_WIDTH;
-    const size_t IF_NEXT_PC_WIDTH = OP_WIDTH - IF_NEXT_PC_POS;
+    const size_t IF_END_PC_POS = OP_CODE_WIDTH;
+    const size_t IF_END_PC_WIDTH = OP_WIDTH - IF_END_PC_POS;
 
-    const size_t OR_NEXT_PC_POS = OP_CODE_WIDTH;
-    const size_t OR_NEXT_PC_WIDTH = OP_WIDTH - OR_NEXT_PC_POS;
+    const size_t OR_END_PC_POS = OP_CODE_WIDTH;
+    const size_t OR_END_PC_WIDTH = OP_WIDTH - OR_END_PC_POS;
 
     const size_t PRIM_CALL_TAG_POS = OP_CODE_WIDTH;
     const size_t PRIM_CALL_TAG_WIDTH = OP_WIDTH - PRIM_CALL_TAG_POS;
@@ -57,10 +61,15 @@ namespace nibl {
     
     Op add();
     
-    Op _and(PC next_pc);
-    inline PC and_next_pc(Op op) { return get<PC, AND_NEXT_PC_POS, AND_NEXT_PC_WIDTH>(op); }
+    Op _and(PC end_pc);
+    inline PC and_end_pc(Op op) { return get<PC, AND_END_PC_POS, AND_END_PC_WIDTH>(op); }
 
-    Op call();
+    Op bench();
+
+    Op call(Fun &fun);
+    inline PC call_tag(Op op) { return get<Tag, CALL_TAG_POS, CALL_TAG_WIDTH>(op); }
+
+    Op dec();
     Op div();
     Op dup();
     Op eq();
@@ -69,16 +78,16 @@ namespace nibl {
     Op _goto(PC pc);
     inline PC goto_pc(Op op) { return get<PC, GOTO_PC_POS, GOTO_PC_WIDTH>(op); }
 
-    Op _if(PC next_pc);
-    inline PC if_next_pc(Op op) { return get<PC, IF_NEXT_PC_POS, IF_NEXT_PC_WIDTH>(op); }
+    Op _if(PC end_pc);
+    inline PC if_end_pc(Op op) { return get<PC, IF_END_PC_POS, IF_END_PC_WIDTH>(op); }
 
     Op lt();
     Op mod();
     Op mul();
     Op _not();
     
-    Op _or(PC next_pc);
-    inline PC or_next_pc(Op op) { return get<PC, OR_NEXT_PC_POS, OR_NEXT_PC_WIDTH>(op); }
+    Op _or(PC end_pc);
+    inline PC or_end_pc(Op op) { return get<PC, OR_END_PC_POS, OR_END_PC_WIDTH>(op); }
 
     Op pop();
 

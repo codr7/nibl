@@ -155,6 +155,19 @@ namespace nibl::libs {
       vm.ops[pc] = ops::_and(vm.emit_pc());
       return nullopt;
     }),
+    bench_macro(vm, env, "bench:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
+      vm.ops[vm.emit()] = ops::bench();
+      
+      while (!args.empty()) {
+	Form f(pop_front(args));
+	if (f.imp == Form::END) { break; }	
+	if (auto e = f.emit(vm, env, args)) { return e; }
+      }
+
+      vm.ops[vm.emit()] = ops::stop();
+      return nullopt;
+    }),
+    dec_macro(vm, env, "dec", pos, ops::dec()),
     def_macro(vm, env, "def:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
       string id(pop_front(args).as<forms::Id>().name);
       optional<string> prev_name(env.def_name);

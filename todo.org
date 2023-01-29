@@ -1,5 +1,5 @@
-* fib
-** add bench: macro
-** add tag to call op
-*** change id Fun emit
-** tail recursive version
+* bench fib
+** add rotl/rotr
+** replace = 0 with z?
+** replace = 1 with one?
+

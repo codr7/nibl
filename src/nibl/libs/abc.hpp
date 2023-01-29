@@ -76,9 +76,9 @@ namespace nibl::libs {
     PrimType prim_type;
     StrType str_type;
 
-    Macro add_macro, and_macro, def_macro, div_macro, dup_macro, else_macro, eq_macro, fun_macro,
-      gt_macro, if_macro, lt_macro, mod_macro, mul_macro, not_macro, or_macro, pop_macro, rec_macro, ret_macro,
-      stop_macro, sub_macro, swap_macro, test_macro, trace_macro;
+    Macro add_macro, and_macro, bench_macro, dec_macro, def_macro, div_macro, dup_macro, else_macro, eq_macro,
+      fun_macro, gt_macro, if_macro, lt_macro, mod_macro, mul_macro, not_macro, or_macro, pop_macro, rec_macro,
+      ret_macro, stop_macro, sub_macro, swap_macro, test_macro, trace_macro;
 
     Prim call_prim, load_prim, type_of_prim;
     

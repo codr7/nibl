@@ -2,6 +2,7 @@
 #define NIBL_EVAL_HPP
 
 #include "nibl/prim.hpp"
+#include "nibl/timer.hpp"
 #include "nibl/vm.hpp"
 
 namespace nibl {
@@ -15,12 +16,30 @@ namespace nibl {
     if (vm.stack.back().as<bool>()) {
       vm.stack.pop_back();
     } else {
-      pc = ops::and_next_pc(op);
+      pc = ops::and_end_pc(op);
     }
   }
 
+  inline E eval_bench(VM &vm, PC &pc, Op op) {
+    Int reps = pop_back(vm.stack).as<Int>();
+    PC start_pc = pc;
+    Timer t;
+    
+    for (Int i  = 0; i < reps; i++, pc = start_pc) {
+      if (auto e = vm.eval(pc); e) { return e; }
+    }
+
+    vm.push(vm.abc_lib.int_type, t.get<Timer::ms>());
+    return nullopt;
+  }
+
   inline void eval_call(VM &vm, PC &pc, Op op) {
-    vm.call(*pop_back(vm.stack).as<Fun *>(), pc);
+    vm.call(*vm.tags[ops::call_tag(op)].as<Fun *>(), pc);
+  }
+
+  inline void eval_dec(VM &vm, PC &pc, Op op) {
+    Val &v(vm.stack.back());
+    v = Val(vm.abc_lib.int_type, v.as<Int>()-1);
   }
 
   inline void eval_div(VM &vm, PC &pc, Op op) {
@@ -50,7 +69,7 @@ namespace nibl {
   }
 
   inline void eval_if(VM &vm, PC &pc, Op op) {
-    if (!pop_back(vm.stack).as<bool>()) { pc = ops::if_next_pc(op); }
+    if (!pop_back(vm.stack).as<bool>()) { pc = ops::if_end_pc(op); }
   }
 
   inline void eval_lt(VM &vm, PC &pc, Op op) {
@@ -78,7 +97,7 @@ namespace nibl {
 
   inline void eval_or(VM &vm, PC &pc, Op op) {
     if (vm.stack.back().as<bool>()) {
-      pc = ops::or_next_pc(op);
+      pc = ops::or_end_pc(op);
     } else {
       vm.stack.pop_back();
     }

@@ -8,8 +8,9 @@ namespace nibl {
   
   E VM::eval(PC &pc) {
     static const void* dispatch[] = {
-      &&ADD, &&AND, &&CALL, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT, &&OR, &&POP,
-      &&PRIM_CALL, &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&SUB, &&SWAP, &&TEST, &&TRACE,
+      &&ADD, &&AND, &&BENCH, &&CALL, &&DEC, &&DIV, &&DUP, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD, &&MUL, &&NOT,
+      &&OR, &&POP, &&PRIM_CALL, &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&SUB, &&SWAP, &&TEST,
+      &&TRACE,
       
       &&STOP};
     
@@ -21,8 +22,14 @@ namespace nibl {
   AND:
     eval_and(*this, pc, op);
     DISPATCH();
+  BENCH:
+    eval_bench(*this, pc, op);
+    DISPATCH();
   CALL:
     eval_call(*this, pc, op);
+    DISPATCH();
+  DEC:
+    eval_dec(*this, pc, op);
     DISPATCH();
   DIV:
     eval_div(*this, pc, op);

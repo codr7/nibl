@@ -20,8 +20,7 @@ namespace nibl::forms {
       }
 
       if (*found->type == vm.abc_lib.fun_type) {
-	vm.ops[vm.emit()] = ops::push_tag(found->as<Fun *>()->tag);
-	vm.ops[vm.emit()] = ops::call();
+	vm.ops[vm.emit()] = ops::call(*found->as<Fun *>());
 	return nullopt;
       }
 

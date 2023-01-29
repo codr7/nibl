@@ -1,7 +1,7 @@
 # Nibl
 
 ### Intro
-Nibl is a virtualized Forth implementation that aims to be both simple to understand/extend/embed and practical, it currently weighs in at around 1kloc.
+Nibl is a virtual Forth implementation that aims to be both simple to understand/extend/embed and practical, it currently weighs in at around 1kloc.
 
 ### Building
 Nibl requires a C++ compiler and CMake to build.
@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v10
+Nibl v11
 
   def: fib fun:
     dup 1 > if:
@@ -271,4 +271,24 @@ Test ok: [1 2 2]
 Test ok: [1 2]
 Test ok: [1 3 2]
 ...
+```
+
+### Benchmarking
+`bench:` evaluates its body specified number of repetitions and measures elapsed time in milliseconds.
+
+```
+  def: fib fun:
+    dup 1 > if:
+      dec dup fib swap
+      dec fib +;;
+[]
+
+  1000 bench: 20 fib pop;
+
+[1244]
+```
+```
+cd bench
+python fib.py
+1078
 ```

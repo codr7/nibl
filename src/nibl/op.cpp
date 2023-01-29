@@ -11,10 +11,18 @@ namespace nibl {
       out << "ADD";
       break;
     case OpCode::AND:
-      out << "AND" << ops::and_next_pc(op);
+      out << "AND " << ops::and_end_pc(op);
       break;
-    case OpCode::CALL:
-      out << "CALL";
+    case OpCode::BENCH:
+      out << "BENCH";
+      break;
+    case OpCode::CALL: {
+      Tag t(ops::call_tag(op));
+      out << "CALL " << t << ' ' << *vm.tags[t].as<Fun *>();
+      break;
+    }
+    case OpCode::DEC:
+      out << "DEC";
       break;
     case OpCode::DIV:
       out << "DIV";
@@ -29,7 +37,7 @@ namespace nibl {
       out << "GT";
       break;
     case OpCode::IF:
-      out << "IF " << ops::if_next_pc(op);
+      out << "IF " << ops::if_end_pc(op);
       break;
     case OpCode::GOTO:
       out << "GOTO " << ops::goto_pc(op);
@@ -47,7 +55,7 @@ namespace nibl {
       out << "NOT";
       break;
     case OpCode::OR:
-      out << "OR" << ops::or_next_pc(op);
+      out << "OR " << ops::or_end_pc(op);
       break;
     case OpCode::POP:
       out << "POP";
@@ -99,22 +107,30 @@ namespace nibl {
 namespace nibl::ops {
   Op add() { return static_cast<Op>(OpCode::ADD); }
   
-  Op _and(PC next_pc) {
+  Op _and(PC end_pc) {
     return
       static_cast<Op>(OpCode::AND) +
-      static_cast<Op>(next_pc << AND_NEXT_PC_POS);
+      static_cast<Op>(end_pc << AND_END_PC_POS);
   }
 
-  Op call() { return static_cast<Op>(OpCode::CALL); }
+  Op bench() { return static_cast<Op>(OpCode::BENCH); }
+
+  Op call(Fun &fun) {
+    return
+      static_cast<Op>(OpCode::CALL) +
+      static_cast<Op>(fun.tag << CALL_TAG_POS);
+  }
+
+  Op dec() { return static_cast<Op>(OpCode::DEC); }
   Op div() { return static_cast<Op>(OpCode::DIV); }
   Op dup() { return static_cast<Op>(OpCode::DUP); }
   Op eq() { return static_cast<Op>(OpCode::EQ); }
   Op gt() { return static_cast<Op>(OpCode::GT); }
 
-  Op _if(PC next_pc) {
+  Op _if(PC end_pc) {
     return
       static_cast<Op>(OpCode::IF) +
-      static_cast<Op>(next_pc << IF_NEXT_PC_POS);
+      static_cast<Op>(end_pc << IF_END_PC_POS);
   }
 
   Op _goto(PC pc) {
@@ -128,10 +144,10 @@ namespace nibl::ops {
   Op mul() { return static_cast<Op>(OpCode::MUL); }
   Op _not() { return static_cast<Op>(OpCode::NOT); }
 
-  Op _or(PC next_pc) {
+  Op _or(PC end_pc) {
     return
       static_cast<Op>(OpCode::OR) +
-      static_cast<Op>(next_pc << OR_NEXT_PC_POS);
+      static_cast<Op>(end_pc << OR_END_PC_POS);
   }
 
   Op pop() { return static_cast<Op>(OpCode::POP); }
