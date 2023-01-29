@@ -22,11 +22,6 @@ static int v_cmd(Args &args) {
   return 0;
 }
 
-static int build_cmd(Args &args) {
-  cout << "Not implemented" << endl;
-  return 0;
-}
-
 static int eval_cmd(Args &args) {
   nibl::Pos pos("init", 1, 1);
   nibl::VM vm(pos);
@@ -50,7 +45,6 @@ static int help_cmd(Args &args) {
   cout << endl <<
     "Usage: nibl [command] [file1.nl] [file2.nl]" << endl << endl <<
     "Commands:" << endl <<
-    "build\tBuild executable" << endl <<
     "eval\tEvaluate and exit" << endl << 
     "repl\tStart repl" << endl <<
     "v\tPrint version and exit" << endl;
@@ -83,7 +77,7 @@ using Cmd = function<int (Args &args)>;
 
 int main(int argc, char *argv[]) {
   static const map<string, Cmd> cmds = {
-    {"build", build_cmd}, {"eval", eval_cmd}, {"help", help_cmd}, {"repl", repl_cmd}, {"v", v_cmd}
+    {"eval", eval_cmd}, {"help", help_cmd}, {"repl", repl_cmd}, {"v", v_cmd}
   };
   
   optional<Cmd> cmd;

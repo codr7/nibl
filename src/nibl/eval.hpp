@@ -20,17 +20,19 @@ namespace nibl {
     }
   }
 
-  inline E eval_bench(VM &vm, PC &pc, Op op) {
+  inline void eval_bench(VM &vm, PC &pc, Op op) {
     Int reps = pop_back(vm.stack).as<Int>();
     PC start_pc = pc;
     Timer t;
     
     for (Int i  = 0; i < reps; i++, pc = start_pc) {
-      if (auto e = vm.eval(pc); e) { return e; }
+      if (auto e = vm.eval(pc); e) {
+	vm.errors.push_back(*e);
+	return;
+      }
     }
 
     vm.push(vm.abc_lib.int_type, t.get<Timer::ms>());
-    return nullopt;
   }
 
   inline void eval_call(VM &vm, PC &pc, Op op) {
@@ -126,11 +128,13 @@ namespace nibl {
   inline void eval_ret(VM &vm, PC &pc, Op op) { pc = pop_back(vm.calls).ret_pc; }
 
   inline void eval_rotl(VM &vm, PC &pc, Op op) {
-    rotate(vm.stack.end() - 3, vm.stack.end() - 1, vm.stack.end());
+    const auto i = vm.stack.end();
+    rotate(i - 3, i - 1, i);
   }
 
   inline void eval_rotr(VM &vm, PC &pc, Op op) {
-    rotate(vm.stack.end() - 3, vm.stack.end() - 2, vm.stack.end());
+    const auto i = vm.stack.end();
+    rotate(i - 3, i - 2, i);
   }
 
   inline void eval_sub(VM &vm, PC &pc, Op op) {
@@ -143,9 +147,14 @@ namespace nibl {
     iter_swap(vm.stack.end()-2, vm.stack.end()-1);
   }
 
-  inline E eval_test(VM &vm, PC &pc, Op op) {
+  inline void eval_test(VM &vm, PC &pc, Op op) {
     Stack expected(move(vm.stack));
-    if (auto e = vm.eval(pc); e) { return e; }
+
+    if (auto e = vm.eval(pc); e) {
+      vm.errors.push_back(*e);
+      return;
+    }
+    
     Stack actual(move(vm.stack));
     
     if (actual == expected) {
@@ -153,8 +162,6 @@ namespace nibl {
     } else {
       vm.stdout << "Test failed, expected: " << expected << ", actual: " << actual << endl;
     }
-
-    return nullopt;
   }
 
   inline void eval_trace(VM &vm, PC &pc, Op op) {

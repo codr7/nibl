@@ -68,7 +68,7 @@ namespace nibl {
     eval_pop(*this, pc, op);
     DISPATCH();
   PRIM_CALL:
-    if (auto e = eval_prim_call(*this, pc, op); e) { return e; }
+    eval_prim_call(*this, pc, op);
     DISPATCH();
   PUSH_BOOL:
     eval_push_bool(*this, pc, op);
@@ -98,12 +98,13 @@ namespace nibl {
     eval_swap(*this, pc, op);
     DISPATCH();
   TEST:
-    if (auto e = eval_test(*this, pc, op); e) { return e; }
+    eval_test(*this, pc, op);
     DISPATCH();
   TRACE:
     eval_trace(*this, pc, op);
     DISPATCH();
   STOP:
-    return nullopt;
+    if (errors.empty()) { return nullopt; }
+    return pop_front(errors);
   }
 }

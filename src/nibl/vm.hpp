@@ -30,7 +30,8 @@ namespace nibl {
     vector<Op> ops;
     Stack stack;
     vector<Call> calls;
-
+    deque<Error> errors;
+    
     VM(const optional<Pos> &pos);
     Tag tag(Type &type, any &&data);
     Read read(istream &in, Pos &pos);

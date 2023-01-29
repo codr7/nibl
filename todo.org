@@ -10,6 +10,4 @@
 ** emit as series of strings/ops
 ** add str op with nr of vals as arg
 ** use sstream
-* implement build cmd
-** generate single c++ file with eval-calls
-** add op_build(ostream &out)
+
