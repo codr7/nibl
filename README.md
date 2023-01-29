@@ -290,7 +290,7 @@ Test ok: [1 3 2]
 
   1000 bench: 20 fib pop;
 
-[1176]
+[1120]
 ```
 ```
 cd bench
@@ -310,7 +310,7 @@ python fib.py
 []
 
   1000000 bench: 20 0 1 fib pop;
-[2854]
+[2759]
 ```
 ```
 cd bench

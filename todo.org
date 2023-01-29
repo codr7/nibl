@@ -5,4 +5,3 @@
 ** emit as series of strings/ops
 ** add str op with nr of vals as arg
 ** use sstream
-

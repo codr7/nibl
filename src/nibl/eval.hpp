@@ -41,7 +41,7 @@ namespace nibl {
 
   inline void eval_dec(VM &vm, PC &pc, Op op) {
     Val &v(vm.stack.back());
-    v = Val(vm.abc_lib.int_type, v.as<Int>()-1);
+    v.data = v.as<Int>()-1;
   }
 
   inline void eval_div(VM &vm, PC &pc, Op op) {
@@ -93,8 +93,8 @@ namespace nibl {
   }
 
   inline void eval_not(VM &vm, PC &pc, Op op) {
-    Val &a(vm.stack.back());
-    a = Val(vm.abc_lib.bool_type, !a.as<bool>());
+    Val &v(vm.stack.back());
+    v.data = !v.as<bool>();
   }
 
   inline void eval_or(VM &vm, PC &pc, Op op) {
@@ -144,7 +144,8 @@ namespace nibl {
   }
 
   inline void eval_swap(VM &vm, PC &pc, Op op) {
-    iter_swap(vm.stack.end()-2, vm.stack.end()-1);
+    const auto i = vm.stack.end();
+    iter_swap(i-2, i-1);
   }
 
   inline void eval_test(VM &vm, PC &pc, Op op) {
