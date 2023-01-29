@@ -269,7 +269,7 @@ namespace nibl::libs {
     }),
     load_prim(vm, env, "load", [](VM &vm, Prim &prim, PC &pc) {
       Pos pos("load", 1, 1);
-      return vm.load(vm.pop().as<Str>(), pos);
+      return vm.load(vm.pop().as<Str>(), pos, true);
     }),
     type_of_prim(vm, env, "type-of", [](VM &vm, Prim &prim, PC &pc) {
       vm.stack.back() = Val(vm.abc_lib.meta_type, vm.stack.back().type);

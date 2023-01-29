@@ -73,7 +73,7 @@ namespace nibl {
     return nullopt;
   }
   
-  E VM::load(fs::path filename, Pos &pos) {
+  E VM::load(fs::path filename, Pos &pos, bool eval) {
     auto p(filename.is_absolute() ? filename : path/filename);
     ifstream in(p);
     if (in.fail()) { return Error(pos, p, '?'); }
@@ -84,10 +84,11 @@ namespace nibl {
     PC pc = emit_pc();
     if (auto e = emit(fs); e) { return e; }
     ops[emit()] = ops::stop();	
-    
+
+    if (!eval) { return nullopt; }
     auto pp(path);
     path = p.parent_path();
-    auto e = eval(pc);
+    auto e = this->eval(pc);
     path = pp;
     return e;
   }

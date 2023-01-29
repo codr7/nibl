@@ -18,6 +18,7 @@ Nibl v11
 Usage: nibl [command] [file1.nl] [file2.nl]
 
 Commands:
+dump    Dump VM code
 eval	Evaluate and exit
 repl	Start repl
 v	Print version and exit

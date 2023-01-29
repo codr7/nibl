@@ -8,10 +8,10 @@ using namespace std;
 
 using Args = deque<string>;
 
-static nibl::E load_args(nibl::VM &vm, Args &args) {
+static nibl::E load_args(nibl::VM &vm, Args &args, bool eval) {
   for (const string &arg: args) {
     nibl::Pos pos(arg, 1, 1);
-    if (auto e = vm.load(arg, pos); e) { return e; }
+    if (auto e = vm.load(arg, pos, eval); e) { return e; }
   }
 
   return nullopt;
@@ -19,6 +19,24 @@ static nibl::E load_args(nibl::VM &vm, Args &args) {
 
 static int v_cmd(Args &args) {
   cout << "Nibl v" << nibl::VERSION << endl;
+  return 0;
+}
+
+static int dump_cmd(Args &args) {
+  nibl::Pos pos("init", 1, 1);
+  nibl::VM vm(pos);
+
+  if (auto e = vm.root_env.import(vm.abc_lib, {}, pos); e) {
+    cout << *e << endl;
+    return -1;
+  }
+  
+  if (auto e = load_args(vm, args, false); e) {
+      cout << *e << endl;
+      return -1;
+  }
+
+  for (nibl::PC pc = 0; pc < vm.ops.size(); pc++) { op_trace(vm, pc, cout); }
   return 0;
 }
 
@@ -31,7 +49,7 @@ static int eval_cmd(Args &args) {
     return -1;
   }
   
-  if (auto e = load_args(vm, args); e) {
+  if (auto e = load_args(vm, args, true); e) {
       cout << *e << endl;
       return -1;
   }
@@ -45,6 +63,7 @@ static int help_cmd(Args &args) {
   cout << endl <<
     "Usage: nibl [command] [file1.nl] [file2.nl]" << endl << endl <<
     "Commands:" << endl <<
+    "dump\tDump VM code" << endl << 
     "eval\tEvaluate and exit" << endl << 
     "repl\tStart repl" << endl <<
     "v\tPrint version and exit" << endl;
@@ -64,7 +83,7 @@ static int repl_cmd(Args &args) {
     return -1;
   }
 
-  if (auto e = load_args(vm, args); e) {
+  if (auto e = load_args(vm, args, true); e) {
       cout << *e << endl;
       return -1;
   }
@@ -77,7 +96,7 @@ using Cmd = function<int (Args &args)>;
 
 int main(int argc, char *argv[]) {
   static const map<string, Cmd> cmds = {
-    {"eval", eval_cmd}, {"help", help_cmd}, {"repl", repl_cmd}, {"v", v_cmd}
+    {"dump", dump_cmd}, {"eval", eval_cmd}, {"help", help_cmd}, {"repl", repl_cmd}, {"v", v_cmd}
   };
   
   optional<Cmd> cmd;

@@ -44,7 +44,7 @@ namespace nibl {
     void push(Type &type, any &&data);
     Val pop();
     void call(Fun &fun, PC &pc);
-    E load(fs::path filename, Pos &pos);
+    E load(fs::path filename, Pos &pos, bool eval);
   };
 
   inline void VM::push(Type &type, any &&data) { stack.emplace_back(type, move(data)); }
