@@ -30,6 +30,11 @@ F test: 1 3 >;
 
 1 2 3 test: fun: 1 2 3; call;
 
+def: fib fun:
+  dup 1 > if: 1 - dup fib swap 1 - fib +;;
+
+55 test: 10 fib;
+
 Int test: 1 type-of;
 Meta test: Int type-of;
 Macro test: &dup type-of;

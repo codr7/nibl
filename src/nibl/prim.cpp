@@ -9,7 +9,7 @@ namespace nibl {
     env.bind(name, vm.abc_lib.prim_type, this);
   }
 
-  E Prim::call(VM &vm) { return body(vm, *this); }
+  E Prim::call(VM &vm, PC &pc) { return body(vm, *this, pc); }
 
   ostream &operator <<(ostream &out, const Prim &p) {
     out << p.name;

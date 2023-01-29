@@ -1,10 +1,5 @@
 * fib
 ** add bench: macro
-* add def: macro
-** two args: name/value
-** set/reset env.def_name in emit
-** def: foo func: 1 2 3;
-** def: bar 42
-*** special case lit
-**** check next form & bind
-** handle Fun in id emit
+** add tag to call op
+*** change id Fun emit
+** tail recursive version

@@ -155,7 +155,16 @@ namespace nibl::libs {
       vm.ops[pc] = ops::_and(vm.emit_pc());
       return nullopt;
     }),
-    call_macro(vm, env, "call", pos, ops::call()),
+    def_macro(vm, env, "def:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
+      string id(pop_front(args).as<forms::Id>().name);
+      optional<string> prev_name(env.def_name);
+      env.def_name = id;
+      if (auto e = pop_front(args).emit(vm, env, args); e) { return e; }
+      env.def_name = prev_name;
+      Val val(pop_front(args).as<forms::Lit>().val);
+      env.bind(id, *val.type, val.data);
+      return nullopt;
+    }),
     div_macro(vm, env, "/", pos, ops::div()),
     dup_macro(vm, env, "dup", pos, ops::dup()),
     else_macro(vm, env, "else:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) {
@@ -164,10 +173,12 @@ namespace nibl::libs {
     eq_macro(vm, env, "=", pos, ops::eq()),
     fun_macro(vm, env, "fun:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) -> E {
       const PC skip_pc = vm.emit(), fun_pc = vm.emit_pc();
-	
+      Fun *f = new Fun(vm, env, env.def_name, pos, fun_pc);
+      if (f->name) { env.bind(*f->name, vm.abc_lib.fun_type, f); }
+
       while (!args.empty()) {
 	Form f(pop_front(args));
-	if (f.imp == Form::END) { break; }	
+	if (f.imp == Form::END) { break; }
 	if (auto e = f.emit(vm, env, args)) { return e; }
       }
 
@@ -176,8 +187,7 @@ namespace nibl::libs {
       }
 	
       vm.ops[skip_pc] = ops::_goto(vm.emit_pc());
-      Fun *f = new Fun(vm, env, env.def_name, pos, fun_pc);
-      if (!env.def_name) { args.emplace_front(forms::Lit(pos, vm.abc_lib.fun_type, f)); }
+      args.emplace_front(forms::Lit(pos, vm.abc_lib.fun_type, f));
       return nullopt;
     }),
     gt_macro(vm, env, ">", pos, ops::gt()),
@@ -232,17 +242,21 @@ namespace nibl::libs {
       vm.ops[pc] = ops::test();
       return nullopt;
     }),
-    trace_macro(vm, env, "trace", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos pos) {
+    trace_macro(vm, env, "trace", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) {
       vm.trace = !vm.trace;
       return nullopt;
     }),
 
     /* Prims */
-    load_prim(vm, env, "load", [](VM &vm, Prim &prim) {
+    call_prim(vm, env, "call", [](VM &vm, Prim &prim, PC &pc) {
+      vm.call(*pop_back(vm.stack).as<Fun *>(), pc);
+      return nullopt;
+    }),
+    load_prim(vm, env, "load", [](VM &vm, Prim &prim, PC &pc) {
       Pos pos("load", 1, 1);
       return vm.load(vm.pop().as<Str>(), pos);
     }),
-    type_of_prim(vm, env, "type-of", [](VM &vm, Prim &prim) {
+    type_of_prim(vm, env, "type-of", [](VM &vm, Prim &prim, PC &pc) {
       vm.stack.back() = Val(vm.abc_lib.meta_type, vm.stack.back().type);
       return nullopt;
     }) {

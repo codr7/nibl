@@ -87,7 +87,7 @@ namespace nibl {
   inline void eval_pop(VM &vm, PC &pc, Op op) { vm.stack.pop_back(); }
 
   inline E eval_prim_call(VM &vm, PC &pc, Op op) {
-    return vm.tags[ops::prim_call_tag(op)].as<Prim *>()->call(vm);
+    return vm.tags[ops::prim_call_tag(op)].as<Prim *>()->call(vm, pc);
   }
 
   inline void eval_push_bool(VM &vm, PC &pc, Op op) {

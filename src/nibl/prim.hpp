@@ -13,10 +13,10 @@ namespace nibl {
   struct VM;
 
   struct Prim {
-    using Body = function<E (VM &vm, Prim &prim)>;
+    using Body = function<E (VM &vm, Prim &prim, PC &pc)>;
     
     Prim(VM &vm, Env &env, const string &name, Body body);
-    E call(VM &vm);
+    E call(VM &vm, PC &pc);
     
     const string name;
     const Tag tag;

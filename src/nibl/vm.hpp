@@ -17,7 +17,7 @@
 namespace nibl {
   namespace fs = std::filesystem;
 
-  const unsigned int VERSION = 9;
+  const unsigned int VERSION = 10;
     
   struct VM {
     bool trace = false;

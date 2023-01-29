@@ -13,11 +13,17 @@ cd build
 cmake ..
 make
 ./nibl
-Nibl v9
+Nibl v10
 
-1 2 3 dup
-
-[1 2 3 3]
+  def: fib fun:
+    dup 1 > if:
+      1 - dup fib swap
+      1 - fib +;;
+    
+[]
+  10 fib
+  
+[55]
 ```
 
 ### Stack Operations
@@ -145,6 +151,18 @@ Skip evaluation until `;` or `else:` is reached or the program ends when `a` is 
    20 dup 10 = if: pop 1 else: dup 20 = if: pop 2 else: pop 3;;
 
 [2]
+```
+
+### Definitions
+Values may be bound to names using `def:`.
+
+```
+  def: foo 42
+
+[]
+  foo
+
+[42]
 ```
 
 ### Functions

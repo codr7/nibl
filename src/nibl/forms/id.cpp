@@ -19,6 +19,12 @@ namespace nibl::forms {
 	return found->as<Macro *>()->emit(vm, env, args, pos);
       }
 
+      if (*found->type == vm.abc_lib.fun_type) {
+	vm.ops[vm.emit()] = ops::push_tag(found->as<Fun *>()->tag);
+	vm.ops[vm.emit()] = ops::call();
+	return nullopt;
+      }
+
       if (*found->type == vm.abc_lib.prim_type) {
 	vm.ops[vm.emit()] = ops::prim_call(*found->as<Prim *>());
 	return nullopt;
