@@ -41,10 +41,8 @@ def: fibt fun:
   rotr dup 1 > if:
     dec rotl dup rotl + rec
   else:
-    0 = if:
-      pop
-    else:
-      swap pop;;;
+    1 = if: swap;
+    pop;;
 
 55 test: 10 0 1 fibt;
 

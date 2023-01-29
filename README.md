@@ -304,10 +304,8 @@ python fib.py
     rotr dup 1 > if:
       dec rotl dup rotl + rec
     else:
-      0 = if:
-        pop
-      else:
-        swap pop;;;
+      1 = if: swap;
+      pop;;
 
 []
 
