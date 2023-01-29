@@ -279,6 +279,7 @@ Test ok: [1 3 2]
 ### Benchmarking
 `bench:` evaluates its body specified number of repetitions and measures elapsed time in milliseconds.
 
+#### Recursive Fibonacci
 ```
   def: fib fun:
     dup 1 > if:
@@ -296,7 +297,7 @@ python fib.py
 1078
 ```
 
-
+#### Tail recursive Fibonacci
 ```
   def: fib fun:
     rotr dup 0 = if:
