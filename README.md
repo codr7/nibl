@@ -293,8 +293,7 @@ Test ok: [1 3 2]
 [1120]
 ```
 ```
-cd bench
-python fib.py
+python bench/fib.py
 1078
 ```
 
@@ -313,7 +312,6 @@ python fib.py
 [2179]
 ```
 ```
-cd bench
-python fibt.py
+python bench/fibt.py
 1402
 ```
