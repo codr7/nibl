@@ -266,7 +266,7 @@ Test ok: [1 2 3]
 []
 ```
 
-Nibl comes with a regression test suite.
+Nibl comes with a [regression test suite](https://github.com/codr7/nibl/blob/main/tests.nl).
 
 ```
   "tests.nl" load
