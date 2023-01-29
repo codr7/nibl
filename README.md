@@ -20,7 +20,7 @@ Usage: nibl [command] [file1.nl] [file2.nl]
 Commands:
 dump    Dump VM code
 eval	Evaluate and exit
-repl	Start repl
+repl	Start REPL
 v	Print version and exit
 ```
 

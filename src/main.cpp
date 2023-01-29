@@ -65,7 +65,7 @@ static int help_cmd(Args &args) {
     "Commands:" << endl <<
     "dump\tDump VM code" << endl << 
     "eval\tEvaluate and exit" << endl << 
-    "repl\tStart repl" << endl <<
+    "repl\tStart REPL" << endl <<
     "v\tPrint version and exit" << endl;
   
   return 0;
