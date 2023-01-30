@@ -36,10 +36,10 @@ Remove `a`.
 Swap `a` and `b`.
 
 #### rotl [a b c | c a b]
-Rotate three top values to the left.
+Rotate top three values left.
 
 #### rotr [a b c | b c a]
-Rotate three top values to the right.
+Rotate top three values right.
 
 ### Numbers
 
@@ -292,7 +292,7 @@ Test ok: [1 2 2]
 ```
 ```
 python bench/fib.py
-1078
+1004
 ```
 
 #### Tail recursive Fibonacci

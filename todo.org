@@ -1,3 +1,9 @@
+* add dec-dup op
+** custom implementation
+** bench fib
+* add dup-rotl op
+** insert in place
+** bench fibt
 * add say op
 * string interpolation
 ** 2 3 2 3 + "% + % = %" say
@@ -5,3 +11,4 @@
 ** emit as series of strings/ops
 ** add str op with nr of vals as arg
 ** use sstream
+   
