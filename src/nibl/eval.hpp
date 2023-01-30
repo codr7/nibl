@@ -53,7 +53,11 @@ namespace nibl {
   inline void eval_dup(VM &vm, PC &pc, Op op) {
     vm.stack.emplace_back(vm.stack.back());
   }
-  
+
+  inline void eval_dup_rotl(VM &vm, PC &pc, Op op) {
+    vm.stack.insert(vm.stack.end() - 2, vm.stack.back());
+  }
+
   inline void eval_eq(VM &vm, PC &pc, Op op) {
     Val b(pop_back(vm.stack));
     Val &a(vm.stack.back());

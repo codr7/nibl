@@ -20,8 +20,8 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, BENCH, CALL, DEC, DIV, DUP, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PRIM_CALL, PUSH_BOOL,
-    PUSH_INT, PUSH_TAG, REC, RET, ROTL, ROTR, SUB, SWAP, TEST, TRACE,
+    ADD, AND, BENCH, CALL, DEC, DIV, DUP, DUP_ROTL, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PRIM_CALL,
+    PUSH_BOOL, PUSH_INT, PUSH_TAG, REC, RET, ROTL, ROTR, SUB, SWAP, TEST, TRACE,
     
     STOP };
 
@@ -72,6 +72,7 @@ namespace nibl {
     Op dec();
     Op div();
     Op dup();
+    Op dup_rotl();
     Op eq();
     Op gt();
     

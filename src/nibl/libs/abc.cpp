@@ -180,6 +180,7 @@ namespace nibl::libs {
     }),
     div_macro(vm, env, "/", pos, ops::div()),
     dup_macro(vm, env, "dup", pos, ops::dup()),
+    dup_rotl_macro(vm, env, "dup-rotl", pos, ops::dup_rotl()),
     else_macro(vm, env, "else:", pos, [](VM &vm, Env &env, Macro &macro, Forms &args, const Pos &pos) {
       return Error(pos, "Missing if");
     }),

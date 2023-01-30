@@ -307,7 +307,7 @@ python bench/fib.py
 []
 
   100000 bench: 100 0 1 fib pop;
-[1091]
+[1064]
 ```
 ```
 python bench/fibt.py

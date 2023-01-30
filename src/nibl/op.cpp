@@ -30,6 +30,9 @@ namespace nibl {
     case OpCode::DUP:
       out << "DUP";
       break;
+    case OpCode::DUP_ROTL:
+      out << "DUP_ROTL";
+      break;
     case OpCode::EQ:
       out << "EQ";
       break;
@@ -130,6 +133,7 @@ namespace nibl::ops {
   Op dec() { return static_cast<Op>(OpCode::DEC); }
   Op div() { return static_cast<Op>(OpCode::DIV); }
   Op dup() { return static_cast<Op>(OpCode::DUP); }
+  Op dup_rotl() { return static_cast<Op>(OpCode::DUP_ROTL); }
   Op eq() { return static_cast<Op>(OpCode::EQ); }
   Op gt() { return static_cast<Op>(OpCode::GT); }
 

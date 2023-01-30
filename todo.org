@@ -1,6 +1,3 @@
-* add dec-dup op
-** custom implementation
-** bench fib
 * add dup-rotl op
 ** insert in place
 ** bench fibt
