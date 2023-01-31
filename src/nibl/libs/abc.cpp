@@ -264,6 +264,14 @@ namespace nibl::libs {
     }),
 
     /* Prims */
+    ask_prim(vm, env, "ask", [](VM &vm, Prim &prim, PC &pc) {
+      Val &v = vm.stack.back();
+      vm.stdout << v.as<Str>();
+      Str a;
+      getline(vm.stdin, a);
+      v.data = a;
+      return nullopt;
+    }),
     call_prim(vm, env, "call", [](VM &vm, Prim &prim, PC &pc) {
       vm.call(*pop_back(vm.stack).as<Fun *>(), pc);
       return nullopt;
@@ -271,6 +279,42 @@ namespace nibl::libs {
     load_prim(vm, env, "load", [](VM &vm, Prim &prim, PC &pc) {
       Pos pos("load", 1, 1);
       return vm.load(vm.pop().as<Str>(), pos, true);
+    }),
+    parse_int_prim(vm, env, "parse-int", [](VM &vm, Prim &prim, PC &pc) {      
+      Val &v(vm.stack.back());
+      istringstream s(v.as<Str>());
+
+      Int i;
+      s >> i;
+
+      if (s.fail()) {
+	v = Val(vm.abc_lib.bool_type, false);
+	return nullopt;
+      }
+      
+      v = Val(vm.abc_lib.int_type, i);
+      vm.push(vm.abc_lib.str_type, s.str().substr(s.tellg()));
+      return nullopt;
+    }),
+    say_prim(vm, env, "say", [](VM &vm, Prim &prim, PC &pc) {
+      Val v(vm.pop());
+
+      if (*v.type == vm.abc_lib.str_type) {
+	vm.stdout << v.as<Str>();
+      } else {
+	vm.stdout << v;
+      }
+      
+      vm.stdout << endl;
+      return nullopt;
+    }),
+    to_str_prim(vm, env, "to-str", [](VM &vm, Prim &prim, PC &pc) {
+      Val &v(vm.stack.back());
+      if (*v.type == vm.abc_lib.str_type) { return nullopt; }
+      stringstream buf;
+      buf << v;
+      v = Val(vm.abc_lib.str_type, buf.str());
+      return nullopt;
     }),
     type_of_prim(vm, env, "type-of", [](VM &vm, Prim &prim, PC &pc) {
       vm.stack.back() = Val(vm.abc_lib.meta_type, vm.stack.back().type);

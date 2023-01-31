@@ -9,9 +9,14 @@
 12 test: 3 4 *;
 3 test: 10 3 /;
 
-3 test: T and: 3;
+"42" test: 42 to-str;
+42 "foo" test: "42foo" parse-int;
+7 " 14" test: "7 14" parse-int;
+
+F test: 42 not;
+3 test: 42 and: 3;
 F test: F and: 3;
-T test: T or: 3;
+42 test: 42 or: 3;
 3 test: F or: 3;
 
 T test: 3 3 =;

@@ -42,6 +42,7 @@ Rotate top three values left.
 Rotate top three values right.
 
 ### Numbers
+Nibl only supports integer arithmetics so far.
 
 #### + [a b | c]
 `c` is `b` added to `a`.
@@ -58,8 +59,36 @@ Rotate top three values right.
 #### % [a b | c]
 `c` is the remainder from dividing `a` by `b`.
 
+### Strings
+Strings are enclosed in double quotes.
+
+#### to-str [a | b]
+`b` is the string representation of `a`.
+
+```
+  42 to-str
+
+["42"]
+```
+
+#### parse-int [a | b c]
+`b` is the integer value parsed from `a`, or `F` on failure.
+`c` is the remaining string on success.
+
+```
+  "42" parse-int
+
+[42 ""]
+```
+```
+  "foo" parse-int
+
+[F]
+```
+
 ### Booleans
 Booleans can be either true (`T`) or false (`F`).
+Any value except `F`, regardless of type, is true.
 
 #### not [a | b]
 `b` is true if `a` is false, else false.
@@ -219,8 +248,10 @@ References may be captured using `&`.
 [1 2 3 dup]
 ```
 
-### Loading
-Code may be loaded from file using `load`.
+### IO
+
+#### load [a | ...]
+Evaluate code in file `a`.
 
 foo.nl
 ```
@@ -231,6 +262,12 @@ foo.nl
 
 [1 2 3]
 ```
+
+#### say [a |]
+Print `a` followed by newline to stdout.
+
+#### ask [a | b]
+Print `a` to stdout and read line from stdin into `b`.
 
 ### Tracing
 Tracing may be toggled using `trace`.
@@ -307,7 +344,7 @@ python bench/fib.py
 []
 
   100000 bench: 100 0 1 fib pop;
-[1064]
+[1062]
 ```
 ```
 python bench/fibt.py

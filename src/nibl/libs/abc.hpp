@@ -81,7 +81,7 @@ namespace nibl::libs {
       or_macro, pop_macro, rec_macro, ret_macro, rotl_macro, rotr_macro, stop_macro, sub_macro, swap_macro,
       test_macro, trace_macro;
 
-    Prim call_prim, load_prim, type_of_prim;
+    Prim ask_prim, call_prim, load_prim, parse_int_prim, say_prim, to_str_prim, type_of_prim;
     
     ABC(VM &vm, Env &env, const optional<Pos> &pos);
   };

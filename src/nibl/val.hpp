@@ -23,6 +23,8 @@ namespace nibl {
 
     template <typename T>
     T as() const { return any_cast<T>(data); }
+
+    operator bool() const { return (data.type() == typeid(bool)) ? as<bool>() : true; }
   };
 
   ostream &operator <<(ostream &out, const Val &v);

@@ -1,8 +1,4 @@
-* add dup-rotl op
-** insert in place
-** bench fibt
-* add say op
-* string interpolation
+* add string interpolation
 ** 2 3 2 3 + "% + % = %" say
 ** "2 + 3 = %(2 3 +)" say
 ** emit as series of strings/ops

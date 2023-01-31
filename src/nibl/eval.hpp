@@ -13,7 +13,7 @@ namespace nibl {
   }
 
   inline void eval_and(VM &vm, PC &pc, Op op) {
-    if (vm.stack.back().as<bool>()) {
+    if (vm.stack.back()) {
       vm.stack.pop_back();
     } else {
       pc = ops::and_end_pc(op);
@@ -75,7 +75,7 @@ namespace nibl {
   }
 
   inline void eval_if(VM &vm, PC &pc, Op op) {
-    if (!pop_back(vm.stack).as<bool>()) { pc = ops::if_end_pc(op); }
+    if (!pop_back(vm.stack)) { pc = ops::if_end_pc(op); }
   }
 
   inline void eval_lt(VM &vm, PC &pc, Op op) {
@@ -98,11 +98,11 @@ namespace nibl {
 
   inline void eval_not(VM &vm, PC &pc, Op op) {
     Val &v(vm.stack.back());
-    v.data = !v.as<bool>();
+    v = Val(vm.abc_lib.bool_type, !v);
   }
 
   inline void eval_or(VM &vm, PC &pc, Op op) {
-    if (vm.stack.back().as<bool>()) {
+    if (vm.stack.back()) {
       pc = ops::or_end_pc(op);
     } else {
       vm.stack.pop_back();
