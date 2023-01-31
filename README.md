@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl help
-Nibl v11
+Nibl v12
 
 Usage: nibl [command] [file1.nl] [file2.nl]
 
