@@ -107,7 +107,7 @@ Arbitrary expressions may be interpolated using `%{...}`.
 ```
   42 "foo % bar \%"
   
-["foo 42 bar \%"]
+["foo 42 bar %"]
 ```
 
 ### Booleans
