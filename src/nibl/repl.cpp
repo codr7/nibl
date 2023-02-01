@@ -10,10 +10,10 @@ namespace nibl {
     stringstream buf;
     
     for (;;) {
-      vm.stdout << "  ";
+      vm.stdout() << "  ";
       
       string line;
-      if (!getline(vm.stdin, line)) { break; }
+      if (!getline(vm.stdin(), line)) { break; }
       
       if (line.empty()) {
 	Pos pos("repl", 1, 1);
@@ -21,7 +21,7 @@ namespace nibl {
 	PC pc = vm.emit_pc();
 
 	if (auto e = vm.read(buf, fs, pos); e) {
-	  vm.stdout << *e << endl;
+	  vm.stdout() << *e << endl;
 	  goto END;
 	}
 
@@ -29,14 +29,14 @@ namespace nibl {
 	buf.clear();
 
 	if (auto e = vm.emit(fs); e) {
-	    vm.stdout << *e << endl;
-	    goto END;
+	  vm.stdout() << *e << endl;
+	  goto END;
 	}
 
 	vm.ops[vm.emit()] = ops::stop();	
-	if (auto e = vm.eval(pc); e) { vm.stdout << *e << endl; }
+	if (auto e = vm.eval(pc); e) { vm.stdout() << *e << endl; }
       END:
-	vm.stdout << vm.stack << endl;
+	vm.stdout() << vm.stack << endl;
       } else {
 	buf << line << endl;
       }

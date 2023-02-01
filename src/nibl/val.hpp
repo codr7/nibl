@@ -5,6 +5,7 @@
 #include <optional>
 
 #include "nibl/error.hpp"
+#include "nibl/type.hpp"
 
 namespace nibl {
   using namespace std;
@@ -20,7 +21,8 @@ namespace nibl {
     Val(Type &type, any &&data);
     Val(Type &type, const any &data);
     E emit(VM &vm, Env &env) const;
-
+    void write(ostream &out) const { type->write(*this, out); }
+      
     template <typename T>
     T as() const { return any_cast<T>(data); }
 

@@ -13,6 +13,10 @@
 42 "foo" test: "42foo" parse-int;
 7 " 14" test: "7 14" parse-int;
 
+"foo 2 bar 1 baz" test: 1 2 "foo % bar % baz";
+"foo 3 bar" test: "foo %{1 2 +} bar";
+"foo 42 bar \%" test: 42 "foo % bar \%";
+
 F test: 42 not;
 3 test: 42 and: 3;
 F test: F and: 3;

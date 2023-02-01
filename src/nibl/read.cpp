@@ -1,6 +1,7 @@
 #include <map>
 
 #include "nibl/forms/id.hpp"
+#include "nibl/forms/interp.hpp"
 #include "nibl/forms/lit.hpp"
 #include "nibl/forms/ref.hpp"
 #include "nibl/read.hpp"
@@ -14,7 +15,7 @@ namespace nibl {
     char c;
     
     while (in.get(c)) {
-      if (c == ';' || !isgraph(c)) {
+      if (c == ';' || c == '}' || !isgraph(c)) {
 	in.unget();
 	break;
       }
@@ -62,8 +63,10 @@ namespace nibl {
     const Pos fpos(pos);
     stringstream buf;
     char c;
+    bool interp = false;
     
     while (in.get(c)) {
+      if (c == '%') { interp = true; }
       if (c == '"') { break; }
       buf << c;
       pos.column++;
@@ -74,6 +77,9 @@ namespace nibl {
     }
 
     Str s(buf.str());
-    return Read(forms::Lit(fpos, vm.abc_lib.str_type, move(s)), nullopt);
+    
+    return interp ?
+      Read(forms::Interp(fpos, move(s)), nullopt) :
+      Read(forms::Lit(fpos, vm.abc_lib.str_type, move(s)), nullopt);
   }
 }

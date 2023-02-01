@@ -4,3 +4,4 @@ def: fib fun:
     dec fib +;;
 
 1000 bench: 20 fib pop;
+say

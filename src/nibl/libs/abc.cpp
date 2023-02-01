@@ -13,122 +13,65 @@
 namespace nibl::libs {
   BoolType::BoolType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Bool", pos) {}
   
-  void BoolType::dump(const Val &val, ostream &out) const {
-    out << (val.as<bool>() ? 'T' : 'F');
-  }
-
   E BoolType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_bool(val.as<bool>());
     return nullopt;
   }
 
-  bool BoolType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<bool>() == val2.as<bool>();
+  CharType::CharType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Char", pos) {}
+  
+  E CharType::emit(VM &vm, Env &env, const Val &val) {
+    vm.ops[vm.emit()] = ops::push_char(val.as<Char>());
+    return nullopt;
   }
 
   FunType::FunType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Fun", pos) {}
   
-  void FunType::dump(const Val &val, ostream &out) const {
-    out << *val.as<Fun *>();
-  }
-
   E FunType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(val.as<Fun *>()->tag);
     return nullopt;
   }
 
-  bool FunType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Fun *>() == val2.as<Fun *>();
-  }
-
   IntType::IntType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Int", pos) {}
   
-  void IntType::dump(const Val &val, ostream &out) const {
-    out << val.as<Int>();
-  }
-
   E IntType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_int(val.as<Int>());
     return nullopt;
   }
 
-  bool IntType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Int>() == val2.as<Int>();
-  }
-
   LibType::LibType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Lib", pos) {}
   
-  void LibType::dump(const Val &val, ostream &out) const {
-    out << *val.as<Lib *>();
-  }
-
   E LibType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(val.as<Lib *>()->tag);
     return nullopt;
   }
 
-  bool LibType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Lib *>() == val2.as<Lib *>();
-  }
-
   MacroType::MacroType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Macro", pos) {}
   
-  void MacroType::dump(const Val &val, ostream &out) const {
-    out << *val.as<Macro *>();
-  }
-
   E MacroType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(val.as<Macro *>()->tag);
     return nullopt;
   }
 
-  bool MacroType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Macro *>() == val2.as<Macro *>();
-  }
-
   MetaType::MetaType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Meta", pos) {}
   
-  void MetaType::dump(const Val &val, ostream &out) const {
-    out << *val.as<Type *>();
-  }
-
   E MetaType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(val.as<Type *>()->tag);
     return nullopt;
   }
 
-  bool MetaType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Type *>() == val2.as<Type *>();
-  }
-
   PrimType::PrimType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Prim", pos) {}
   
-  void PrimType::dump(const Val &val, ostream &out) const {
-    out << *val.as<Prim *>();
-  }
-
   E PrimType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(val.as<Prim *>()->tag);
     return nullopt;
   }
 
-  bool PrimType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Prim *>() == val2.as<Prim *>();
-  }
-  
   StrType::StrType(VM &vm, Env &env, const optional<Pos> &pos): Type(vm, env, "Str", pos) {}
   
-  void StrType::dump(const Val &val, ostream &out) const {
-    out << '"' << val.as<Str>() << '"';
-  }
-
   E StrType::emit(VM &vm, Env &env, const Val &val) {
     vm.ops[vm.emit()] = ops::push_tag(vm.tag(*this, val.as<Str>()));
     return nullopt;
-  }
-
-  bool StrType::eq(const Val &val1, const Val &val2) const {
-    return val1.as<Str>() == val2.as<Str>();
   }
 
   ABC::ABC(VM &vm, Env &env, const optional<Pos> &pos):
@@ -136,6 +79,7 @@ namespace nibl::libs {
 
     /* Types */
     bool_type(vm, env, pos),
+    char_type(vm, env, pos),
     fun_type(vm, env, pos),
     int_type(vm, env, pos),
     lib_type(vm, env, pos),
@@ -266,9 +210,9 @@ namespace nibl::libs {
     /* Prims */
     ask_prim(vm, env, "ask", [](VM &vm, Prim &prim, PC &pc) {
       Val &v = vm.stack.back();
-      vm.stdout << v.as<Str>();
+      vm.stdout() << v.as<Str>();
       Str a;
-      getline(vm.stdin, a);
+      getline(vm.stdin(), a);
       v.data = a;
       return nullopt;
     }),
@@ -298,14 +242,9 @@ namespace nibl::libs {
     }),
     say_prim(vm, env, "say", [](VM &vm, Prim &prim, PC &pc) {
       Val v(vm.pop());
-
-      if (*v.type == vm.abc_lib.str_type) {
-	vm.stdout << v.as<Str>();
-      } else {
-	vm.stdout << v;
-      }
-      
-      vm.stdout << endl;
+      v.write(vm.stdout());
+      vm.stdout() << endl;
+      flush(vm.stdout());
       return nullopt;
     }),
     to_str_prim(vm, env, "to-str", [](VM &vm, Prim &prim, PC &pc) {

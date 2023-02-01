@@ -13,7 +13,7 @@ cd build
 cmake ..
 make
 ./nibl help
-Nibl v12
+Nibl v13
 
 Usage: nibl [command] [file1.nl] [file2.nl]
 
@@ -69,6 +69,30 @@ Strings are enclosed in double quotes.
   42 to-str
 
 ["42"]
+```
+
+#### Interpolation
+Values may be interpolated into strings by embedding `%`.
+
+A single `%` interpolates the top stack value.
+```
+  1 2 "foo % bar % baz"
+  
+["foo 2 bar 1 baz"]
+```
+
+Arbitrary expressions may be interpolated using `%{...}`.
+```
+  "foo %{1 2 +} bar"
+  
+["foo 3 bar"]
+```
+
+`\%` may be used to escape interpolation.
+```
+  42 "foo % bar \%"
+  
+["foo 42 bar \%"]
 ```
 
 #### parse-int [a | b c]
@@ -214,6 +238,7 @@ Functions are first class and may be defined using `fun:`, and subsequently call
 Every value has one of the following types:
 
 - `Bool` The type of booleans
+- `Char` The type of characters
 - `Fun` The type of functions
 - `Int` The type of numbers
 - `Lib` The type of libraries
@@ -344,7 +369,7 @@ python bench/fib.py
 []
 
   100000 bench: 100 0 1 fib pop;
-[1062]
+[962]
 ```
 ```
 python bench/fibt.py

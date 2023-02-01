@@ -1,7 +1,0 @@
-* add string interpolation
-** 2 3 2 3 + "% + % = %" say
-** "2 + 3 = %(2 3 +)" say
-** emit as series of strings/ops
-** add str op with nr of vals as arg
-** use sstream
-   

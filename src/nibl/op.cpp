@@ -71,6 +71,9 @@ namespace nibl {
     case OpCode::PUSH_BOOL:
       out << "PUSH_BOOL " << (ops::push_bool_value(op) ? 'T' : 'F');
       break;
+    case OpCode::PUSH_CHAR:
+      out << "PUSH_CHAR " << ops::push_char_value(op);
+      break;
     case OpCode::PUSH_INT:
       out << "PUSH_INT " << ops::push_int_value(op);
       break;
@@ -91,6 +94,9 @@ namespace nibl {
     case OpCode::ROTR:
       out << "ROTR";
       break;
+    case OpCode::STR:
+      out << "STR";
+      break;
     case OpCode::SUB:
       out << "SUB";
       break;
@@ -102,6 +108,9 @@ namespace nibl {
       break;
     case OpCode::TRACE:
       out << "TRACE";
+      break;
+    case OpCode::WRITE:
+      out << "WRITE";
       break;
 
     case OpCode::STOP:
@@ -174,6 +183,12 @@ namespace nibl::ops {
       static_cast<Op>(value << PUSH_BOOL_VALUE_POS);
   }
 
+  Op push_char(char value) {
+    return
+      static_cast<Op>(OpCode::PUSH_CHAR) +
+      static_cast<Op>(value << PUSH_CHAR_VALUE_POS);
+  }
+
   Op push_int(Int value) {
     return
       static_cast<Op>(OpCode::PUSH_INT) +
@@ -190,9 +205,12 @@ namespace nibl::ops {
   Op ret() { return static_cast<Op>(OpCode::RET); }
   Op rotl() { return static_cast<Op>(OpCode::ROTL); }
   Op rotr() { return static_cast<Op>(OpCode::ROTR); }
+  Op str() { return static_cast<Op>(OpCode::STR); }
   Op sub() { return static_cast<Op>(OpCode::SUB); }
   Op swap() { return static_cast<Op>(OpCode::SWAP); }
   Op test() { return static_cast<Op>(OpCode::TEST); }
   Op trace() { return static_cast<Op>(OpCode::TRACE); }
+  Op write() { return static_cast<Op>(OpCode::WRITE); }
+
   Op stop() { return static_cast<Op>(OpCode::STOP); }
 }

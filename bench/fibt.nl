@@ -6,3 +6,4 @@ def: fib fun:
     pop;;
 
 100000 bench: 100 0 1 fib pop;
+say

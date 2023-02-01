@@ -6,7 +6,8 @@
 
 namespace nibl {
   using namespace std;
-  
+
+  using Char = char;
   using Int = int64_t;
   using PC = size_t;
   using Str = string;

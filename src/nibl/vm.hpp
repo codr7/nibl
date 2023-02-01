@@ -17,13 +17,14 @@
 namespace nibl {
   namespace fs = std::filesystem;
 
-  const unsigned int VERSION = 12;
+  const unsigned int VERSION = 13;
     
   struct VM {
     bool trace = false;
     fs::path path;
-    istream &stdin;
-    ostream &stdout;
+    istream *_stdin;
+    ostream *_stdout;
+    
     Env root_env;
     vector<Val> tags;
     libs::ABC abc_lib;    
@@ -33,6 +34,8 @@ namespace nibl {
     deque<Error> errors;
     
     VM(const optional<Pos> &pos);
+    istream &stdin() { return *_stdin; }
+    ostream &stdout() { return *_stdout; }
     Tag tag(Type &type, any &&data);
     Read read(istream &in, Pos &pos);
     E read(istream &in, Forms &out, Pos &pos);

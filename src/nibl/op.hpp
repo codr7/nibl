@@ -20,8 +20,9 @@ namespace nibl {
   const size_t OP_CODE_WIDTH = 6;
 
   enum class OpCode {
-    ADD, AND, BENCH, CALL, DEC, DIV, DUP, DUP_ROTL, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP, PRIM_CALL,
-    PUSH_BOOL, PUSH_INT, PUSH_TAG, REC, RET, ROTL, ROTR, SUB, SWAP, TEST, TRACE,
+    ADD, AND, BENCH, CALL, DEC, DIV, DUP, DUP_ROTL, EQ, GT, GOTO, IF, LT, MOD, MUL, NOT, OR, POP,
+    PRIM_CALL, PUSH_BOOL, PUSH_CHAR, PUSH_INT, PUSH_TAG, REC, RET, ROTL, ROTR, STR, SUB, SWAP, TEST,
+    TRACE, WRITE, 
     
     STOP };
 
@@ -50,6 +51,9 @@ namespace nibl {
     const size_t PUSH_BOOL_VALUE_POS = OP_CODE_WIDTH;
     const size_t PUSH_BOOL_VALUE_WIDTH = 1;
 
+    const size_t PUSH_CHAR_VALUE_POS = OP_CODE_WIDTH;
+    const size_t PUSH_CHAR_VALUE_WIDTH = sizeof(Char)*8;
+
     const size_t PUSH_INT_VALUE_POS = OP_CODE_WIDTH;
     const size_t PUSH_INT_VALUE_WIDTH = OP_WIDTH - PUSH_INT_VALUE_POS;
 
@@ -71,6 +75,7 @@ namespace nibl {
 
     Op dec();
     Op div();
+
     Op dup();
     Op dup_rotl();
     Op eq();
@@ -98,8 +103,12 @@ namespace nibl {
     Op push_bool(bool value);
     inline bool push_bool_value(Op op) { return get<bool, PUSH_BOOL_VALUE_POS, PUSH_BOOL_VALUE_WIDTH>(op); }
 
-    Op push_int(Int value);
+    Op push_char(Char value);
+    inline Char push_char_value(Op op) {
+      return get<Char, PUSH_CHAR_VALUE_POS, PUSH_CHAR_VALUE_WIDTH>(op);
+    }
 
+    Op push_int(Int value);
     inline Int push_int_value(Op op) {
       return get<Int, PUSH_INT_VALUE_POS, PUSH_INT_VALUE_WIDTH>(op);
     }
@@ -111,10 +120,12 @@ namespace nibl {
     Op ret();
     Op rotl();
     Op rotr();
+    Op str();
     Op sub();
     Op swap();
     Op test();
     Op trace();
+    Op write();
     
     Op stop();
   }

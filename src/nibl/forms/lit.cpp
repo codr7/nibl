@@ -7,7 +7,9 @@ namespace nibl::forms {
 
   void Lit::Imp::dump(ostream &out) const { out << val; }
   
-  E Lit::Imp::emit(VM &vm, Env &env, deque<Form> &args) const { return val.emit(vm, env); }
+  E Lit::Imp::emit(VM &vm, Env &env, deque<Form> &args) const {
+    return val.emit(vm, env);
+  }
 
   Lit::Lit(const Pos &pos, Type &type, any &&data): Form(make_shared<const Imp>(pos, type, move(data))) {}
 

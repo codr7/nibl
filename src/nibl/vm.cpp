@@ -4,7 +4,7 @@
 #include "nibl/vm.hpp"
 
 namespace nibl {
-  VM::VM(const optional<Pos> &pos): stdin(cin), stdout(cout), abc_lib(*this, root_env, pos) {}
+  VM::VM(const optional<Pos> &pos): _stdin(&cin), _stdout(&cout), abc_lib(*this, root_env, pos) {}
 
   Tag VM::tag(Type &type, any &&data) {
     const Tag t = tags.size();
@@ -76,7 +76,7 @@ namespace nibl {
   E VM::load(fs::path filename, Pos &pos, bool eval) {
     auto p(filename.is_absolute() ? filename : path/filename);
     ifstream in(p);
-    if (in.feail()) { return Error(pos, p, '?'); }
+    if (in.fail()) { return Error(pos, p, '?'); }
 
     Forms fs;
     if (auto e = read(in, fs, pos); e) { return e; }

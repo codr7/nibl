@@ -9,8 +9,8 @@ namespace nibl {
   E VM::eval(PC &pc) {
     static const void* dispatch[] = {
       &&ADD, &&AND, &&BENCH, &&CALL, &&DEC, &&DIV, &&DUP, &&DUP_ROTL, &&EQ, &&GT, &&GOTO, &&IF, &&LT, &&MOD,
-      &&MUL, &&NOT, &&OR, &&POP, &&PRIM_CALL, &&PUSH_BOOL, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET, &&ROTL,
-      &&ROTR, &&SUB, &&SWAP, &&TEST, &&TRACE,
+      &&MUL, &&NOT, &&OR, &&POP, &&PRIM_CALL, &&PUSH_BOOL, &&PUSH_CHAR, &&PUSH_INT, &&PUSH_TAG, &&REC, &&RET,
+      &&ROTL, &&ROTR, &&STR, &&SUB, &&SWAP, &&TEST, &&TRACE, &&WRITE, 
       
       &&STOP};
     
@@ -76,6 +76,9 @@ namespace nibl {
   PUSH_BOOL:
     eval_push_bool(*this, pc, op);
     DISPATCH();
+  PUSH_CHAR:
+    eval_push_char(*this, pc, op);
+    DISPATCH();
   PUSH_INT:
     eval_push_int(*this, pc, op);
     DISPATCH();
@@ -94,6 +97,9 @@ namespace nibl {
   ROTR:
     eval_rotr(*this, pc, op);
     DISPATCH();
+  STR:
+    eval_str(*this, pc, op);
+    DISPATCH();
   SUB:
     eval_sub(*this, pc, op);
     DISPATCH();
@@ -106,6 +112,10 @@ namespace nibl {
   TRACE:
     eval_trace(*this, pc, op);
     DISPATCH();
+  WRITE:
+    eval_write(*this, pc, op);
+    DISPATCH();
+
   STOP:
     if (errors.empty()) { return nullopt; }
     return pop_front(errors);
