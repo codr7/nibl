@@ -71,6 +71,21 @@ Strings are enclosed in double quotes.
 ["42"]
 ```
 
+#### parse-int [a | b c]
+`b` is the integer value parsed from `a`, or `F` on failure.
+`c` is the remaining string on success.
+
+```
+  "42" parse-int
+
+[42 ""]
+```
+```
+  "foo" parse-int
+
+[F]
+```
+
 #### Interpolation
 Values may be interpolated into strings by embedding `%`.
 
@@ -93,21 +108,6 @@ Arbitrary expressions may be interpolated using `%{...}`.
   42 "foo % bar \%"
   
 ["foo 42 bar \%"]
-```
-
-#### parse-int [a | b c]
-`b` is the integer value parsed from `a`, or `F` on failure.
-`c` is the remaining string on success.
-
-```
-  "42" parse-int
-
-[42 ""]
-```
-```
-  "foo" parse-int
-
-[F]
 ```
 
 ### Booleans
